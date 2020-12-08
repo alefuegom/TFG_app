@@ -1,0 +1,40 @@
+2020-12-08 22:23:20,009 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2020-12-08 22:27:14,961 [Worker-9: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: org.springframework.samples:spring-petclinic:2.3.0.BUILD-SNAPSHOT @ C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\pom.xml.
+2020-12-08 22:27:40,438 [Worker-9: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /spring-petclinic/src/main/java
+2020-12-08 22:27:40,441 [Worker-9: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /spring-petclinic/src/main/resources
+2020-12-08 22:27:40,465 [Worker-9: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /spring-petclinic/src/main/resources
+2020-12-08 22:27:40,469 [Worker-9: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /spring-petclinic/src/test/java
+2020-12-08 22:27:41,600 [Worker-9: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 41 sec
+2020-12-08 22:27:45,768 [Worker-19: Discover lifecycle mappings] INFO  o.e.m.i.discovery.MavenDiscovery - No lifecyle mapping found at jar:file:/C:/Users/alesk/AppData/Local/Temp/RemoteBundleDiscoveryStrategy16978597061769178289.tmp/org.eclipse.m2e.discovery.oss_catalog_1.13.jar_15368467628626153811.jar!/lifecycle%2Forg.eclipse.m2e.discovery.lifecyclemapping.m2e-wtp.xml
+2020-12-08 22:27:45,774 [Worker-19: Discover lifecycle mappings] WARN  o.e.m.i.discovery.MavenDiscovery - CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-wtp does not contain lifecycle mapping metadata
+2020-12-08 22:27:45,778 [Worker-19: Discover lifecycle mappings] INFO  o.e.m.i.discovery.MavenDiscovery - No lifecyle mapping found at jar:file:/C:/Users/alesk/AppData/Local/Temp/RemoteBundleDiscoveryStrategy16978597061769178289.tmp/org.eclipse.m2e.discovery.oss_catalog_1.13.jar_15368467628626153811.jar!/lifecycle%2Forg.eclipse.m2e.discovery.lifecyclemapping.m2e-egit.xml
+2020-12-08 22:27:45,781 [Worker-19: Discover lifecycle mappings] WARN  o.e.m.i.discovery.MavenDiscovery - CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-egit does not contain lifecycle mapping metadata
+2020-12-08 22:27:45,785 [Worker-19: Discover lifecycle mappings] INFO  o.e.m.i.discovery.MavenDiscovery - No lifecyle mapping found at jar:file:/C:/Users/alesk/AppData/Local/Temp/RemoteBundleDiscoveryStrategy16978597061769178289.tmp/org.eclipse.m2e.discovery.oss_catalog_1.13.jar_15368467628626153811.jar!/lifecycle%2Forg.eclipse.m2e.discovery.lifecyclemapping.m2e-subversive.xml
+2020-12-08 22:27:45,787 [Worker-19: Discover lifecycle mappings] WARN  o.e.m.i.discovery.MavenDiscovery - CatalogItem org.eclipse.m2e.discovery.lifecyclemapping.m2e-subversive does not contain lifecycle mapping metadata
+2020-12-08 22:27:45,873 [Worker-19: Discover lifecycle mappings] INFO  o.e.m.i.discovery.MavenDiscovery - No lifecyle mapping found at jar:file:/C:/Users/alesk/AppData/Local/Temp/RemoteBundleDiscoveryStrategy16978597061769178289.tmp/org.eclipse.m2e.discovery.oss_catalog_1.13.jar_15368467628626153811.jar!/lifecycle%2Forg.eclipse.m2e.discovery.extras.m2e-chromatic.xml
+2020-12-08 22:27:45,874 [Worker-19: Discover lifecycle mappings] WARN  o.e.m.i.discovery.MavenDiscovery - CatalogItem org.eclipse.m2e.discovery.extras.m2e-chromatic does not contain lifecycle mapping metadata
+2020-12-08 22:27:52,632 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - dotGitDirectory is null, aborting execution!
+2020-12-08 22:27:52,854 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG/src/main/less
+2020-12-08 22:27:52,854 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Executing the mojo: 
+2020-12-08 22:27:52,855 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Wro4j Model path: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\src\main\wro\wro.xml
+2020-12-08 22:27:52,855 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - targetGroups: null
+2020-12-08 22:27:52,855 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - minimize: true
+2020-12-08 22:27:52,855 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - ignoreMissingResources: null
+2020-12-08 22:27:52,856 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - parallelProcessing: false
+2020-12-08 22:27:52,856 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - buildDirectory: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target
+2020-12-08 22:27:52,877 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - destinationFolder: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target
+2020-12-08 22:27:52,877 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - cssDestinationFolder: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target\classes\static\resources\css
+2020-12-08 22:28:12,065 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The following groups will be processed: [petclinic]
+2020-12-08 22:28:12,067 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - folder: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target\classes\static\resources\css
+2020-12-08 22:28:12,072 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - processing group: petclinic.css
+2020-12-08 22:28:22,100 [Worker-19: Building] WARN  r.i.w.e.p.css.Less4jProcessor - Less warnings are:
+2020-12-08 22:28:22,131 [Worker-19: Building] WARN  r.i.w.e.p.css.Less4jProcessor - 10:1 Cannot link source map. Css result location is not know and could not be deduced from input less source..
+2020-12-08 22:28:22,202 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - file size: petclinic.css -> 152399 bytes
+2020-12-08 22:28:22,205 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target\classes\static\resources\css\petclinic.css (152399 bytes)
+2020-12-08 22:28:22,205 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - folder: C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\target
+2020-12-08 22:28:22,206 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - processing group: petclinic.js
+2020-12-08 22:28:22,322 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-08 22:28:22,339 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2020-12-08 22:28:22,401 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 9 resources
+2020-12-08 22:28:22,628 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-08 22:28:22,628 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG\initApp\TFG\src\test\resources

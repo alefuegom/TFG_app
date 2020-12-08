@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Clientes</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOMBRE</th>
+                        <th>APELLIDOS</th>
+                        <th>DNI</th>
+                        <th>TELEFONO</th>
+                        <th>DIRECCION</th>
+                        <th>CUENTA BANCARIA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clientes" class="text-center">
+                        <td>{{cliente.id}}</td>
+                        <td>{{cliente.name}}</td>
+                        <td>{{cliente.surname}}</td>
+                        <td>{{cliente.dni}}</td>
+                        <td>{{cliente.telephone}}</td>
+                        <td>{{cliente.address}}</td>
+                        <td>{{cliente.account}}</td>
+
+
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

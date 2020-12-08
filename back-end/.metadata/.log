@@ -785,3 +785,18 @@ java.lang.NullPointerException
 	at org.eclipse.m2e.core.internal.embedder.MavenImpl.execute(MavenImpl.java:1374)
 	at org.eclipse.m2e.core.internal.project.registry.ProjectRegistryRefreshJob.run(ProjectRegistryRefreshJob.java:84)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2020-12-08 22:46:19.041
+!MESSAGE Less warnings are:
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2020-12-08 22:46:19.043
+!MESSAGE 10:1 Cannot link source map. Css result location is not know and could not be deduced from input less source..
+
+!ENTRY org.eclipse.ui 2 2 2020-12-08 22:47:37.097
+!MESSAGE Invalid property category path: org.springframework.ide.eclipse.beans.ui.properties.ProjectPropertyPage (bundle: org.springframework.ide.eclipse.xml.namespaces, propertyPage: org.springframework.ide.eclipse.beans.ui.namespaces.projectPropertyPage)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2020-12-08 22:48:10.965
+!MESSAGE Less warnings are:
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2020-12-08 22:48:10.966
+!MESSAGE 10:1 Cannot link source map. Css result location is not know and could not be deduced from input less source..

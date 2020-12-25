@@ -2,6 +2,8 @@ package alefuegom.tfg.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -14,6 +16,7 @@ import com.sun.istack.NotNull;
 public class Servicio extends BaseEntity {
 	
 	@NotNull
+	@Enumerated(EnumType.ORDINAL) 
 	private EstadoServicio estado;
 	
 	private String observaciones;
@@ -24,7 +27,7 @@ public class Servicio extends BaseEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	private SolicitudServicio solicitud;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(optional=true, cascade = CascadeType.ALL)
 	private Factura factura;
 	
 	

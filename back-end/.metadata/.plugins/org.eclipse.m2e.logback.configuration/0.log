@@ -3893,3 +3893,224 @@ java.lang.NullPointerException: null
 2020-12-22 17:35:51,952 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2020-12-22 17:35:51,952 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
 2020-12-22 17:35:51,952 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:02:15,007 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2020-12-25 23:02:34,112 [Worker-6: Updating Maven Dependencies] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: org.springframework.samples:spring-petclinic:2.4.0.BUILD-SNAPSHOT @ C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\pom.xml.
+2020-12-25 23:02:45,155 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - dotGitDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\.git
+2020-12-25 23:02:45,447 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.build.user.name with value Alejandro Fuentes Gómez
+2020-12-25 23:02:45,448 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.build.user.email with value 48445978+alefuegom@users.noreply.github.com
+2020-12-25 23:02:45,496 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.branch with value develop
+2020-12-25 23:02:45,498 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - --always = true
+2020-12-25 23:02:45,498 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - --dirty = -dirty
+2020-12-25 23:02:45,500 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - --abbrev = 7
+2020-12-25 23:02:45,510 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Tag refs [[]]
+2020-12-25 23:02:45,510 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Created map: [{}]
+2020-12-25 23:02:45,512 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - evalCommit is [f5f28377d86660559321784a765729761c990a59]
+2020-12-25 23:02:45,834 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.id.describe with value f5f2837-dirty
+2020-12-25 23:02:45,835 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.id.describe-short with value f5f2837-dirty
+2020-12-25 23:02:45,836 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.id with value f5f28377d86660559321784a765729761c990a59
+2020-12-25 23:02:45,838 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.id.abbrev with value f5f2837
+2020-12-25 23:02:46,050 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.dirty with value true
+2020-12-25 23:02:46,052 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.user.name with value Alejandro Fuentes Gómez
+2020-12-25 23:02:46,052 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.user.email with value 48445978+alefuegom@users.noreply.github.com
+2020-12-25 23:02:46,053 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.message.full with value SP1-Populación1
+
+Se han populado las tablas de usuario, persona, empresa, cliente, trabajador y administrador.
+2020-12-25 23:02:46,053 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.message.short with value SP1-Populación1
+2020-12-25 23:02:46,054 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.commit.time with value 2020-12-22T17:37:32+0100
+2020-12-25 23:02:46,055 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.remote.origin.url with value https://github.com/alefuegom/TFG_app.git
+2020-12-25 23:02:46,061 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.tags with value 
+2020-12-25 23:02:46,068 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - evalCommit is [f5f28377d86660559321784a765729761c990a59]
+2020-12-25 23:02:46,070 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Tag refs [[]]
+2020-12-25 23:02:46,071 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Created map: [{}]
+2020-12-25 23:02:46,079 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.closest.tag.name with value 
+2020-12-25 23:02:46,086 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - evalCommit is [f5f28377d86660559321784a765729761c990a59]
+2020-12-25 23:02:46,088 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Tag refs [[]]
+2020-12-25 23:02:46,089 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Created map: [{}]
+2020-12-25 23:02:46,097 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.closest.tag.commit.count with value 
+2020-12-25 23:02:46,110 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.total.commit.count with value 8
+2020-12-25 23:02:46,943 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.local.branch.ahead with value 0
+2020-12-25 23:02:46,943 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.local.branch.behind with value 0
+2020-12-25 23:02:46,947 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.build.time with value 2020-12-25T23:02:46+0100
+2020-12-25 23:02:46,948 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.build.version with value 2.4.0.BUILD-SNAPSHOT
+2020-12-25 23:02:46,949 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Collected git.build.host with value LAPTOP-GGG9JJ84
+2020-12-25 23:02:46,949 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.tags in results
+2020-12-25 23:02:46,949 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.closest.tag.commit.count in results
+2020-12-25 23:02:46,949 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.build.version in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.user.name in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.id.abbrev in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.branch in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.build.host in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.id.describe-short in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.total.commit.count in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.id.describe in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.build.user.email in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.id in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.message.short in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.user.email in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.closest.tag.name in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.local.branch.ahead in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.time in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.local.branch.behind in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.build.time in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.build.user.name in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.dirty in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.commit.message.full in results
+2020-12-25 23:02:46,950 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - including property git.remote.origin.url in results
+2020-12-25 23:02:46,953 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Reading existing properties file [C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target\classes\git.properties] (for module petclinic)...
+2020-12-25 23:02:46,971 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Writing properties file to [C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target\classes\git.properties] (for module petclinic)...
+2020-12-25 23:02:53,725 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG/src/main/less
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Executing the mojo: 
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Wro4j Model path: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\main\wro\wro.xml
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - targetGroups: null
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - minimize: true
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - ignoreMissingResources: null
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - parallelProcessing: false
+2020-12-25 23:02:53,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - buildDirectory: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target
+2020-12-25 23:02:53,739 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - destinationFolder: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target
+2020-12-25 23:02:53,739 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - cssDestinationFolder: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target\classes\static\resources\css
+2020-12-25 23:02:54,670 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The following groups will be processed: [petclinic]
+2020-12-25 23:02:54,670 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - folder: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target\classes\static\resources\css
+2020-12-25 23:02:54,671 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - processing group: petclinic.css
+2020-12-25 23:02:59,338 [Worker-6: Building] WARN  r.i.w.e.p.css.Less4jProcessor - Less warnings are:
+2020-12-25 23:02:59,352 [Worker-6: Building] WARN  r.i.w.e.p.css.Less4jProcessor - 10:1 Cannot link source map. Css result location is not know and could not be deduced from input less source..
+2020-12-25 23:02:59,400 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - file size: petclinic.css -> 152399 bytes
+2020-12-25 23:02:59,401 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target\classes\static\resources\css\petclinic.css (152399 bytes)
+2020-12-25 23:02:59,401 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - folder: C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\target
+2020-12-25 23:02:59,401 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - processing group: petclinic.js
+2020-12-25 23:03:00,606 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:03:00,606 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:03:00,608 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2020-12-25 23:03:00,673 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 40 resources
+2020-12-25 23:03:00,722 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The encoding used to copy filtered properties files have not been set. This means that the same encoding will be used to copy filtered properties files as when copying other filtered resources. This might not be what you want! Run your build with --debug to see which files might be affected. Read more at https://maven.apache.org/plugins/maven-resources-plugin/examples/filtering-properties-files.html
+2020-12-25 23:03:00,726 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:03:00,727 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:03:00,727 [Worker-6: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:15:26,941 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:15:26,941 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:15:26,956 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2020-12-25 23:15:27,041 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 40 resources
+2020-12-25 23:15:27,085 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The encoding used to copy filtered properties files have not been set. This means that the same encoding will be used to copy filtered properties files as when copying other filtered resources. This might not be what you want! Run your build with --debug to see which files might be affected. Read more at https://maven.apache.org/plugins/maven-resources-plugin/examples/filtering-properties-files.html
+2020-12-25 23:15:27,090 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:15:27,090 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:15:27,090 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:16:18,264 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:16:18,264 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:16:18,265 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:16:18,266 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:16:18,275 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:16:18,276 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:16:18,276 [Worker-2: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:39:03,917 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:39:03,918 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:39:03,919 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:39:03,919 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:39:03,942 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:39:03,943 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:39:03,943 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:39:53,922 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:39:53,922 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:39:53,923 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:39:53,923 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:39:53,930 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:39:53,930 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:39:53,930 [Worker-21: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:40:28,879 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:40:28,880 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:40:28,884 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:40:28,885 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:40:28,898 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:40:28,898 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:40:28,898 [Worker-3: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:41:02,522 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:41:02,523 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:41:02,524 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:41:02,526 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:41:02,537 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:41:02,537 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:41:02,537 [Worker-23: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:47:34,025 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:47:34,026 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:47:34,026 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:47:34,027 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:47:34,047 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:47:34,047 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:47:34,047 [Worker-22: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:49:01,920 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:49:01,921 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:49:01,921 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:49:01,922 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:49:01,930 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:49:01,930 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:49:01,931 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:53:02,512 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:53:02,512 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:53:02,513 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:53:02,513 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:53:02,525 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:53:02,526 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:53:02,526 [Worker-29: Launching TFGApplication] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:55:55,282 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:55:55,282 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:55:55,293 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2020-12-25 23:55:55,381 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 40 resources
+2020-12-25 23:55:55,430 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The encoding used to copy filtered properties files have not been set. This means that the same encoding will be used to copy filtered properties files as when copying other filtered resources. This might not be what you want! Run your build with --debug to see which files might be affected. Read more at https://maven.apache.org/plugins/maven-resources-plugin/examples/filtering-properties-files.html
+2020-12-25 23:55:55,435 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:55:55,435 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:55:55,435 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:56:18,749 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:56:18,750 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:56:18,760 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2020-12-25 23:56:18,782 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 40 resources
+2020-12-25 23:56:18,843 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - The encoding used to copy filtered properties files have not been set. This means that the same encoding will be used to copy filtered properties files as when copying other filtered resources. This might not be what you want! Run your build with --debug to see which files might be affected. Read more at https://maven.apache.org/plugins/maven-resources-plugin/examples/filtering-properties-files.html
+2020-12-25 23:56:18,846 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:56:18,846 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:56:18,846 [Worker-37: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:56:59,281 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:56:59,281 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:56:59,282 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:56:59,283 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:56:59,292 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:56:59,293 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:56:59,293 [Worker-36: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-25 23:59:05,929 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:59:05,929 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:59:05,930 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-25 23:59:05,930 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-25 23:59:05,942 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-25 23:59:05,942 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-25 23:59:05,942 [Worker-38: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-26 00:02:48,998 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:02:48,998 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:02:48,999 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-26 00:02:49,000 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-26 00:02:49,008 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:02:49,008 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:02:49,008 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-26 00:03:10,040 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:03:10,040 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:03:10,041 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-26 00:03:10,041 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-26 00:03:10,054 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:03:10,054 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:03:10,054 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-26 00:03:40,856 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:03:40,856 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:03:40,857 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-26 00:03:40,858 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-26 00:03:40,867 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:03:40,867 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:03:40,868 [Worker-34: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-26 00:08:31,223 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:08:31,224 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:08:31,224 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-26 00:08:31,225 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-26 00:08:31,235 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:08:31,235 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:08:31,236 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources
+2020-12-26 00:09:31,151 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:09:31,152 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:09:31,152 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2020-12-26 00:09:31,152 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2020-12-26 00:09:31,161 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2020-12-26 00:09:31,161 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered properties files.
+2020-12-26 00:09:31,161 [Worker-30: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\TFG\src\test\resources

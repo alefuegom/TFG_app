@@ -1,6 +1,5 @@
-export class Usuario{
+export interface Usuario{
     email:string;
     contraseña:string;
-    constructor( email:string, contraseña:string){
-       }
+
 }

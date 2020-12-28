@@ -5,8 +5,8 @@ import { EstadoSolicitud } from "./EstadoSolicitud";
 import { Plaga } from "./Plaga";
 import { Tratamiento } from "./Tratamiento";
 
-export class SolicitudServicio{
-    id: Int16Array;
+export interface SolicitudServicio{
+    id: number;
     estado:EstadoSolicitud;
     fecha:Date;
     observaciones:string;
@@ -15,6 +15,4 @@ export class SolicitudServicio{
     tratamiento:Tratamiento;
     plaga:Plaga;
 
-    constructor(id:Int16Array, estado:EstadoSolicitud, fecha:Date, observaciones:string, cliente:Cliente,
-        empresa:Empresa, tratamiento:Tratamiento, plaga:Plaga){}
 }

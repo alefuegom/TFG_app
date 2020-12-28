@@ -3,7 +3,7 @@
     margin:0 auto;
     padding: 60px;
     height: 2000px;
-   /* background-image:url('src/app/images/background.jpg') ;*/
+   background-image:url('src/app/images/background.jpg');
     background-size: cover;
     background-position: center center ;
 
@@ -15,6 +15,7 @@
     width: 100%;
     padding: 20px;
     background-color: white;
+    opacity: 0.8;
     position: relative;
     border: 5px solid black;
 }
@@ -22,6 +23,7 @@
     margin-top: 50px;
     width: 100%;
     align-content: center;
+    opacity: 0.8;
     display: inline-block;
     color:black;
     padding: 20px;
@@ -35,6 +37,7 @@
     margin-top: 50px;
     width: 100%;
     display: inline-block;
+    opacity: 0.8;
     color:black;
     padding: 20px;
     background-color: white;
@@ -48,6 +51,8 @@
     display: inline-block;
     color:black;
     padding: 20px;
+    opacity: 0.8;
+
     background-color: white;
     position: relative;
     border: 5px solid black;

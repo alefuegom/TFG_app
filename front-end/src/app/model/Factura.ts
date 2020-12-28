@@ -1,13 +1,10 @@
-export class Factura{
-    numeroFactura: Int16Array;
+export interface Factura{
+    numeroFactura: number;
     fechaExpedición: Date;
     emisor:string;
     receptor:string;
     descripcion:string;
-    importe:Int16Array;
-    tipoImpositivo: Int16Array;
+    importe:number;
+    tipoImpositivo: number;
     fechaOperaciones: Date;
-
-    constructor(numeroFactura:Int16Array, fechaExpedicion:Date, emisor:string, receptor:string,
-        descripcion:string, importe:Int16Array, tipoImpositivo:Int16Array, fechaOperaciones:Date){}
 }

@@ -1,8 +1,6 @@
 import { Persona } from "./Persona";
 
-export class Administrador{
+export interface Administrador{
     persona:Persona
-
-    constructor(persona:Persona){}
 
 }

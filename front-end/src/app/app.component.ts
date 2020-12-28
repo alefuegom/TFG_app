@@ -10,15 +10,4 @@ export class AppComponent {
   title = 'ProyectoTFG';
   constructor(private router:Router){}
 
-  signIn(){
-    this.router.navigate(["signIn"]);
-  }
-
-  signUp(){
-    this.router.navigate(["signUp"]);
-  }
-
-  listCustomer(){
-    this.router.navigate(["listCustomer"])
-  }
 }

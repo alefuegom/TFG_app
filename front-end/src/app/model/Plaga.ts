@@ -1,5 +1,4 @@
-export class Plaga{
+export interface Plaga{
     nombre:string;
     
-    constructor(nombre:string){}
 }

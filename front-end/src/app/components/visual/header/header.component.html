@@ -4,11 +4,9 @@
 
       <nav>
         <ul>
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Sobre nosotros</a></li>
-          <li><a href="#">Contacto</a></li>
-          <li><a href="#">Sign in</a></li>
-          <li><a href="#" (click)="signUp()">Sign Up</a></li>
+          <li><a [routerLink]="['']" routerLinkActive="active">Inicio</a></li>
+          <li><a [routerLink]="['login']" routerLinkActive="active">Login</a></li>
+          <li><a [routerLink]="['registro']" routerLinkActive="active">Registrarse</a></li>
         </ul>
       </nav>
     </div>

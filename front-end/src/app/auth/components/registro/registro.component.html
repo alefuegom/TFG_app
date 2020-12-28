@@ -1,0 +1,110 @@
+<div class="container">
+    <h1>REGISTRO</h1>
+    <button (click)="cliente =  false" class="buttons">¿Eres una empresa?</button>
+    <button (click)="cliente = true" class="buttons">¿Eres una persona?</button>
+    <div *ngIf="cliente">
+        <form action="">
+            <div class="input">
+                <label for="email">Email:</label>
+                <br>
+                <input type="email" name="email" id="email">
+            </div>
+
+            <div class="input">
+                <label for="contraseña">Contraseña:</label>
+                <br>
+                <input type="password" name="contraseña" id="contraseña">
+            </div>
+
+            <div class="input">
+                <label for="nombre">Nombre:</label>
+                <br>
+                <input type="text" name="nombre" id="nombre">
+            </div>
+
+            <div class="input">
+                <label for="apellidos">Apellidos:</label>
+                <br>
+                <input type="text" name="apellidos" id="apellidos">
+            </div>
+
+            <div class="input">
+                <label for="dni">DNI:</label>
+                <br>
+                <input type="text" name="dni" id="dni">
+            </div>
+
+            <div class="input">
+                <label for="telefono">Número de teléfono:</label>
+                <br>
+                <input type="number" name="telefono" id="telefono">
+            </div>
+
+            <div class="input">
+                <label for="direccion">Dirección:</label>
+                <br>
+                <input type="text" name="direccion" id="direccion">
+            </div>
+
+            <div class="input">
+                <label for="cuentaBancaria">Cuenta bancaria:</label>
+                <br>
+                <input type="text" name="cuentaBancaria" id="cuentaBancaria">
+            </div>
+
+            <div class="buttons">
+            <button>Registro</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="!cliente">
+        <form action="">
+            <div class="input">
+                <label for="email">Email:</label>
+                <br>
+                <input type="email" name="email" id="email">
+            </div>
+
+            <div class="input">
+                <label for="contraseña">Contraseña:</label>
+                <br>
+                <input type="password" name="contraseña" id="contraseña">
+            </div>
+
+            <div class="input">
+                <label for="nombre">Nombre:</label>
+                <br>
+                <input type="text" name="nombre" id="nombre">
+            </div>
+
+            <div class="input">
+                <label for="dni">CIF:</label>
+                <br>
+                <input type="text" name="dni" id="dni">
+            </div>
+
+            <div class="input">
+                <label for="telefono">Número de teléfono:</label>
+                <br>
+                <input type="number" name="telefono" id="telefono">
+            </div>
+
+            <div class="input">
+                <label for="direccion">Dirección:</label>
+                <br>
+                <input type="text" name="direccion" id="direccion">
+            </div>
+
+            <div class="input">
+                <label for="cuentaBancaria">Cuenta bancaria:</label>
+                <br>
+                <input type="text" name="cuentaBancaria" id="cuentaBancaria">
+            </div>
+            <div class="buttons">
+            <button>Registro</button>
+            </div>
+        </form>
+    </div>
+
+</div>

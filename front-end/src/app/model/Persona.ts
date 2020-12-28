@@ -1,12 +1,9 @@
 import { Usuario } from "./Usuario";
 
-export class Persona{
+export interface Persona{
     nombre:string;
     apellidos:string;
     dni:string;
-    telefono:BigInt;
-    usuario:Usuario;
-
-    constructor(nombre:string, apellidos:string, dni:string, telefono:BigInt, usuario:Usuario){}
-    
+    telefono:number;
+    usuario:Usuario;    
 }

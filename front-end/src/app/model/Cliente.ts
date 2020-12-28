@@ -1,12 +1,8 @@
 import { Persona } from "./Persona";
 
-export class Cliente{
+export interface Cliente{
     direccion:string;
     cuentaBancaria:string;
     persona:Persona;
 
-
-    constructor(direccion:string,  cuentaBancaria:string, persona:Persona){
-
-        }
 }

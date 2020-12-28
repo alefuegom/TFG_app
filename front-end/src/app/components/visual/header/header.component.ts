@@ -10,6 +10,7 @@ export class HeaderComponent {
   title = 'ProyectoTFG';
   constructor(private router:Router){}
 
+
   ngOnInit(): void {
   }
   signIn(){
@@ -18,10 +19,6 @@ export class HeaderComponent {
 
   signUp(){
     this.router.navigate(["signUp"]);
-  }
-
-  listCustomer(){
-    this.router.navigate(["listCustomer"])
   }
 
 }

@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+{% block contenido %}
+<h1 class="text-muted text-center" style="margin-bottom:40px; margin-top:90px;">Registro de una persona</h1>
+<form id='form' method='post'>
+    {% csrf_token %}
+    <div class="container center_div" style="margin-top:10px; width:100%;">
+        {{form.as_p}}
+        <p><input type='submit' value='Confirmar'/></p>
+    </div>
+</form>
+{% endblock %}

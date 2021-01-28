@@ -1,0 +1,13 @@
+{% include 'header.html' %}
+{% block contenido %}
+<h1 class="text-muted text-center" style="margin-bottom:40px; margin-top:90px;">Login de un cliente</h1>
+{% if ex_msg %}
+<h1 style="margin-top:40px;"><b>{{er_msg}}</b></h1>
+{% endif %}
+<form id='form' method='get'>
+    <div class="container center_div" style="margin-top:10px; width:100%;">
+        {{form.as_p}}
+        <p><input type='submit' value='Confirmar'/></p>
+    </div>
+</form>
+{% endblock %}

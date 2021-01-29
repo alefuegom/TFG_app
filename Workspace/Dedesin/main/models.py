@@ -14,30 +14,30 @@ CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', 'E
 
 # Create your models here.
 class Usuario(models.Model):
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, unique=True)
     contraseña = models.CharField(max_length=254, validators=[CONTRASEÑA_REGEX])
 
 
 class Empresa(models.Model):
     nombre = models.CharField(max_length=50)
-    cif = models.CharField(max_length=10, validators=[CIF_REGEX])
+    cif = models.CharField(max_length=10, validators=[CIF_REGEX], unique=True)
     direccion = models.TextField()
-    telefono = models.BigIntegerField(validators = [NUMBER_REGEX])
-    cuenta_bancaria = models.CharField(max_length=22,validators=[CUENTA_BANCARIA_REGEX])
+    telefono = models.BigIntegerField(validators = [NUMBER_REGEX], unique=True)
+    cuenta_bancaria = models.CharField(max_length=22,validators=[CUENTA_BANCARIA_REGEX],unique=True)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
 
 class Persona(models.Model):
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=80)
-    dni = models.CharField(max_length=9, validators=[DNI_REGEX])
-    telefono = models.BigIntegerField(validators = [NUMBER_REGEX])
+    dni = models.CharField(max_length=9, validators=[DNI_REGEX],unique=True)
+    telefono = models.BigIntegerField(validators = [NUMBER_REGEX],unique=True)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
 
 class Cliente(models.Model):
     direccion = models.TextField()
-    cuenta_bancaria = models.CharField(max_length=22 ,validators=[CUENTA_BANCARIA_REGEX])
+    cuenta_bancaria = models.CharField(max_length=22 ,validators=[CUENTA_BANCARIA_REGEX],unique=True)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE)
 
 

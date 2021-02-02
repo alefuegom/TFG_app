@@ -1,9 +1,9 @@
-{% include 'header.html' %}
+{% extends 'header.html' %}
 {% block contenido %}
 
 <div class="container" style="margin-top:70px">
     <div class="row justify-content-center ">
-        <div class="col-8 row justify-content-center my-5" style="background-color:rgba(0,0,0,0.1);">
+        <div class="col-8 row justify-content-center my-5 bg-dark text-white">
             <h1 class="my-4 font-weight-bold" style="width:100%; text-align:center;">Inicio de sesión</h1>
             {% if form.errors %}
             {% for field in form %}
@@ -40,8 +40,10 @@
                     {{ field.label_tag }} {{ field }}
                 </div>
                 {% endfor %}
-                <p><input type='submit' class="btn btn-success btn-lg mt-4" value='Confirmar'
-                          style="margin-top:10px; margin-left:90px;"/>
+                <div class="d-flex justify-content-center ">
+                <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+                          style=""/>
+                    </div>
             </form>
         </div>
     </div>

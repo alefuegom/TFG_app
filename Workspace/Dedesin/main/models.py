@@ -24,8 +24,8 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50)
     cif = models.CharField(max_length=10, validators=[CIF_REGEX], unique=True)
     direccion = models.TextField()
-    telefono = models.IntegerField(validators = [TELEFONO_REGEX], unique=True)
-    cuenta_bancaria = models.CharField(max_length=22,validators=[CUENTA_BANCARIA_REGEX], blank=True)
+    telefono = models.CharField(validators = [TELEFONO_REGEX], unique=True, max_length=9)
+    cuenta_bancaria = models.CharField(max_length=22,validators=[CUENTA_BANCARIA_REGEX], unique=True)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=50)
     apellidos = models.CharField(max_length=80)
     dni = models.CharField(max_length=9, validators=[DNI_REGEX],unique=True)
-    telefono = models.IntegerField(validators = [TELEFONO_REGEX],unique=True)
+    telefono = models.CharField(validators = [TELEFONO_REGEX],unique=True,max_length=9)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):

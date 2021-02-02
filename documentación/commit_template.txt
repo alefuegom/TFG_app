@@ -1,0 +1,18 @@
+# ------ PLANTILLA COMMIT ------
+# Por favor, haga uso de esta plantilla en el momento de subir cambios al repositorio
+# ------------------------------
+# Para introducir el título del commit use las siguientes etiquetas:
+# [IMPL] Para implementar
+# [MOD] Para modificar
+# [EL] Para eliminar
+# Escriba aquí su título:
+
+# ------------------------------
+# Para introducir la descripción del commit use las siguientes indicaciones:
+# Detalle brevemente en una o dos frases el contenido añadido/modificado/eliminado
+# Liste todos los cambios producidos
+# Detalle brevemente qué queda por hacer en la funcionalidad que sube (si fuese necesario)
+# Escriba aquí su descripción:
+
+# ------------------------------
+# Gracias por usar la plantilla. Cada vez que no se usa la plantilla, muere un gatito.

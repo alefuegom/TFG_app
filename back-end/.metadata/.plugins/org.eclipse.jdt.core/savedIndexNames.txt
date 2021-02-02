@@ -1,2 +1,0 @@
-INDEX VERSION 1.131+C:\Users\alesk\Desktop\Universidad\TFG_app\TFG_app\back-end\.metadata\.plugins\org.eclipse.jdt.core
-7206857.index

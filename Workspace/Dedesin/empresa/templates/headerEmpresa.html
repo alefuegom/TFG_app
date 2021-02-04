@@ -1,0 +1,84 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Dedesin SL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        body{
+        font-family:'Signika';
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" style="font-size:35px;" href="/">DEDESIN</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/empresa">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/empresa/solicitudServicio">Solicitudes de servicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/empresa/servicio">Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/empresa/miPerfil">Mi perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block contenido %}
+
+{% endblock %}
+</body>
+
+<footer class="bg-light text-center text-lg-start">
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-left">
+                <h5 class="text-uppercase">Contacta con nosotros</h5>
+                <p>
+                    Si tiene alguna pregunta, sugerencia o queja, no dude en realizarla por los medios que se muestran en la parte
+                    derecha de la pantalla.
+                </p>
+            </div>
+
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-left">
+                <h5 class="text-uppercase">Métodos de contacto</h5>
+                <h6>
+                    Dirección:<a
+                        href="https://www.google.es/maps/place/Dedesin/@37.4000117,-6.0448353,17z/data=!3m1!4b1!4m5!3m4!1s0xd126b61e87aa351:0x7389ae0054f1c140!8m2!3d37.4000117!4d-6.0426466"
+                        target="_blank">
+                    Calle Caño Ronco Norte, 143
+                    41900 Camas, Sevilla</a></h6>
+                <h6>Teléfono: 954 391 776</h6>
+                <h6>E-mail: info@dedesin.com</h6>
+            </div>
+
+        </div>
+    </div>
+    <div class="text-center text-white p-3 bg-dark" >
+        © 2021 Copyright: Dedesin S.L.
+    </div>
+</footer>

@@ -90,15 +90,14 @@ class Tratamiento(models.Model):
 
 
 ESTADO_SOLICITUD = {
-    ('pendiente', 'Pendiente'),
-    ('atendida', 'Atendida'),
-    ('aceptada', 'Aceptada'),
-    ('rechazada', 'Rechazada')
+    ('Pendiente', 'Pendiente'),
+    ('Atendida', 'Atendida'),
+    ('Aceptada', 'Aceptada'),
+    ('Rechazada', 'Rechazada')
 }
 
 
 class SolicitudServicio(models.Model):
-    id = models.IntegerField(primary_key=True)
     estado = models.CharField(choices=ESTADO_SOLICITUD, default='pendiente', max_length=9)
     fecha = models.DateField(default=None, null=True)
     observaciones = models.TextField()
@@ -115,7 +114,6 @@ ESTADO_SERVICIO = {
 }
 
 class Servicio(models.Model):
-    id = models.IntegerField(primary_key=True)
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
     observaciones = models.TextField()
     solicitud_servicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)

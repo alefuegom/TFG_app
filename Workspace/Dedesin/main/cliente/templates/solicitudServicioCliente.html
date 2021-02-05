@@ -1,0 +1,45 @@
+{% extends 'headerCliente.html' %}
+{% block contenido %}
+{% if num_solicitudes %}
+<div class="container">
+    <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_solicitudes}} solicitudes de servicio</h2>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Plaga</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in solicitudes %}
+        <tr>
+            <td>{{s.id}}</td>
+            <td>{{s.fecha}}</td>
+            <td>{{s.estado.title}}</td>
+            <td>{{s.plaga}}</td>
+            <td>
+                <a class="btn btn-outline-dark rounded-0" href="{{s.id}}">Ver detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row d-flex justify-content-end my-5 mr-2">
+        <a class="btn btn-outline-dark rounded-0" href="#">Nueva solicitud</a>
+    </div>
+</div>
+{% else %}
+<div class="container" style="margin-top:10%;">
+    <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente no tiene ninguna solicitud de servicio.</h2>
+    <div class="row d-flex justify-content-end my-5 mr-2">
+        <a class="btn btn-outline-dark rounded-0" href="#">Nueva solicitud</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

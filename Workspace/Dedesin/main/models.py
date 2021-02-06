@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
 
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, User
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -14,25 +16,16 @@ CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
                                   'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número')
 
 
-# Create your models here.
-class Usuario(models.Model):
-    email = models.EmailField(max_length=254, unique=True)
-    contraseña = models.CharField(max_length=254, validators=[CONTRASEÑA_REGEX])
-
-    def __str__(self):
-        return self.email
-
-
 class Empresa(models.Model):
     nombre = models.CharField(max_length=50)
     cif = models.CharField(max_length=10, validators=[CIF_REGEX], unique=True)
     direccion = models.TextField()
     telefono = models.CharField(validators=[TELEFONO_REGEX], unique=True, max_length=9)
     cuenta_bancaria = models.CharField(max_length=22, validators=[CUENTA_BANCARIA_REGEX], unique=True)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario.email + "-" + self.cif
+        return self.usuario.username + "-" + self.cif
 
 
 class Persona(models.Model):
@@ -40,10 +33,10 @@ class Persona(models.Model):
     apellidos = models.CharField(max_length=80)
     dni = models.CharField(max_length=9, validators=[DNI_REGEX], unique=True)
     telefono = models.CharField(validators=[TELEFONO_REGEX], unique=True, max_length=9)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario.email + "-" + self.dni
+        return self.usuario.username + "-" + self.dni
 
 
 class Cliente(models.Model):
@@ -86,7 +79,7 @@ class Tratamiento(models.Model):
     plaga = models.ForeignKey(Plaga, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nombre+"-"+self.plaga.nombre
+        return self.nombre + "-" + self.plaga.nombre
 
 
 ESTADO_SOLICITUD = {
@@ -103,15 +96,17 @@ class SolicitudServicio(models.Model):
     observaciones = models.TextField()
     tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE, default=None, null=True)
     plaga = models.ForeignKey(Plaga, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.id)+"-"+self.usuario.email +" ("+self.estado+")"
+        return str(self.id) + "-" + self.usuario.username + " (" + self.estado + ")"
+
 
 ESTADO_SERVICIO = {
     ('pendiente', 'Pendiente'),
     ('realizado', 'Realizado')
 }
+
 
 class Servicio(models.Model):
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
@@ -119,5 +114,4 @@ class Servicio(models.Model):
     solicitud_servicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.id)+"-"+self.estado+" ["+str(self.solicitud_servicio.id)+"]"
-
+        return str(self.id) + "-" + self.estado + " [" + str(self.solicitud_servicio.id) + "]"

@@ -33,7 +33,7 @@ class Persona(models.Model):
     apellidos = models.CharField(max_length=80)
     dni = models.CharField(max_length=9, validators=[DNI_REGEX], unique=True)
     telefono = models.CharField(validators=[TELEFONO_REGEX], unique=True, max_length=9)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.usuario.username + "-" + self.dni

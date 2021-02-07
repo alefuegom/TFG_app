@@ -21,7 +21,7 @@
             {% endif %}
 
             {% if er_msg %}
-            <div class="alert alert-danger"style="width:100%">
+            <div class="alert alert-danger" style="width:100%">
                 <strong>{{er_msg}}</strong>
             </div>
             {% endif %}
@@ -31,7 +31,8 @@
                 <strong>{{ex_msg}}</strong>
             </div>
             {% endif %}
-            <form id='form' method='get'>
+            <form id='form' method='post'>
+                {% csrf_token %}
                 {% for field in form %}
                 <div class="container center_div" style="margin-top:10px;">
                     {# uncomment to display field errors #}
@@ -41,9 +42,9 @@
                 </div>
                 {% endfor %}
                 <div class="d-flex justify-content-center ">
-                <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
-                          style=""/>
-                    </div>
+                    <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+                              style=""/>
+                </div>
             </form>
         </div>
     </div>

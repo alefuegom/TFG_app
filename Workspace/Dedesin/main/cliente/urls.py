@@ -23,6 +23,6 @@ urlpatterns = [
     path('servicio/', views.servicio_cliente),
     path('miPerfil/', views.perfil_cliente),
     path('solicitudServicio/1', views.solicitud_servicio_cliente_form),
-    path('servicio/1', views.solicitud_servicio_cliente_form)
-
+    path('servicio/1', views.solicitud_servicio_cliente_form),
+    path('cerrarSesion/', views.logout)
 ]

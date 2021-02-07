@@ -1,6 +1,8 @@
 import string
 
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import login as do_login
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 
 # Create your views here.
@@ -10,37 +12,34 @@ from .forms import *
 def index(request):
     return render(request, 'home.html')
 
+
 def tratamientos(request):
     return render(request, 'tratamientos.html')
 
 
 def inicioSesion(request):
-    if request.method == 'GET':
-        form = InicioSesionForm(request.GET, request.FILES)
+    if request.method == "POST":
+        form = InicioSesionForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
-            try:
-                usuario = Usuario.objects.get(email=email)
-                if usuario.contraseña == contraseña:
-                    try:
-                        empresa = Empresa.objects.get(usuario=usuario)
-                        return render(request, 'auth/inicioSesion.html',
-                                      {'form': form, 'ex_msg': 'Ha iniciado correctamente sesión.'})
-                    except:
-                        persona = Persona.objects.get(usuario=usuario)
-                        cliente = Cliente.objects.get(persona=persona)
-                        return render(request, '/cliente/inicioCliente',
-                                          {'form': form, 'cliente':cliente})
-                else:
-                    return render(request, 'auth/inicioSesion.html ',
-                                  {'form': form, 'er_msg': 'Contraseña incorrecto.'})
-            except:
-                return render(request, 'auth/inicioSesion.html ',
-                              {'form': form, 'er_msg': 'No existe ningún usuario con el email introducido.'})
+            usuario = authenticate(username=email, password=contraseña)
+            if usuario is not None:
+                print('usuario')
+                do_login(request, usuario)
+                try:
+                    empresa = Empresa.objects.filter(usuario=usuario)[0]
+                    return redirect('/empresa/')
+                except:
+                    persona = Persona.objects.filter(usuario=usuario)[0]
+                    cliente = Cliente.objects.filter(persona=persona)[0]
+                    return redirect('/cliente/')
+        else:
+            er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
+            return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})
 
     form = InicioSesionForm()
-    return render(request, 'auth/inicioSesion.html', {'form': form})
+    return render(request, "auth/inicioSesion.html", {'form': form})
 
 
 def registroCliente(request):
@@ -57,7 +56,7 @@ def registroCliente(request):
                 cuenta_bancaria = None
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
-            usuario = Usuario(email=email, contraseña=contraseña)
+            usuario = User(username=email, password=contraseña)
             try:
                 usuario.save()
             except:
@@ -79,11 +78,14 @@ def registroCliente(request):
             except:
                 usuario.delete()
                 return render(request, 'auth/registroCliente.html',
-                          {'er_msg': 'Ya existe un usuario con el DNI introducido', 'form': form})
+                              {'er_msg': 'Ya existe un usuario con el DNI introducido', 'form': form})
 
             cliente = Cliente(direccion=direccion, cuenta_bancaria=cuenta_bancaria, persona=persona)
             if not cuenta_bancaria:
                 cliente.save()
+                usuario = authenticate(username=email, password=contraseña)
+                login(request, usuario)
+                return redirect('/cliente/')
             else:
                 cuentas_bancarias = []
                 for c in Cliente.objects.all():
@@ -97,7 +99,9 @@ def registroCliente(request):
                                   {'er_msg': 'Ya existe un usuario con la cuenta bancaria introducida.', 'form': form})
                 else:
                     cliente.save()
-                    return render(request, 'home.html', {'ex_msg': 'El registro se ha realizado correctamente.', 'form': form})
+                    usuario = authenticate(username=email, password=contraseña)
+                    login(request, usuario)
+                    return redirect('/cliente/')
         else:
             return render(request, 'auth/registroCliente.html', {'form': form, 'form.errors': form.errors})
     form = RegistroClienteForm()
@@ -115,7 +119,7 @@ def registroEmpresa(request):
             cuenta_bancaria = form.cleaned_data['cuenta_bancaria']
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
-            usuario = Usuario(email=email, contraseña=contraseña)
+            usuario = User(username=email, password=contraseña)
             try:
                 usuario.save()
             except:
@@ -143,8 +147,9 @@ def registroEmpresa(request):
             else:
                 try:
                     empresa.save()
-                    return render(request, 'auth/registroEmpresa.html',
-                                  {'ex_msg': 'El registro se ha realizado correctamente.', 'form': form})
+                    usuario = authenticate(username=email, password=contraseña)
+                    login(request, usuario)
+                    redirect('/empresa')
                 except:
                     usuario.delete()
                     return render(request, 'auth/registroEmpresa.html',

@@ -23,14 +23,14 @@
             <td>{{s.estado.title}}</td>
             <td>{{s.plaga}}</td>
             <td>
-                <a class="btn btn-outline-dark rounded-0" href="{{s.id}}">Ver detalles</a>
+                <a class="btn btn-outline-dark rounded-0" href="/cliente/solicitudServicio/show/{{s.id}}/">Ver detalles</a>
             </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
     <div class="row d-flex justify-content-end my-5 mr-2">
-        <a class="btn btn-outline-dark rounded-0" href="#">Nueva solicitud</a>
+        <a class="btn btn-outline-dark rounded-0" href="create/">Nueva solicitud</a>
     </div>
 </div>
 {% else %}
@@ -38,7 +38,7 @@
     <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
     <h2 class="text-muted mt-3 mb-5"> Actualmente no tiene ninguna solicitud de servicio.</h2>
     <div class="row d-flex justify-content-end my-5 mr-2">
-        <a class="btn btn-outline-dark rounded-0" href="#">Nueva solicitud</a>
+        <a class="btn btn-outline-dark rounded-0" href="create/">Nueva solicitud</a>
     </div>
 </div>
 {% endif %}

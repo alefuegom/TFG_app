@@ -34,9 +34,9 @@ def inicioSesion(request):
                     persona = Persona.objects.filter(usuario=usuario)[0]
                     cliente = Cliente.objects.filter(persona=persona)[0]
                     return redirect('/cliente/')
-        else:
-            er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
-            return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})
+            else:
+                er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
+                return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})
 
     form = InicioSesionForm()
     return render(request, "auth/inicioSesion.html", {'form': form})

@@ -23,7 +23,9 @@ urlpatterns = [
     path('solicitudServicio/show/<int:id>/', views.show_solicitud_servicio_cliente),
     path('solicitudServicio/edit/<int:id>/', views.edit_solicitud_servicio_cliente),
     path('solicitudServicio/create/', views.create_solicitud_servicio_cliente),
-    path('servicio/', views.servicio_cliente),
-    path('miPerfil/', views.perfil_cliente),
+    path('servicio/', views.list_servicios_cliente),
+    path('servicio/show/<int:id>/', views.show_servicios_cliente),
+    path('miPerfil/', views.show_perfil_cliente),
+    path('miPerfil/edit/', views.edit_perfil_cliente),
     path('cerrarSesion/', views.logout)
 ]

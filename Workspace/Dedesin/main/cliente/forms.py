@@ -1,6 +1,12 @@
 from django import forms
 from ..models import *
 
+DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
+CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
+CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
+TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
+CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
+                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número')
 
 class EditSolicitudServicioClienteForm(forms.Form):
     ESTADO_SOLICITUD = {
@@ -14,6 +20,16 @@ class CreateSolicitudServicioClienteForm(forms.Form):
     plagas = Plaga.objects.all()
     nombre_plagas = []
     for plaga in plagas:
-        nombre_plagas.append([plaga.nombre,plaga.nombre])
+        nombre_plagas.append([plaga.nombre, plaga.nombre])
     plaga = forms.ChoiceField(choices=nombre_plagas)
     observaciones = forms.CharField()
+
+
+class EditPerfilClienteForm(forms.Form):
+    nombre = forms.CharField(label="Nombre")
+    apellidos = forms.CharField(label="Apellidos")
+    dni = forms.CharField(label="DNI", validators=[DNI_REGEX])
+    telefono = forms.CharField(label="Telefono",validators=[TELEFONO_REGEX])
+    direccion = forms.CharField(label="Dirección")
+    cuentaBancaria = forms.CharField(label="Cuenta bancaria", validators=[CUENTA_BANCARIA_REGEX], required=False)
+

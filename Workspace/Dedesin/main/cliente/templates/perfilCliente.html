@@ -1,28 +1,29 @@
 {% extends 'headerCliente.html' %}
 {% block contenido %}
+{% if cliente %}
 <div class="container" style="margin-top:10%;">
     <strong><h1>Mi perfil</h1></strong>
     <div class="container mt-4 mb-5">
         <div class="row">
             <div class="col-sm">
                 <div class="row">
-                   <strong><p>Nombre: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <strong><p>Nombre: </p></strong>
+                    <p class="ml-1">{{cliente.persona.nombre}}</p>
                 </div>
                 <div class="row">
-                   <strong> <p>Apellidos: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <strong><p>Apellidos: </p></strong>
+                    <p class="ml-1">{{cliente.persona.apellidos}}</p>
                 </div>
                 <div class="row">
                     <strong><p>DNI: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <p class="ml-1">{{cliente.persona.dni}}</p>
                 </div>
                 <div class="row">
                     <strong><p> Email:</p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <p class="ml-1">{{cliente.persona.usuario.username}}</p>
                 </div>
                 <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0" href="#">Editar</a>
+                    <a class="btn btn-outline-dark rounded-0" href="edit/">Editar</a>
                 </div>
             </div>
 
@@ -30,20 +31,40 @@
 
                 <div class="row">
                     <strong><p>Teléfono: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <p class="ml-1">{{cliente.persona.telefono}}</p>
                 </div>
                 <div class="row">
                     <strong><p>Dirección: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    <p class="ml-1">{{cliente.direccion}}</p>
                 </div>
                 <div class="row">
                     <strong><p>Cuenta bancaria: </p></strong>
-                    <p class="ml-1">Ejemplo</p>
+                    {% if cliente.cuentaBancaria %}
+                    <p class="ml-1">{{cliente.cuentaBancaria}}</p>
+                    {% else %}
+                    <p class="text-danger ml-1">Por definir</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+{% endif %}
+{% if form %}
+<div class="container" style="margin-top:10%;">
+    <form id='form' method='post'>
+        {% csrf_token %}
 
+        {% for field, valor in items %}
+        <div class="container center_div" style="margin-top:10px;">
+            <label for="field">{{field.label_tag}}</label>
+            <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
+        </div>
+        {% endfor %}
+        <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+                  style=""/>
+    </form>
+
+</div>
+{% endif %}
 {% endblock %}

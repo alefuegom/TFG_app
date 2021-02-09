@@ -19,7 +19,11 @@
         {% for s in solicitudes %}
         <tr>
             <td>{{s.id}}</td>
+            {% if s.fecha %}
             <td>{{s.fecha}}</td>
+            {% else %}
+            <td>Por definir</td>
+            {% endif %}
             <td>{{s.estado.title}}</td>
             <td>{{s.plaga}}</td>
             <td>

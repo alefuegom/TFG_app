@@ -72,7 +72,10 @@ def list_servicios_cliente(request):
 def show_servicios_cliente(request, id):
     servicio = Servicio.objects.get(id=id)
     if servicio:
-        return render(request, 'servicioClienteForm.html', {'servicio': servicio})
+        if request.user == servicio.solicitudServicio.usuario:
+            return render(request, 'servicioClienteForm.html', {'servicio': servicio})
+        else:
+            return redirect('/errorPermiso')
     else:
         return render(request, 'servicioClienteForm.html')
 
@@ -86,7 +89,7 @@ def list_solicitud_servicio_cliente(request):
         return render(request, 'solicitudServicioCliente.html', {'solicitudes': solicitudes,
                                                                  'num_solicitudes': solicitudes.count()})
     else:
-        return render(request, 'solitudServicioCliente.html')
+        return render(request, 'solicitudServicioCliente.html')
 
 
 @login_required
@@ -114,24 +117,27 @@ def create_solicitud_servicio_cliente(request):
 @login_required
 def show_solicitud_servicio_cliente(request, id):
     solicitud = SolicitudServicio.objects.get(id=id)
-
-    return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud})
-
+    if request.user == solicitud.usuario:
+        return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud})
+    else:
+        return redirect('/errorPermiso')
 
 @login_required
 def edit_solicitud_servicio_cliente(request, id):
     solicitud = SolicitudServicio.objects.get(id=id)
-    if request.method == 'POST':
-        form = EditSolicitudServicioClienteForm(request.POST, request.FILES)
-        if form.is_valid():
-            estado = form.cleaned_data['estado']
-            solicitud.estado = estado
-            solicitud.save()
-            return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+    if request.user == solicitud.usuario:
+        if request.method == 'POST':
+            form = EditSolicitudServicioClienteForm(request.POST, request.FILES)
+            if form.is_valid():
+                estado = form.cleaned_data['estado']
+                solicitud.estado = estado
+                solicitud.save()
+                return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+        else:
+            form = EditSolicitudServicioClienteForm()
+            return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'form': form})
     else:
-        form = EditSolicitudServicioClienteForm()
-        return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'form': form})
-
+        return redirect('/errorPermiso')
 
 def logout(request):
     do_logout(request)

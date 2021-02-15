@@ -17,6 +17,12 @@ def tratamientos(request):
     return render(request, 'tratamientos.html')
 
 
+def errorPermiso(request):
+    return render(request, 'errorPermiso.html')
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
+
 def inicioSesion(request):
     if request.method == "POST":
         form = InicioSesionForm(request.POST)
@@ -83,7 +89,7 @@ def registroCliente(request):
             cliente = Cliente(direccion=direccion, cuenta_bancaria=cuenta_bancaria, persona=persona)
             if not cuenta_bancaria:
                 cliente.save()
-                usuario = authenticate(username=email, password=contraseña)
+                # usuario = authenticate(username=email, password=contraseña)
                 login(request, usuario)
                 return redirect('/cliente/')
             else:
@@ -99,7 +105,7 @@ def registroCliente(request):
                                   {'er_msg': 'Ya existe un usuario con la cuenta bancaria introducida.', 'form': form})
                 else:
                     cliente.save()
-                    usuario = authenticate(username=email, password=contraseña)
+                    # usuario = authenticate(username=email, password=contraseña)
                     login(request, usuario)
                     return redirect('/cliente/')
         else:

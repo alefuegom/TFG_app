@@ -16,11 +16,14 @@ Including another URLconf
 from django.urls import path
 
 from . import views
-
 urlpatterns = [
     path('', views.index),
     path('tratamientos', views.tratamientos),
     path('inicioSesion/', views.inicioSesion),
     path('registroCliente/', views.registroCliente),
     path('registroEmpresa/', views.registroEmpresa),
+    path('errorPermiso/', views.errorPermiso),
 ]
+
+
+

@@ -28,4 +28,5 @@ urlpatterns = [
     path('miPerfil/', views.show_perfil_cliente),
     path('miPerfil/edit/', views.edit_perfil_cliente),
     path('cerrarSesion/', views.logout)
+
 ]

@@ -29,15 +29,15 @@ SECRET_KEY = '4@768xy$22fs^#yfu!ajs@^c)&n@bss*u2nt)zpp-n=9)x@fv@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
     'main.cliente.apps.ClienteConfig',
     'main.empresa.apps.EmpresaConfig',
-    'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,6 +123,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
 LOGIN_URL = '/inicioSesion'

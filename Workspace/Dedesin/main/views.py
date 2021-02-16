@@ -25,20 +25,20 @@ def handler404(request, exception):
 
 def inicioSesion(request):
     if request.method == "POST":
-        form = InicioSesionForm(request.POST)
+        form = InicioSesionForm(request.POST, request.FILES)
         if form.is_valid():
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
             usuario = authenticate(username=email, password=contraseña)
             if usuario is not None:
-                print('usuario')
-                do_login(request, usuario)
                 try:
                     empresa = Empresa.objects.filter(usuario=usuario)[0]
+                    do_login(request, usuario)
                     return redirect('/empresa/')
                 except:
                     persona = Persona.objects.filter(usuario=usuario)[0]
                     cliente = Cliente.objects.filter(persona=persona)[0]
+                    do_login(request, usuario)
                     return redirect('/cliente/')
             else:
                 er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
@@ -153,9 +153,8 @@ def registroEmpresa(request):
             else:
                 try:
                     empresa.save()
-                    usuario = authenticate(username=email, password=contraseña)
                     login(request, usuario)
-                    redirect('/empresa')
+                    return redirect('/empresa/')
                 except:
                     usuario.delete()
                     return render(request, 'auth/registroEmpresa.html',

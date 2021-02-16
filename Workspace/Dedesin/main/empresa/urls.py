@@ -19,10 +19,13 @@ from . import views
 
 urlpatterns = [
     path('', views.inicio_empresa),
-    path('solicitudServicio/', views.solicitud_servicio_empresa),
-    path('servicio/', views.servicio_empresa),
-    path('miPerfil/', views.perfil_empresa),
-    path('solicitudServicio/1', views.solicitud_servicio_empresa_form),
-    path('servicio/1', views.solicitud_servicio_empresa_form)
-
+    path('solicitudServicio/', views.list_solicitud_servicio_empresa),
+    path('solicitudServicio/show/<int:id>/', views.show_solicitud_servicio_empresa),
+    path('solicitudServicio/edit/<int:id>/', views.edit_solicitud_servicio_empresa),
+    path('solicitudServicio/create/', views.create_solicitud_servicio_empresa),
+    path('servicio/', views.list_servicios_empresa),
+    path('servicio/show/<int:id>/', views.show_servicios_empresa),
+    path('miPerfil/', views.show_perfil_empresa),
+    path('miPerfil/edit/', views.edit_perfil_empresa),
+    path('cerrarSesion/', views.logout)
 ]

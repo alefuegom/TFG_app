@@ -13,7 +13,7 @@ class EditSolicitudServicioClienteForm(forms.Form):
         ('Aceptada', 'Aceptada'),
         ('Rechazada', 'Rechazada')
     }
-    estado = forms.ChoiceField(choices=ESTADO_SOLICITUD)
+    estado = forms.ChoiceField(choices=ESTADO_SOLICITUD, error_messages={'required':'El campo estado no puede estar vacío.'})
 
 
 class CreateSolicitudServicioClienteForm(forms.Form):
@@ -21,15 +21,15 @@ class CreateSolicitudServicioClienteForm(forms.Form):
     nombre_plagas = []
     for plaga in plagas:
         nombre_plagas.append([plaga.nombre, plaga.nombre])
-    plaga = forms.ChoiceField(choices=nombre_plagas)
+    plaga = forms.ChoiceField(choices=nombre_plagas, error_messages={'required':'El campo plaga no puede estar vacío.'})
     observaciones = forms.CharField()
 
 
 class EditPerfilClienteForm(forms.Form):
-    nombre = forms.CharField(label="Nombre")
-    apellidos = forms.CharField(label="Apellidos")
-    dni = forms.CharField(label="DNI", validators=[DNI_REGEX])
-    telefono = forms.CharField(label="Telefono",validators=[TELEFONO_REGEX])
-    direccion = forms.CharField(label="Dirección")
+    nombre = forms.CharField(label="Nombre",error_messages={'required':'El campo nombre no puede estar vacío.'})
+    apellidos = forms.CharField(label="Apellidos",error_messages={'required':'El campo apellidos no puede estar vacío.'})
+    dni = forms.CharField(label="DNI", validators=[DNI_REGEX],error_messages={'required':'El campo DNI no puede estar vacío.'})
+    telefono = forms.CharField(label="Telefono",validators=[TELEFONO_REGEX],error_messages={'required':'El campo teléfono no puede estar vacío.'})
+    direccion = forms.CharField(label="Dirección",error_messages={'required':'El campo dirección no puede estar vacío.'})
     cuentaBancaria = forms.CharField(label="Cuenta bancaria", validators=[CUENTA_BANCARIA_REGEX], required=False)
 

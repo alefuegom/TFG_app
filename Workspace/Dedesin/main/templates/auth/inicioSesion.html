@@ -33,6 +33,7 @@
             {% endif %}
             <form id='form' method='post'>
                 {% csrf_token %}
+
                 {% for field in form %}
                 <div class="container center_div" style="margin-top:10px;">
                     {# uncomment to display field errors #}

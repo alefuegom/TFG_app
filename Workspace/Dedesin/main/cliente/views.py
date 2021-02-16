@@ -36,11 +36,16 @@ def edit_perfil_cliente(request):
             cliente.direccion = form.cleaned_data['direccion']
             cliente.cuenta_bancaria = form.cleaned_data['cuentaBancaria']
             persona.save()
-            print("LLEGA")
             cliente.save()
             return redirect('/cliente/miPerfil')
         else:
-            return render(request, 'perfilCliente.html', {'form': form})
+            cuenta_bancaria = cliente.cuenta_bancaria
+            if not cuenta_bancaria:
+                cuenta_bancaria = ""
+            valores = [persona.nombre, persona.apellidos, persona.dni, persona.telefono, cliente.direccion,
+                       cuenta_bancaria]
+            items = zip(form, valores)
+            return render(request, 'perfilCliente.html', {'form': form, 'items': items})
     else:
         form = EditPerfilClienteForm()
         cuenta_bancaria = cliente.cuenta_bancaria

@@ -1,8 +1,5 @@
-import re
-from datetime import datetime
 
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -10,7 +7,6 @@ from django.db import models
 
 DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
 MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe una matrícula correcta.')
-
 CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
 CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
@@ -27,7 +23,7 @@ class Empresa(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario.username + "-" + self.cif
+        return self.nombre + "-" + self.cif
 
 
 class Persona(models.Model):
@@ -38,7 +34,7 @@ class Persona(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.usuario.username + "-" + self.dni
+        return self.nombre + "," + self.apellidos + "-" + self.dni
 
 
 class Cliente(models.Model):
@@ -47,7 +43,7 @@ class Cliente(models.Model):
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.persona.usuario.username + "-" + self.persona.dni
+        return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
 
 
 class Vehiculo(models.Model):
@@ -60,20 +56,21 @@ class Vehiculo(models.Model):
     def __str__(self):
         return self.marca + "-" + self.modelo + "(" + self.matricula + ")"
 
+
 class Trabajador(models.Model):
     cualificacion = models.TextField(max_length=254)
     vehiculo = models.OneToOneField(Vehiculo, on_delete=models.CASCADE)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.persona.usuario.email + "-" + self.persona.dni
+        return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
 
 
 class Administrador(models.Model):
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.persona.usuario.email + "-" + self.persona.dni
+        return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
 
 
 class Plaga(models.Model):

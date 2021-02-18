@@ -25,7 +25,6 @@ def edit_perfil_empresa(request):
     if request.method == 'POST':
         form = EditPerfilEmpresaForm(request.POST, request.FILES)
         if form.is_valid():
-            print("ES VALIDO BRO")
             empresa.nombre = form.cleaned_data['nombre']
             empresa.cif = form.cleaned_data['cif']
             empresa.telefono = form.cleaned_data['telefono']

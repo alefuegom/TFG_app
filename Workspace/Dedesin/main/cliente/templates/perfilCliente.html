@@ -39,8 +39,8 @@
                 </div>
                 <div class="row">
                     <strong><p>Cuenta bancaria: </p></strong>
-                    {% if cliente.cuentaBancaria %}
-                    <p class="ml-1">{{cliente.cuentaBancaria}}</p>
+                    {% if cliente.cuenta_bancaria %}
+                    <p class="ml-1">{{cliente.cuenta_bancaria}}</p>
                     {% else %}
                     <p class="text-danger ml-1">Por definir</p>
                     {% endif %}
@@ -74,7 +74,7 @@
             <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
         </div>
         {% endfor %}
-        <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+        <input type='submit' class="btn btn-outline-dark rounded-0 my-3" value='Confirmar'
                   style=""/>
     </form>
 

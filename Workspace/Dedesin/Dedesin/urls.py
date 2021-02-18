@@ -22,6 +22,9 @@ urlpatterns = [
     path('', include('main.urls')),
     path('cliente/', include('main.cliente.urls')),
     path('empresa/', include('main.empresa.urls')),
+    path('trabajador/', include('main.trabajador.urls')),
+
+
 ]
 handler404 = views.handler404
 

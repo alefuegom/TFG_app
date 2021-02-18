@@ -9,6 +9,8 @@ from django.db import models
 # Con estos patrones podemos validar los campos dni, cif y la cuenta bancaria
 
 DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
+MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe una matrícula correcta.')
+
 CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
 CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
@@ -21,7 +23,7 @@ class Empresa(models.Model):
     cif = models.CharField(max_length=10, validators=[CIF_REGEX], unique=True)
     direccion = models.TextField()
     telefono = models.CharField(validators=[TELEFONO_REGEX], unique=True, max_length=9)
-    cuenta_bancaria = models.CharField(max_length=22, validators=[CUENTA_BANCARIA_REGEX], unique=True)
+    cuenta_bancaria = models.CharField(max_length=24, validators=[CUENTA_BANCARIA_REGEX], unique=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -41,15 +43,26 @@ class Persona(models.Model):
 
 class Cliente(models.Model):
     direccion = models.TextField()
-    cuenta_bancaria = models.CharField(max_length=22, validators=[CUENTA_BANCARIA_REGEX], null=True)
+    cuenta_bancaria = models.CharField(max_length=24, validators=[CUENTA_BANCARIA_REGEX], null=True)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.persona.usuario.email + "-" + self.persona.dni
+        return self.persona.usuario.username + "-" + self.persona.dni
 
+
+class Vehiculo(models.Model):
+    marca = models.CharField(max_length=50)
+    modelo = models.CharField(max_length=50)
+    matricula = models.CharField(max_length=7, validators=[MATRICULA_REGEX])
+    fecha_matriculacion = models.DateField()
+    proxima_revision = models.DateField()
+
+    def __str__(self):
+        return self.marca + "-" + self.modelo + "(" + self.matricula + ")"
 
 class Trabajador(models.Model):
     cualificacion = models.TextField(max_length=254)
+    vehiculo = models.OneToOneField(Vehiculo, on_delete=models.CASCADE)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):

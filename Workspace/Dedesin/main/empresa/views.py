@@ -123,12 +123,22 @@ def edit_solicitud_servicio_empresa(request, id):
     solicitud = SolicitudServicio.objects.get(id=id)
     if request.user == solicitud.usuario:
         if request.method == 'POST':
-            form = EditSolicitudServicioEmpresaForm(request.POST, request.FILES)
-            if form.is_valid():
-                estado = form.cleaned_data['estado']
-                solicitud.estado = estado
-                solicitud.save()
-                return redirect("/empresa/solicitudServicio/show/" + str(solicitud.id))
+            if solicitud.estado == 'Atendida':
+                form = EditSolicitudServicioEmpresaForm(request.POST, request.FILES)
+                if form.is_valid():
+                    estado = form.cleaned_data['estado']
+                    solicitud.estado = estado
+                    solicitud.save()
+                    if estado == 'Rechazada':
+                        return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+                    elif estado == 'Aceptada':
+                        servicio = Servicio(solicitudServicio=solicitud,estado="Pendiente")
+                        servicio.save()
+                        return redirect("/cliente/servicio/show/"+str(servicio.id))
+            else:
+                msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
+                return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
+                                                                             'msg_error': msg_error})
         else:
             form = EditSolicitudServicioEmpresaForm()
             return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'form': form})

@@ -131,16 +131,26 @@ def show_solicitud_servicio_cliente(request, id):
 def edit_solicitud_servicio_cliente(request, id):
     solicitud = SolicitudServicio.objects.get(id=id)
     if request.user == solicitud.usuario:
-        if request.method == 'POST':
-            form = EditSolicitudServicioClienteForm(request.POST, request.FILES)
-            if form.is_valid():
-                estado = form.cleaned_data['estado']
-                solicitud.estado = estado
-                solicitud.save()
-                return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+        if solicitud.estado == 'Atendida':
+            if request.method == 'POST':
+                form = EditSolicitudServicioClienteForm(request.POST, request.FILES)
+                if form.is_valid():
+                    estado = form.cleaned_data['estado']
+                    solicitud.estado = estado
+                    solicitud.save()
+                    if estado == 'Rechazada':
+                        return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+                    elif estado == 'Aceptada':
+                        servicio = Servicio(solicitudServicio=solicitud,estado="Pendiente")
+                        servicio.save()
+                        return redirect("/cliente/servicio/show/"+str(servicio.id))
+            else:
+                form = EditSolicitudServicioClienteForm()
+                return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'form': form})
         else:
-            form = EditSolicitudServicioClienteForm()
-            return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'form': form})
+            msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
+            return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud,
+                                                                         'msg_error':msg_error})
     else:
         return redirect('/errorPermiso')
 

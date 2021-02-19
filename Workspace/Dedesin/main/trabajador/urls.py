@@ -22,7 +22,8 @@ urlpatterns = [
     path('servicios/show/<int:id>/', views.show_servicios_trabajador),
     path('servicios/edit/<int:id>/', views.edit_servicio_trabajador),
     path('miPerfil/', views.show_perfil_trabajador),
-    path('miPerfil/edit/', views.edit_perfil_trabajador)
+    path('miPerfil/edit/', views.edit_perfil_trabajador),
+    path('cerrarSesion', views.cerrarSesion)
 
 ]
 

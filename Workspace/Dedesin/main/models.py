@@ -122,7 +122,7 @@ class Servicio(models.Model):
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
     observaciones = models.TextField()
     solicitudServicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)
-    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE)
+    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.id) + "-" + self.estado + " [" + str(self.solicitudServicio.id) + "]"

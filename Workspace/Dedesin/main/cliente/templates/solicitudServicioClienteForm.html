@@ -4,6 +4,11 @@
 <div class="container mb-5" style="margin-top:10%;">
     <h1> Solicitud de servicio {{solicitud.id}}</h1>
     <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
         <div class="row">
             <div class="col-sm">
                 <div class="row">
@@ -34,20 +39,28 @@
                 </div>
                 <div class="row">
                     <strong><p>Abandono: </p></strong>
-                    {% if solicitud.abandono %}
-                    <p class=" ml-1">{{solicitud.abandono}}</p>
+                    {% if solicitud.tratamiento.abandono %}
+                    <p class=" ml-1">{{solicitud.tratamiento.abandono}}</p>
                     {% else %}
                     <p class=" ml-1">Por definir</p>
                     {% endif %}
                 </div>
                 <div class="row">
                     <strong><p>Tiempo de abandono: </p></strong>
-                    {% if solicitud.horasAbandono %}
-                    <p class=" ml-1">{{solicitud.horasAbandono}}</p>
+                    {% if solicitud.tratamiento.horasAbandono %}
+                    <p class=" ml-1">{{solicitud.tratamiento.horasAbandono}}</p>
                     {% else %}
                     <p class=" ml-1">Por definir</p>
                     {% endif %}
                 </div>
+                {% if solicitud.estado == 'Atendida'%}
+                {% if not form %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0" href="/cliente/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
+                </div>
+                {% endif %}
+                {% endif %}
+
             </div>
             <div class="col-sm">
                 <div class="row">
@@ -64,13 +77,6 @@
             </div>
         </div>
     </div>
-    {% if solicitud.estado == 'Atendida'%}
-    {% if not form %}
-    <div class="row d-flex justify-content-end my-5 mr-3">
-        <a class="btn btn-outline-dark rounded-0" href="/cliente/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
-    </div>
-    {% endif %}
-    {% endif %}
 
 </div>
 {% endif %}

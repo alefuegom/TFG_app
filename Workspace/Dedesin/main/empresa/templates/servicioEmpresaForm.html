@@ -31,6 +31,7 @@
                     <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
             </div>
+            {% if servicio.estado == 'realizado' %}
             <div class="col-sm">
                 <div class="row">
                     <strong><p>Observaciones del trabajador</p></strong>
@@ -41,6 +42,7 @@
                     <p class="ml-1">{{servicio.trabajador.persona.nombre}} {{servicio.trabajador.persona.apellidos}}</p>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

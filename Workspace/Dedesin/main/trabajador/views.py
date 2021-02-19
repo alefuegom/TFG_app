@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from ..models import *
 from .forms import *
+from django.contrib.auth import logout as do_logout
+
 
 
 def inicioTrabajador(request):
@@ -24,7 +26,9 @@ def edit_perfil_trabajador(request):
             trabajador.persona.telefono = form.cleaned_data['telefono']
             trabajador.cualificacion = form.cleaned_data['cualificacion']
             trabajador.persona.dni = form.cleaned_data['dni']
+            trabajador.persona.save()
             trabajador.save()
+            print("yes")
             return redirect('/trabajador/miPerfil')
         else:
             valores = [trabajador.persona.nombre, trabajador.persona.apellidos, trabajador.persona.dni,
@@ -62,7 +66,6 @@ def edit_servicio_trabajador(request, id):
     if request.method == 'POST':
         form = EditServicioTrabajadorForm(request.POST, request.FILES)
         if form.is_valid():
-            print(servicio.estado)
             if servicio.estado != 'realizado':
                 servicio.observaciones = form.cleaned_data['observaciones']
                 servicio.estado = 'realizado'
@@ -110,3 +113,7 @@ def edit_servicio_trabajador(request, id):
                 return render(request, 'servicioTrabajadorForm.html',
                               {'form': form, 'servicio': servicio, 'msg_error': msg_error,
                                'persona': persona})
+
+def cerrarSesion(request):
+    do_logout(request)
+    return redirect('/')

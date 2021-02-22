@@ -42,9 +42,14 @@ def inicioSesion(request):
                         do_login(request, usuario)
                         return redirect('/cliente/')
                     except:
-                        trabajador = Trabajador.objects.filter(persona=persona)[0]
-                        do_login(request, usuario)
-                        return redirect('/trabajador/')
+                        try:
+                            trabajador = Trabajador.objects.filter(persona=persona)[0]
+                            do_login(request, usuario)
+                            return redirect('/trabajador/')
+                        except:
+                            administrador = Administrador.objects.filter(persona=persona)[0]
+                            do_login(request, usuario)
+                            return redirect('/administrador/')
             else:
                 er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
                 return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})

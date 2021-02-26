@@ -21,8 +21,12 @@ urlpatterns = [
     path('cerrarSesion/', views.cerrarSesion),
     path('solicitudServicio/', views.list_solicitudServicio_administrador),
     path('solicitudServicio/show/<int:id>/', views.show_solicitudServicio_administrador),
+    path('solicitudServicio/edit/<int:id>/', views.edit_solicitudServicio_administrador),
     path('servicio/', views.list_servicio_administrador),
     path('servicio/show/<int:id>/', views.show_servicio_administrador),
+    path('servicio/edit/<int:id>/', views.edit_servicio_administrador),
+    path('miPerfil/', views.show_perfil_administrador),
+    path('miPerfil/edit/', views.edit_perfil_administrador)
 
 ]
 

@@ -3,6 +3,9 @@
 {% if servicio %}
 <div class="container mb-5" style="margin-top:10%;">
     <h1> Servicio {{servicio.id}} </h1>
+    <h2>Solicitud de servicio asociada: <a
+            href="/administrador/solicitudServicio/show/{{servicio.solicitudServicio.id}}">{{servicio.solicitudServicio.id}}</a>
+    </h2>
     <div class="container mt-4">
         <div class="row">
             <div class="col-sm">
@@ -31,17 +34,28 @@
                     <strong><p>Tiempo de abandono: </p></strong>
                     <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
+                <div class="row">
+                    <strong><p>Trabajador asociado: </p></strong>
+                    {% if servicio.trabajador %}
+                    <p class="ml-1">{{servicio.trabajador.persona.nombre}} {{servicio.trabajador.persona.apellidos}}</p>
+                    {% else %}
+                    <p class="ml-1 text-danger">Por definir</p>
+                    {% endif %}
+                </div>
                 {% if servicio.estado == 'realizado' %}
                 <div class="row">
                     <strong><p>Observaciones del trabajador</p></strong>
                     <p class="ml-2">{{servicio.observaciones}}</p>
                 </div>
-                <div class="row">
-                    <strong><p>Realizado por el trabajador: </p></strong>
-                    <p class="ml-1">{{servicio.trabajador.persona.nombre}} {{servicio.trabajador.persona.apellidos}}</p>
+                {% endif %}
+                {% if servicio.estado == 'Pendiente'%}
+                {% if not form %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0"
+                       href="/administrador/servicio/edit/{{servicio.id}}">Editar</a>
                 </div>
                 {% endif %}
-
+                {% endif %}
             </div>
             {% if cliente %}
             <div class="col-sm">
@@ -80,5 +94,95 @@
         </div>
     </div>
 </div>
+{% endif %}
+{% if servicio_edit %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Servicio {{servicio_edit.id}} </h1>
+    <h2>Solicitud de servicio asociada: {{servicio_edit.solicitudServicio.id}}</h2>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <h3 class="text-muted mb-3 w-100">Detalles del servicio</h3>
+                    <strong><p>Fecha: </p></strong>
+                    <p class=" ml-1">{{servicio_edit.solicitudServicio.fecha}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Estado:</p></strong>
+                    <p class="ml-1">{{servicio_edit.estado.title}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Tratamiento: </p></strong>
+                    <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.nombre}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Plaga: </p></strong>
+                    <p class="ml-1">{{servicio_edit.solicitudServicio.plaga.nombre}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Abandono: </p></strong>
+                    <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.abandono}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Tiempo de abandono: </p></strong>
+                    <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.horasAbandono}}</p>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <form id='form' method='post'>
+                            {% csrf_token %}
+                            {% for field in form %}
+                            <div class="container center_div" style="margin-top:10px;">
+                                {# uncomment to display field errors #}
+                                {# {{ field.errors }} #}
+
+                                {{ field.label_tag }} {{ field }}
+                            </div>
+                            {% endfor %}
+                            <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
+                                      style=""/>
+                        </form>
+                    </div>
+                </div>
+                {% if cliente %}
+                <div class="col-sm">
+                    <div class="row">
+                        <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
+                        <strong><p>Cliente:</p></strong>
+                        <p class="ml-2">{{cliente.persona.nombre}},{{cliente.persona.apellidos}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Dirección:</p></strong>
+                        <p class="ml-2">{{cliente.direccion}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Teléfono:</p></strong>
+                        <p class="ml-2">{{cliente.persona.telefono}}</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% if empresa %}
+                <div class="col-sm">
+                    <div class="row">
+                        <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
+                        <strong><p>Empresa:</p></strong>
+                        <p class="ml-2">{{empresa.nombre}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Dirección:</p></strong>
+                        <p class="ml-2">{{empresa.direccion}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Teléfono:</p></strong>
+                        <p class="ml-2">{{empresa.telefono}}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endif %}
 {% endblock %}

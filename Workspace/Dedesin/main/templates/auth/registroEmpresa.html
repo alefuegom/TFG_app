@@ -1,0 +1,53 @@
+{% extends 'header.html' %}
+{% block contenido %}
+<div class="container" style="margin-top:70px">
+    <div class="row justify-content-center ">
+        <div class="col-8 row justify-content-center my-5 bg-dark text-white">
+            <h1 class="mt-4 mb-2 font-weight-bold" style="width:100%; text-align:center;">Registro para empresas</h1>
+            <a class="my-1 text-white" style="width:100%;text-align:center;" href="/registroCliente">¿Eres un cliente
+                particular?</a>
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" style="width:100%">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+            <div class="alert alert-danger" style="width:100%">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% if er_msg %}
+            <div class="alert alert-danger" style="width:100%">
+                <strong>{{er_msg}}</strong>
+            </div>
+            {% endif %}
+            {% if ex_msg %}
+            <div class="alert alert-success" style="width:100%">
+                <strong>{{ex_msg}}</strong>
+            </div>
+            {% endif %}
+
+            <form id='form' method='post'>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="container center_div" style="margin-top:10px;">
+                    {# uncomment to display field errors #}
+                    {# {{ field.errors }} #}
+
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-center ">
+                    <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+                              style=""/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

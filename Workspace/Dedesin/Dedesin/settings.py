@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# User model
+
+AUTH_USER_MODEL = 'auth.User'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -25,13 +29,17 @@ SECRET_KEY = '4@768xy$22fs^#yfu!ajs@^c)&n@bss*u2nt)zpp-n=9)x@fv@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.main',
+    'main.apps.MainConfig',
+    'main.trabajador.apps.TrabajadorConfig',
+    'main.cliente.apps.ClienteConfig',
+    'main.empresa.apps.EmpresaConfig',
+    'main.administrador.apps.AdministradorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +85,7 @@ WSGI_APPLICATION = 'Dedesin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -117,5 +125,5 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
+LOGIN_URL = '/inicioSesion'

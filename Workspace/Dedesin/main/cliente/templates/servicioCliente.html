@@ -1,0 +1,39 @@
+{% extends 'headerCliente.html' %}
+{% block contenido %}
+{% if num_servicios %}
+<div class="container mb-5">
+    <strong><h1 style="margin-top:10%;"> Servicios </h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_servicios}} servicios</h2>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Plaga</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in servicios %}
+        <tr>
+            <td>{{s.id}}</td>
+            <td>{{s.solicitudServicio.fecha}}</td>
+            <td>{{s.estado.title}}</td>
+            <td>{{s.solicitudServicio.plaga.nombre}}</td>
+            <td>
+                <a class="btn btn-outline-dark rounded-0" href="show/{{s.id}}">Ver detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="container mb-5">
+    <strong><h1 style="margin-top:10%;"> Servicios </h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente no se tiene ningun servicio.</h2>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'headerCliente.html' %}
+{% block contenido %}
+{% if servicio %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Servicio {{servicio.id}} </h1>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <strong><p>Fecha: </p></strong>
+                    <p class=" ml-1">{{servicio.solicitudServicio.fecha}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Estado:</p></strong>
+                    <p class="ml-1">{{servicio.estado.title}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Tratamiento: </p></strong>
+                    <p class="ml-1">{{servicio.solicitudServicio.tratamiento.nombre}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Plaga: </p></strong>
+                    <p class="ml-1">{{servicio.solicitudServicio.plaga.nombre}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Abandono: </p></strong>
+                    <p class="ml-1">{{servicio.solicitudServicio.tratamiento.abandono}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Tiempo de abandono: </p></strong>
+                    <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
+                </div>
+            </div>
+            {% if servicio.estado == 'realizado' %}
+            <div class="col-sm">
+                <div class="row">
+                    <strong><p>Observaciones del trabajador</p></strong>
+                    <p class="ml-2">{{servicio.observaciones}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Realizado por el trabajador: </p> </strong>
+                    <p class="ml-1">{{servicio.trabajador.persona.nombre}} {{servicio.trabajador.persona.apellidos}}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

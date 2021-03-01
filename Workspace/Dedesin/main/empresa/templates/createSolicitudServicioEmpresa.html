@@ -1,0 +1,28 @@
+{% extends 'headerEmpresa.html' %}
+{% block contenido %}
+<div class="container">
+    <form id='form' method='post' style="margin-top:10%">
+        {% csrf_token %}
+        <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
+        <h2 class="text-muted mt-3 mb-5">Nueva solicitud</h2>
+
+        <div class="center_div" style="margin-top:10px;">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="center_div" style="margin-top:10px;">
+                {# uncomment to display field errors #}
+                {# {{ field.errors }} #}
+
+                {{ field.label_tag }} {{ field }}
+
+
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center ">
+                <p><input type='submit' class="btn btn-light mt-4" value='Confirmar'
+                          style=""/>
+            </div>
+    </form>
+</div>
+
+{% endblock %}

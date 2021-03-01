@@ -1,0 +1,83 @@
+{% extends 'headerEmpresa.html' %}
+{% block contenido %}
+{% if solicitud %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Solicitud de servicio {{solicitud.id}}</h1>
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <strong><p>Fecha: </p></strong>
+                    {% if solicitud.fecha %}
+                    <p class=" ml-1">{{solicitud.fecha}}</p>
+                    {% else %}
+                    <p class=" ml-1">Por definir</p>
+                    {% endif %}
+                </div>
+                {% if not form %}
+                <div class="row">
+                    <strong><p>Estado:</p></strong>
+                    <p class="ml-1">{{solicitud.estado.title}}</p>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <strong><p>Tratamiento: </p></strong>
+                    {% if solicitud.tratamiento %}
+                    <p class=" ml-1">{{solicitud.tratamiento.nombre}}</p>
+                    {% else %}
+                    <p class=" ml-1">Por definir</p>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <strong><p>Plaga: </p></strong>
+                    <p class="ml-1">{{solicitud.plaga.nombre}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Abandono: </p></strong>
+                    {% if solicitud.abandono %}
+                    <p class=" ml-1">{{solicitud.abandono}}</p>
+                    {% else %}
+                    <p class=" ml-1">Por definir</p>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <strong><p>Tiempo de abandono: </p></strong>
+                    {% if solicitud.horasAbandono %}
+                    <p class=" ml-1">{{solicitud.horasAbandono}}</p>
+                    {% else %}
+                    <p class=" ml-1">Por definir</p>
+                    {% endif %}
+                </div>
+                {% if solicitud.estado == 'Atendida'%}
+                {% if not form %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0" href="/cliente/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
+                </div>
+                {% endif %}
+                {% endif %}
+
+            </div>
+            <div class="col-sm">
+                <div class="row">
+                    <strong><p>Observaciones</p></strong>
+                    <p class="ml-2">{{solicitud.observaciones}}</p>
+                </div>
+                {% if form %}
+                <form id='form' method='post'>
+                    {% csrf_token %}
+                    {{form}}
+                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/></p>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endif %}
+{% endblock %}

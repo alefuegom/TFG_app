@@ -26,7 +26,9 @@ urlpatterns = [
     path('servicio/show/<int:id>/', views.show_servicio_administrador),
     path('servicio/edit/<int:id>/', views.edit_servicio_administrador),
     path('miPerfil/', views.show_perfil_administrador),
-    path('miPerfil/edit/', views.edit_perfil_administrador)
+    path('miPerfil/edit/', views.edit_perfil_administrador),
+    path('plaga/', views.list_plagas_administrador),
+    path('plaga/delete/<int:id>/', views.delete_plagas_administrador)
 
 ]
 

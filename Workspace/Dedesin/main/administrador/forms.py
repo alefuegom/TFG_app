@@ -32,3 +32,6 @@ class EditServicioAdministradorForm(forms.Form):
         trabajadores.append([tb.id, tb.persona.nombre + "," + tb.persona.apellidos])
     trabajador = forms.ChoiceField(choices=trabajadores,
                                    error_messages={'required': 'El campo trabajador no puede estar vacío'})
+
+class CreatePlagaAdministradorForm(forms.Form):
+    nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})

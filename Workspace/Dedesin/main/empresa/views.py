@@ -7,6 +7,15 @@ from ..models import *
 from django.contrib.auth import logout as do_logout
 
 
+# MÉTODOS AUXILIARES
+def esEmpresa(request):
+    try:
+        empresa = Empresa.objects.filter(usuario=request.user)[0]
+        return empresa
+    except:
+        return None
+
+
 # VISTAS GENERALES
 @login_required
 def inicio_empresa(request):
@@ -23,6 +32,7 @@ def show_perfil_empresa(request):
         return render(request, 'perfilEmpresa.html', {'empresa': empresa})
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required
 def edit_perfil_empresa(request):
@@ -54,6 +64,12 @@ def edit_perfil_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
+def logout(request):
+    do_logout(request)
+    return redirect('/')
+
+
 # CRUD SERVICIOS
 @login_required
 def list_servicios_empresa(request):
@@ -72,6 +88,7 @@ def list_servicios_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def show_servicios_empresa(request, id):
     if esEmpresa():
@@ -86,6 +103,7 @@ def show_servicios_empresa(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 # CRUD SOLICITUD DE SERVICIO
 @login_required
 def list_solicitud_servicio_empresa(request):
@@ -99,6 +117,7 @@ def list_solicitud_servicio_empresa(request):
             return render(request, 'solicitudServicioEmpresa.html')
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required
 def create_solicitud_servicio_empresa(request):
@@ -124,6 +143,7 @@ def create_solicitud_servicio_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def show_solicitud_servicio_empresa(request, id):
     if esEmpresa():
@@ -134,6 +154,7 @@ def show_solicitud_servicio_empresa(request, id):
             return redirect('/errorPermiso')
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required
 def edit_solicitud_servicio_empresa(request, id):
@@ -165,14 +186,3 @@ def edit_solicitud_servicio_empresa(request, id):
     else:
         return redirect('/errorPermiso/')
 
-def logout(request):
-    do_logout(request)
-    return redirect('/')
-
-
-def esEmpresa(request):
-    try:
-        empresa = Empresa.objects.filter(usuario=request.user)[0]
-        return empresa
-    except:
-        return None

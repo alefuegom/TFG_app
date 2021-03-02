@@ -8,6 +8,23 @@ from .forms import *
 from ..models import *
 
 
+# MÉTODOS AUXILIARES
+def esAdministrador(request):
+    try:
+        persona = Persona.objects.filter(usuario=request.user)[0]
+        administrador = Administrador.objects.filter(persona=persona)[0]
+        return administrador
+    except:
+        return None
+
+
+# VISTAS GENERALES
+@login_required
+def cerrarSesion(request):
+    do_logout(request)
+    return redirect('/')
+
+
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
@@ -54,6 +71,7 @@ def edit_perfil_administrador(request):
         return redirect('/errorPermiso/')
 
 
+# CRUD SOLICITUD SERVICIO
 @login_required
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
@@ -127,6 +145,7 @@ def edit_solicitudServicio_administrador(request, id):
         return redirect('/errorPermiso/')
 
 
+# CRUD SERVICIOS
 @login_required
 def list_servicio_administrador(request):
     if esAdministrador(request):
@@ -174,16 +193,59 @@ def edit_servicio_administrador(request, id):
         return redirect('/errorPermiso/')
 
 
-@login_required
-def cerrarSesion(request):
-    do_logout(request)
-    return redirect('/')
+# CRUD PLAGAS
+@login_required()
+def list_plagas_administrador(request):
+    if esAdministrador(request):
+        plagas = Plaga.objects.all()
+        if len(plagas) > 0:
+            return render(request, 'plagaAdministrador.html', {'plagas': plagas, 'num_plagas': len(plagas)})
+        else:
+            return render(request, 'plagaAdministrador.html')
+
+    else:
+        return redirect('/errorPermiso/')
 
 
-def esAdministrador(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        administrador = Administrador.objects.filter(persona=persona)[0]
-        return administrador
-    except:
-        return None
+@login_required()
+def create_plagas_administrador(request):
+    if esAdministrador(request):
+        if request.method == 'POST':
+            form = CreatePlagaAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                nombre = form.cleaned_data['nombre']
+                if len(Plaga.objects.filter(nombre=nombre)) == 0:
+                    plaga = Plaga(nombre=nombre)
+                    plaga.save()
+                    return redirect('/administrador/plaga')
+                else:
+                    msg_error = "Ya existe una plaga con el nombre introducido."
+                    return render(request, 'plagaAdministradorForm.html', {'form': form, 'msg_error': msg_error})
+            else:
+                return render(request, 'plagaAdministradorForm.html', {'form': form})
+        else:
+            form = CreatePlagaAdministradorForm()
+            return render(request, 'plagaAdministradorForm.html', {'form': form})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def delete_plagas_administrador(request, id):
+    if esAdministrador(request):
+        plaga = Plaga.objects.get(id=id)
+        solicitudesServicio = SolicitudServicio.objects.filter(plaga=plaga)
+        msg_error =""
+        if len(solicitudesServicio) > 0:
+            msg_error = "No se puede eliminar una plaga que está presente en una solicitud de servicio."
+        tratamientos = Tratamiento.objects.filter(plaga=plaga)
+        if len(tratamientos) > 0:
+            msg_error = "No se puede eliminar una plaga que está presente en un tratamiento."
+        if msg_error:
+            plagas = Plaga.objects.all()
+            return render(request, 'plagaAdministrador.html', {'plagas': plagas, 'num_plagas': len(plagas),
+                          'msg_error': msg_error})
+        plaga.delete()
+        return redirect('/administrador/plaga')
+    else:
+        return redirect('/errorPermiso/')

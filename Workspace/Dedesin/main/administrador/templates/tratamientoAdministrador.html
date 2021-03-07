@@ -1,0 +1,47 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if num_tratamientos %}
+<div class="container">
+<strong><h1 style="margin-top:10%;">Tratamientos</h1></strong>
+<h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_tratamientos}} tratamientos</h2>
+{% if msg_error %}
+<div class="alert alert-danger" style="width:100%">
+    <strong>{{msg_error}}</strong>
+</div>
+{% endif %}
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre del tratamiento</th>
+        <th scope="col">Plaga</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for t in tratamientos %}
+    <tr>
+        <td>{{t.id}}</td>
+        <td>{{t.nombre}}</td>
+        <td>{{t.plaga.nombre}}</td>
+        <td>
+            <a href="/administrador/tratamiento/show/{{t.id}}"><i class="fa fa-info-circle fa-2x" style="color:blue;"></i></a>
+            <a class="ml-4" href="/administrador/tratamiento/delete/{{t.id}}"><i class="fa fa-trash fa-2x" style="color:red;"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-outline-dark rounded-0 mt-2 mb-5"
+   href="/administrador/tratamiento/create">Nueva tratamiento</a>
+</div>
+
+{% else %}
+<div class="container" style="margin-top:10%;">
+    <strong><h1 style="margin-top:10%;"></h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente no tiene ningun tratamiento introducido</h2>
+    <a class="btn btn-outline-dark rounded-0 mt-2 mb-5"
+       href="/administrador/tratamiento/create">Nuevo tratamiento</a>
+</div>
+{% endif %}
+{% endblock %}

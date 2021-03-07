@@ -7,7 +7,7 @@ from django.contrib.auth import logout as do_logout
 
 @login_required
 def inicioTrabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         return render(request, 'inicioTrabajador.html')
     else:
         return redirect('/errorPermiso/')
@@ -15,7 +15,7 @@ def inicioTrabajador(request):
 
 @login_required
 def show_perfil_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         return render(request, 'perfilTrabajador.html', {'trabajador': trabajador})
@@ -25,7 +25,7 @@ def show_perfil_trabajador(request):
 
 @login_required
 def edit_perfil_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         if request.method == 'POST':
@@ -58,7 +58,7 @@ def edit_perfil_trabajador(request):
 
 @login_required
 def list_servicios_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         servicios = Servicio.objects.filter(trabajador=trabajador)
@@ -69,7 +69,7 @@ def list_servicios_trabajador(request):
 
 @login_required
 def show_servicios_trabajador(request, id):
-    if esTrabajador():
+    if esTrabajador(request):
         servicio = Servicio.objects.get(id=id)
         if request.user == servicio.trabajador.persona.usuario:
             try:
@@ -86,7 +86,7 @@ def show_servicios_trabajador(request, id):
 
 @login_required
 def edit_servicio_trabajador(request, id):
-    if esTrabajador():
+    if esTrabajador(request):
         servicio = Servicio.objects.get(id=id)
         if request.user == servicio.trabajador.persona.usuario:
             if request.method == 'POST':

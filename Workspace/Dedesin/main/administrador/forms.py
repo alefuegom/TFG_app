@@ -33,5 +33,32 @@ class EditServicioAdministradorForm(forms.Form):
     trabajador = forms.ChoiceField(choices=trabajadores,
                                    error_messages={'required': 'El campo trabajador no puede estar vacío'})
 
+
 class CreatePlagaAdministradorForm(forms.Form):
     nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})
+
+
+class CreateTratamientoAdministradorForm(forms.Form):
+    nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})
+    nombre_plagas = []
+    for p in Plaga.objects.all():
+        nombre_plagas.append([p.id, p.nombre])
+    plaga = forms.ChoiceField(choices=nombre_plagas)
+    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0, max_value=99999999)
+    abandono = forms.BooleanField(required=False)
+    horasAbandono = forms.IntegerField(label='Horas de abandono', min_value=0, max_value=99999999)
+    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows":3, "cols":40}), label="Descripción",
+                                  error_messages={'required': 'El campo descripción no puede estar vacío'})
+                    
+class EditTratamientoAdministradorForm(forms.Form):
+    nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})
+    nombre_plagas = []
+    for p in Plaga.objects.all():
+        nombre_plagas.append([p.id, p.nombre])
+    plaga = forms.ChoiceField(choices=nombre_plagas)
+    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0, max_value=99999999)
+    abandono = forms.BooleanField(required=False)
+    horasAbandono = forms.IntegerField(label='Horas de abandono', min_value=0, max_value=99999999)
+    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows":3, "cols":40}), label="Descripción",
+                                  error_messages={'required': 'El campo descripción no puede estar vacío'})
+                    

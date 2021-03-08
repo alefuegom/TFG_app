@@ -294,10 +294,14 @@ def create_tratamiento_administrador(request):
                 descripcion = form.cleaned_data['descripcion']
                 precio = form.cleaned_data['precio']
                 abandono = form.cleaned_data['abandono']
-                horasAbandono = form.cleaned_data['h orasAbandono']
+                horasAbandono = form.cleaned_data['horasAbandono']
                 plaga = Plaga.objects.get(id=form.cleaned_data['plaga'])
                 if not abandono and horasAbandono != 0:
                     msg_error = "No se puede rellenar el tiempo de abandono, si el tratamiento no requiere abandono."
+                    return render(request, 'tratamientoAdministradorForm.html',
+                                  {'form': form, 'msg_error': msg_error})
+                if abandono and horasAbandono <= 0:
+                    msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
                     return render(request, 'tratamientoAdministradorForm.html',
                                   {'form': form, 'msg_error': msg_error})
                 else:

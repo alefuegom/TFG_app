@@ -36,4 +36,6 @@ urlpatterns = [
     path('tratamiento/create/', views.create_tratamiento_administrador),
     path('tratamiento/edit/<int:id>/', views.edit_tratamiento_administrador),
     path('tratamiento/delete/<int:id>/', views.delete_tratamiento_administrador),
+    path('factura/', views.list_facturas_administrador),
+    path('factura/show/<int:id>/', views.show_factura_administrador)
 ]

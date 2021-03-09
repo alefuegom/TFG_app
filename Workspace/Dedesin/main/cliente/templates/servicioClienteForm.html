@@ -30,6 +30,12 @@
                     <strong><p>Tiempo de abandono: </p></strong>
                     <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
+                {% if servicio.estado == 'realizado' %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0" href="/cliente/servicio/factura/{{servicio.id}}/">Mostrar factura</a>
+                </div>
+                {% endif %}
+
             </div>
             {% if servicio.estado == 'realizado' %}
             <div class="col-sm">
@@ -38,7 +44,7 @@
                     <p class="ml-2">{{servicio.observaciones}}</p>
                 </div>
                 <div class="row">
-                    <strong><p>Realizado por el trabajador: </p> </strong>
+                    <strong><p>Realizado por el trabajador: </p></strong>
                     <p class="ml-1">{{servicio.trabajador.persona.nombre}} {{servicio.trabajador.persona.apellidos}}</p>
                 </div>
             </div>

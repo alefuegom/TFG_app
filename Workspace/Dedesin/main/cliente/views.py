@@ -151,6 +151,7 @@ def show_solicitud_servicio_cliente(request, id):
     else:
         return redirect('/errorPermiso')
 
+
 @login_required
 def edit_solicitud_servicio_cliente(request, id):
     if esCliente(request):
@@ -166,24 +167,36 @@ def edit_solicitud_servicio_cliente(request, id):
                         if estado == 'Rechazada':
                             return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
                         elif estado == 'Aceptada':
-                            servicio = Servicio(solicitudServicio=solicitud,estado="Pendiente")
+                            servicio = Servicio(solicitudServicio=solicitud, estado="Pendiente")
                             servicio.save()
-                            return redirect("/cliente/servicio/show/"+str(servicio.id))
+                            return redirect("/cliente/servicio/show/" + str(servicio.id))
                 else:
                     form = EditSolicitudServicioClienteForm()
                     return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'form': form})
             else:
                 msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
                 return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud,
-                                                                             'msg_error':msg_error})
+                                                                             'msg_error': msg_error})
         else:
             return redirect('/errorPermiso')
     else:
         return redirect('/errorPermiso')
 
+
+@login_required()
+def show_factura_cliente(request, id):
+    if esCliente(request):
+        servicio = Servicio.objects.get(id=id)
+        factura = servicio.factura
+        return render(request, 'facturaClienteForm.html', {'servicio': servicio, 'factura': factura})
+    else:
+        return redirect("/errorPermiso/")
+
+
 def logout(request):
     do_logout(request)
     return redirect('/')
+
 
 def esCliente(request):
     try:

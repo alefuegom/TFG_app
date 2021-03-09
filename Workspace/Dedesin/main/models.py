@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
@@ -83,7 +82,7 @@ class Plaga(models.Model):
 class Tratamiento(models.Model):
     nombre = models.CharField(max_length=100, blank=False)
     descripcion = models.TextField()
-    precio = models.IntegerField()
+    precio = models.FloatField()
     abandono = models.BooleanField(default=False)
     horasAbandono = models.IntegerField(default=0)
     plaga = models.ForeignKey(Plaga, on_delete=models.CASCADE)
@@ -118,11 +117,25 @@ ESTADO_SERVICIO = {
 }
 
 
+class Factura(models.Model):
+    fecha_expedicion = models.DateField()
+    emisor = models.CharField(default="Dedesin SL",max_length=50)
+    receptor = models.CharField(max_length=50)
+    descripcion = models.TextField()
+    importe = models.FloatField()
+    tipo_impositivo = models.FloatField(default=21)
+    fecha_operaciones = models.DateField()
+
+    def __str__(self):
+        return str(self.id) + " - " + self.receptor + "[ " + self.descripcion + " ]"
+
+
 class Servicio(models.Model):
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
     observaciones = models.TextField()
     solicitudServicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)
     trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, null=True)
+    factura = models.OneToOneField(Factura,  on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return str(self.id) + "-" + self.estado + " [" + str(self.solicitudServicio.id) + "]"

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from ..models import *
 from .forms import *
 from django.contrib.auth import logout as do_logout
+from datetime import date
 
 
 @login_required
@@ -96,6 +97,7 @@ def edit_servicio_trabajador(request, id):
                         servicio.observaciones = form.cleaned_data['observaciones']
                         servicio.estado = 'realizado'
                         servicio.save()
+                        creacionFactura(servicio)
                         return redirect('/trabajador/servicios/')
                     else:
                         msg_error = 'No se puede editar un servicio que ya ha sido realizado.'
@@ -158,3 +160,27 @@ def esTrabajador(request):
         return trabajador
     except:
         return None
+
+
+def creacionFactura(servicio):
+    fecha_expedicion = date.today()
+    emisor = "Dedesin S.L"
+    usuario = servicio.solicitudServicio.usuario
+    try:
+        empresa = Empresa.objects.filter(usuario=usuario)[0]
+        receptor = empresa.nombre
+    except:
+        persona = Persona.objects.filter(usuario=usuario)[0]
+        receptor = persona.apellidos + ", " + persona.nombre
+    descripcion = "Tratamiento para combatir  la plaga de " + servicio.solicitudServicio.plaga.nombre + \
+                  ". Especialmente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
+                  ". Realizado el día: " + str(servicio.solicitudServicio.fecha)
+    importe = servicio.solicitudServicio.tratamiento.precio
+    tipo_impositivo = 21
+    fecha_operaciones = fecha_expedicion
+
+    factura = Factura(fecha_expedicion=fecha_expedicion, emisor=emisor, receptor=receptor, descripcion=descripcion,
+                      importe=importe, tipo_impositivo=tipo_impositivo, fecha_operaciones=fecha_operaciones)
+    factura.save()
+    servicio.factura = factura
+    servicio.save()

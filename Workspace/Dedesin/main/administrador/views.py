@@ -387,3 +387,23 @@ def delete_tratamiento_administrador(request, id):
 
     else:
         return redirect('/errorPermiso/')
+
+#FACTURAS
+@login_required()
+def list_facturas_administrador(request):
+    if esAdministrador(request):
+        servicios = Servicio.objects.exclude(factura=None)
+        return render(request, 'facturaAdministrador.html', {'servicios':servicios, 'num_servicios': len(servicios)})
+    else:
+        return redirect('/errorPermiso/')
+
+@login_required()
+def show_factura_administrador(request, id):
+    if esAdministrador(request):
+        servicio = Servicio.objects.get(id=id)
+        factura = servicio.factura
+        return render(request, 'facturaAdministradorForm.html', {'servicio': servicio, 'factura': factura})
+    else:
+        return redirect("/errorPermiso/")
+
+

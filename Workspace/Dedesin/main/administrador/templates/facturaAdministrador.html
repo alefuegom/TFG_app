@@ -1,0 +1,46 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if num_servicios %}
+<div class="container">
+    <strong><h1 style="margin-top:10%;">Facturas</h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_servicios}} facturas</h2>
+    {% if msg_error %}
+    <div class="alert alert-danger" style="width:100%">
+        <strong>{{msg_error}}</strong>
+    </div>
+    {% endif %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Fecha expedición</th>
+            <th scope="col">Receptor</th>
+            <th scope="col">Plaga</th>
+            <th scope="col">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in servicios %}
+        <tr>
+            <td>{{s.factura.id}}</td>
+            <td>{{s.factura.fecha_expedicion}}</td>
+            <td>{{s.factura.receptor}}</td>
+            <td>{{s.solicitudServicio.plaga.nombre}}</td>
+            <td>
+                <a href="/administrador/factura/show/{{s.id}}"><i class="fa fa-info-circle fa-2x"
+                                                                  style="color:blue;"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="container" style="margin-top:10%;">
+    <strong><h1 style="margin-top:10%;"></h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente no tiene ninguna factura</h2>
+
+</div>
+{% endif %}
+{% endblock %}

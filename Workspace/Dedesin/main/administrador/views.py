@@ -79,7 +79,7 @@ def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
         solicitudes = SolicitudServicio.objects.all()
         return render(request, 'solicitudServicioAdministrador.html', {'solicitudes': solicitudes, 'num_solicitudes':
-                                                                       len(solicitudes)})
+            len(solicitudes)})
     else:
         return redirect('/errorPermiso/')
 
@@ -331,18 +331,18 @@ def edit_tratamiento_administrador(request, id):
                 if not abandono and horasAbandono != 0:
                     msg_error = "No se puede rellenar el tiempo de abandono, si el tratamiento no requiere abandono."
                     valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
-                    tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
+                               tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
-                    return render(request, 'tratamientoAdministradorForm.html',{ 'items':items,
-                                  'form': form, 'msg_error': msg_error})
+                    return render(request, 'tratamientoAdministradorForm.html', {'items': items,
+                                                                                 'form': form, 'msg_error': msg_error})
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
                     valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
-                    tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
+                               tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
-                    return render(request, 'tratamientoAdministradorForm.html',{ 'items':items,
-                                  'form': form, 'msg_error': msg_error})
+                    return render(request, 'tratamientoAdministradorForm.html', {'items': items,
+                                                                                 'form': form, 'msg_error': msg_error})
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']
@@ -351,20 +351,20 @@ def edit_tratamiento_administrador(request, id):
                     tratamiento.abandono = abandono
                     tratamiento.horasAbandono = horasAbandono
                     tratamiento.save()
-                    return redirect("/administrador/tratamiento/show/"+str(tratamiento.id)+"/")
+                    return redirect("/administrador/tratamiento/show/" + str(tratamiento.id) + "/")
             else:
                 print(form.errors)
                 valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
-                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
+                           tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                 items = zip(form, valores)
-                return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form, 'items':items,
+                return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form, 'items': items,
                                                                              'tratamiento_edit': tratamiento})
         else:
             form = EditTratamientoAdministradorForm()
             valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
                        tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
             items = zip(form, valores)
-            return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form,'items':items,
+            return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form, 'items': items,
                                                                          'tratamiento_edit': tratamiento, })
     else:
         return redirect('/errorPermiso/')
@@ -388,14 +388,16 @@ def delete_tratamiento_administrador(request, id):
     else:
         return redirect('/errorPermiso/')
 
-#FACTURAS
+
+# FACTURAS
 @login_required()
 def list_facturas_administrador(request):
     if esAdministrador(request):
         servicios = Servicio.objects.exclude(factura=None)
-        return render(request, 'facturaAdministrador.html', {'servicios':servicios, 'num_servicios': len(servicios)})
+        return render(request, 'facturaAdministrador.html', {'servicios': servicios, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required()
 def show_factura_administrador(request, id):
@@ -406,4 +408,132 @@ def show_factura_administrador(request, id):
     else:
         return redirect("/errorPermiso/")
 
+
+# CRUD VEHICULOS
+@login_required()
+def list_vehiculo_administrador(request):
+    if esAdministrador(request):
+        vehiculos = Vehiculo.objects.all()
+        if len(vehiculos) > 0:
+            return render(request, 'vehiculoAdministrador.html',
+                          {'vehiculos': vehiculos, 'num_vehiculos': len(vehiculos)})
+        else:
+            return render(request, 'vehiculoAdministrador.html')
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def show_vehiculo_administrador(request, id):
+    if esAdministrador(request):
+        vehiculo = Vehiculo.objects.get(id=id)
+        try:
+            trabajador = Trabajador.objects.filter(vehiculo=vehiculo)[0]
+            return render(request, 'vehiculoAdministradorForm.html', {'vehiculo': vehiculo, 'trabajador': trabajador})
+        except:
+            return render(request, 'vehiculoAdministradorForm.html', {'vehiculo': vehiculo})
+
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def create_vehiculo_administrador(request):
+    if esAdministrador(request):
+        if request.method == 'POST':
+            form = CreateVehiculoAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                marca = form.cleaned_data['marca']
+                modelo = form.cleaned_data['modelo']
+                matricula = form.cleaned_data['matricula']
+                fecha_matriculacion = form.cleaned_data['fecha_matriculacion']
+                proxima_revision = form.cleaned_data['proxima_revision']
+                try:
+                    fecha_matriculacion = datetime.strptime(
+                        fecha_matriculacion, "%d/%m/%Y").date()
+                    if fecha_matriculacion > date.today():
+                        msg_error = "La fecha de matriculación debe ser anterior a la fecha actual."
+                        return render(request, 'vehiculoAdministradorForm.html',
+                                      {'form': form,
+                                       'msg_error': msg_error})
+                except:
+                    msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy) en el campo de fecha de matriculación "
+                    return render(request, 'vehiculoAdministradorForm.html',
+                                  {'form': form,
+                                   'msg_error': msg_error})
+                try:
+                    proxima_revision = datetime.strptime(
+                        proxima_revision, "%d/%m/%Y").date()
+                    if proxima_revision <= date.today():
+                        msg_error = "La fecha de la próxima revisión debe ser posterior a la fecha actual."
+                        return render(request, 'vehiculoAdministradorForm.html',
+                                      {'form': form,
+                                       'msg_error': msg_error})
+                except:
+                    msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy) en el campo de fecha de próxima revisión "
+                    return render(request, 'vehiculoAdministradorForm.html',
+                                  {'form': form,
+                                   'msg_error': msg_error})
+                vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula,
+                                    fecha_matriculacion=fecha_matriculacion,
+                                    proxima_revision=proxima_revision)
+                vehiculo.save()
+                return redirect('/administrador/vehiculo')
+            else:
+                return render(request, 'vehiculoAdministradorForm.html', {'form': form})
+        else:
+            form = CreateVehiculoAdministradorForm()
+            return render(request, 'vehiculoAdministradorForm.html', {'form': form})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def edit_vehiculo_administrador(request, id):
+    if esAdministrador(request):
+        vehiculo = Vehiculo.objects.get(id=id)
+        if request.method == 'POST':
+            form = EditVehiculoAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                proxima_revision = form.cleaned_data['proxima_revision']
+                try:
+                    proxima_revision = datetime.strptime(
+                        proxima_revision, "%d/%m/%Y").date()
+                    if proxima_revision <= date.today():
+                        msg_error = "La fecha de la próxima revisión debe ser posterior a la fecha actual."
+                        return render(request, 'vehiculoAdministradorForm.html',
+                                      {'form_edit': form, 'vehiculo_edit':vehiculo,
+                                       'msg_error': msg_error})
+                except:
+                    msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy) en el campo de  fecha de próxima revisión "
+                    return render(request, 'vehiculoAdministradorForm.html',
+                                  {'form_edit': form, 'vehiculo_edit':vehiculo,
+                                   'msg_error': msg_error})
+                vehiculo.save()
+                return redirect('/administrador/vehiculo')
+            else:
+                return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit':vehiculo})
+        else:
+            form = EditVehiculoAdministradorForm()
+            return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit':vehiculo})
+    else:
+        return redirect('/errorPermiso/')
+
+@login_required()
+def delete_vehiculo_administrador(request, id):
+    if esAdministrador(request):
+        vehiculo = Vehiculo.objects.get(id=id)
+        try:
+            trabajador = Trabajador.objects.filter(vehiculo=vehiculo)[0]
+            vehiculos = Vehiculo.objects.all()
+            msg_error = "No se puede dar de baja a un vehículo si está asociado a un trabajador."
+            return render(request, 'vehiculoAdministrador.html', {'msg_error':msg_error, 'vehiculos':vehiculos,
+                                                                  'num_vehiculos':len(vehiculos)})
+        except:
+            vehiculo.delete()
+            return redirect('/administrador/vehiculo/')
+    else:
+        return redirect('/errorPermiso/')
+
+#CRUD TRABAJADORES
 

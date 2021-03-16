@@ -37,5 +37,10 @@ urlpatterns = [
     path('tratamiento/edit/<int:id>/', views.edit_tratamiento_administrador),
     path('tratamiento/delete/<int:id>/', views.delete_tratamiento_administrador),
     path('factura/', views.list_facturas_administrador),
-    path('factura/show/<int:id>/', views.show_factura_administrador)
+    path('factura/show/<int:id>/', views.show_factura_administrador),
+    path('vehiculo/', views.list_vehiculo_administrador),
+    path('vehiculo/show/<int:id>/', views.show_vehiculo_administrador),
+    path('vehiculo/create/', views.create_vehiculo_administrador),
+    path('vehiculo/edit/<int:id>/', views.edit_vehiculo_administrador),
+    path('vehiculo/delete/<int:id>/', views.delete_vehiculo_administrador)
 ]

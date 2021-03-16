@@ -2,44 +2,66 @@
 {% block contenido %}
 {% load static %}
 
-<div name="container" class="d-flex justify-content-center" style="margin-top:10%;">
-    <div class="row  ">
-        <h1 class="text-center font-weight-bolder" style="width:100%;"> ¿Quiénes somos? </h1>
-        <div class="col center-block text-justify mt-5" style="padding-left:7%; padding-right:7%">
-            <p> Somos una empresa andaluza, con sede en Sevilla y desarrollamos nuestra actividad en el
-                campo del Control Medioambiental desde hace más de 40 años. A lo largo de los años hemos logrado
-                constituirnos como empresa líder, precursora, reconocida y motor del desarrollo en el sector.
-                En Dedesin, S.L. desarrollamos nuestros servicios bajo la premisa de una completa filosofía y
-                código deontológico de trabajo. Contamos con las más novedosas técnicas en diagnosis, seguimiento
-                y control del sector. Consolidados como un referente indiscutible en nuestra actividad,
-                nos caracterizamos por utilizar siempre productos de calidad y contar con un personal profesional,
-                cualificado y formado de forma precisa, para el desarrollo de su actividad laboral.</p>
+<div name="container" class="container" style="margin-top:10%;">
+    <div class="row">
+        <div class="col-lg">
+            <h2>La solución a sus problemas de plagas</h2>
+            <p>En Dedesin SL solucionamos todo tipo de problemas ambientales, desde invsiones de insectos
+                hasta control de herbaje. </p>
+        </div>
+        <div class="col-lg">
+            <img class="img img-fluid" src="{% static 'main/images/insecto-home.jpg' %}" alt="">
         </div>
     </div>
 </div>
+<div name="container" class="container my-5" style="margin-top:10%;">
+    <div class="row">
+        <div class="col-lg">
+            <img class="img img-fluid" src="{% static 'main/images/familiar-inicio.jpg' %}" alt="">
+        </div>
+        <div class="col-lg">
+            <h2>Una empresa con espíritu familiar</h2>
+            <p>En Dedesin SL tratamos a nuestros clientes como si fueran miembros de nuestra familia.
+                Su problema, es nuestro problema.
+            </p>
+        </div>
+    </div>
 </div>
-
+<div class="w-100" id="parallax-inicio">
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-6 mx-auto">
+                <div >
+                    <h2 class="text-center text-white">Eficiencia y garantia</h2>
+                    <p class="text-center mt-3 text-white">
+                        Desde Dedesin S.L le garantizamos la máxima efectividad y calidad en nuestros tratamientos.
+                        Nos avala 40 años a la cabeza del sector.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container my-5 ">
     <h1 class="text-center font-weight-bolder" style="width:100%;"> Nuestros certificados</h1>
     <div class="row text-center align-items-center mt-5 ">
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:30%" src="{% static '/gestion-ambiental.jpg' %}"
-                 alt="Certificado AENOR de medio ambiente"/>
+                alt="Certificado AENOR de medio ambiente" />
         </div>
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:30%" src="{% static '/empresa-registrada.png' %}"
-                 alt="Certificado AENOR de empresa registrada"/>
+                alt="Certificado AENOR de empresa registrada" />
 
         </div>
 
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:90%" src="{% static '/anecpla.jpg' %}"
-                 alt="Certificado Anecpla"/>
+                alt="Certificado Anecpla" />
         </div>
 
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:90%" src="{% static '/ministerio.png' %}"
-                 alt="Ministerio de sanidad"/>
+                alt="Ministerio de sanidad" />
         </div>
     </div>
 </div>
@@ -48,21 +70,21 @@
     <div class="row text-center mt-5">
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:20%" src="{% static '/nino.png' %}"
-                 alt="Clientes particulares"/>
+                alt="Clientes particulares" />
             <h3 class="mt-3">Particulares</h3>
             <p class="text-left mt-3">Dedesin, S. L. soluciona todos aquellos problemas domésticos de control
                 medioambiental que usted mismo no pueda solventar.</p>
         </div>
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:20%" src="{% static '/empresa.png' %}"
-                 alt="Empresas privadas"/>
+                alt="Empresas privadas" />
             <h3 class="mt-3">Empresas privadas</h3>
             <p class="text-left mt-3 ">Dedesin, S. L. soluciona de forma efectiva, profesional y económica los problemas
                 de control medioambiental que tenga en sus instalaciones.</p>
         </div>
         <div class="col-sm">
             <img class="rounded mx-auto d-block mt-4" style="width:20%" src="{% static '/municipalidad.png' %}"
-                 alt="Administración pública"/>
+                alt="Administración pública" />
             <h3 class="mt-3">Administración pública</h3>
             <p class="text-left mt-3">Dedesin, S.L. soluciona problemas relacionados con el medioambiente en núcleos
                 urbanos y edificios dependientes de la administración pública.</p>
@@ -70,4 +92,3 @@
     </div>
 </div>
 {% endblock %}
-

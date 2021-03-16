@@ -1,0 +1,140 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if vehiculo %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Vehículo {{vehiculo.modelo}}-{{vehiculo.marca}} </h1>
+    {% if trabajador %}
+    <h2>Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
+    {% endif %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <h3 class="text-muted mb-3 w-100">Detalles del vehículo</h3>
+                    <strong><p>Marca: </p></strong>
+                    <p class=" ml-1">{{vehiculo.marca}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Modelo:</p></strong>
+                    <p class="ml-1">{{vehiculo.modelo}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Matrícula: </p></strong>
+                    <p class="ml-1">{{vehiculo.matricula}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Fecha proxíma revisión: </p></strong>
+                    <p class="ml-1">{{vehiculo.proxima_revision}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Fecha matriculación: </p></strong>
+                    <p class="ml-1">{{vehiculo.fecha_matriculacion}}</p>
+                </div>
+                <div class="row">
+                    <a class="btn btn-outline-dark rounded-0 mt-2 mb-5"
+                       href="/administrador/vehiculo/edit/{{vehiculo.id}}">Editar</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if form %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Nuevo vehículo </h1>
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+        <div class="row">
+            <form id='form' method='post'>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="container center_div" style="margin-top:10px;">
+                    {# uncomment to display field errors #}
+                    {# {{ field.errors }} #}
+
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+                <div class="container mt-4">
+                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
+                              style=""/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endif %}
+{% if form_edit %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Vehículo {{vehiculo_edit.modelo}}-{{vehiculo_edit.marca}} </h1>
+    {% if trabajador %}
+    <h2>Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
+    {% endif %}
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <h3 class="text-muted mb-3 w-100"></h3>
+                    <strong><p>Marca: </p></strong>
+                    <p class=" ml-1">{{vehiculo_edit.marca}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Modelo:</p></strong>
+                    <p class="ml-1">{{vehiculo_edit.modelo}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Matrícula: </p></strong>
+                    <p class="ml-1">{{vehiculo_edit.matricula}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Fecha de matriculación: </p></strong>
+                    <p class="ml-1">{{vehiculo_edit.fecha_matriculacion}}</p>
+                </div>
+                <div class="row">
+                    <form id='form_edit' method='post'>
+                        {% csrf_token %}
+                        {% for field in form_edit %}
+                        <div class="container center_div" style="margin-top:10px;">
+                            {# uncomment to display field errors #}
+                            {# {{ field.errors }} #}
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                        {% endfor %}
+                        <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
+                                  style=""/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

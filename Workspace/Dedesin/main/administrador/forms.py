@@ -3,6 +3,7 @@ from ..models import *
 
 DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
+MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe un matrícula correcta.')
 
 
 class EditPerfilAdministrador(forms.Form):
@@ -61,4 +62,14 @@ class EditTratamientoAdministradorForm(forms.Form):
     horasAbandono = forms.IntegerField(label='Horas de abandono', min_value=0, max_value=99999999)
     descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows":3, "cols":40}), label="Descripción",
                                   error_messages={'required': 'El campo descripción no puede estar vacío'})
-                    
+
+class CreateVehiculoAdministradorForm(forms.Form):
+    modelo = forms.CharField(error_messages={'required': 'El campo modelo no puede estar vacío'})
+    marca = forms.CharField(error_messages={'required': 'El campo marca no puede estar vacío'})
+    matricula = forms.CharField(label="Matrícula", max_length=7, min_length=7, validators=[MATRICULA_REGEX])
+    fecha_matriculacion = forms.CharField(label="Fecha de matriculación",min_length= 10, max_length=10,error_messages={'required': 'El campo fecha matriculación no puede estar vacío'})
+    proxima_revision = forms.CharField(label="Fecha de próxima revisión",min_length= 10, max_length=10, error_messages={'required': 'El campo fecha de próxima revisión no puede estar vacío'})
+
+class EditVehiculoAdministradorForm(forms.Form):
+    proxima_revision = forms.CharField(label="Fecha de próxima revisión", min_length=10, max_length=10, error_messages={
+        'required': 'El campo fecha de próxima revisión no puede estar vacío'})

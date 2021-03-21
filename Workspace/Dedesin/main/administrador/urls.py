@@ -42,5 +42,11 @@ urlpatterns = [
     path('vehiculo/show/<int:id>/', views.show_vehiculo_administrador),
     path('vehiculo/create/', views.create_vehiculo_administrador),
     path('vehiculo/edit/<int:id>/', views.edit_vehiculo_administrador),
-    path('vehiculo/delete/<int:id>/', views.delete_vehiculo_administrador)
+    path('vehiculo/delete/<int:id>/', views.delete_vehiculo_administrador),
+    path('trabajador/', views.list_trabajador_administrador),
+    path('trabajador/show/<int:id>/', views.show_trabajador_administrador),
+    path('trabajador/create/', views.create_trabajador_administrador),
+    path('trabajador/edit/<int:id>/', views.edit_trabajador_administrador),
+    path('trabajador/delete/<int:id>/', views.delete_trabajador_administrador)
+
 ]

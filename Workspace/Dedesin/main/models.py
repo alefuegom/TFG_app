@@ -58,7 +58,7 @@ class Vehiculo(models.Model):
 
 class Trabajador(models.Model):
     cualificacion = models.TextField(max_length=254)
-    vehiculo = models.OneToOneField(Vehiculo, on_delete=models.CASCADE)
+    vehiculo = models.OneToOneField(Vehiculo, on_delete=models.CASCADE, null=True)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
@@ -119,7 +119,7 @@ ESTADO_SERVICIO = {
 
 class Factura(models.Model):
     fecha_expedicion = models.DateField()
-    emisor = models.CharField(default="Dedesin SL",max_length=50)
+    emisor = models.CharField(default="Dedesin SL", max_length=50)
     receptor = models.CharField(max_length=50)
     descripcion = models.TextField()
     importe = models.FloatField()
@@ -134,8 +134,8 @@ class Servicio(models.Model):
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
     observaciones = models.TextField()
     solicitudServicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)
-    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, null=True)
-    factura = models.OneToOneField(Factura,  on_delete=models.CASCADE, default=None, null=True)
+    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, default=None, null=True)
+    factura = models.OneToOneField(Factura, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
         return str(self.id) + "-" + self.estado + " [" + str(self.solicitudServicio.id) + "]"

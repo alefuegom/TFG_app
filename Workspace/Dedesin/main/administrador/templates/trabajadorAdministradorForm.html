@@ -1,0 +1,181 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if trabajador %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1 class="mb-4"> Trabajador {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h1>
+    <h3 class="text-muted mb-3 w-100">Detalles del trabajador</h3>
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-lg">
+                <div class="row">
+                    <strong>
+                        <p>Nombre del trabajador: </p>
+                    </strong>
+                    <p class=" ml-1">{{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</p>
+                </div>
+                <div class="row">
+                    <strong>
+                        <p>DNI:</p>
+                    </strong>
+                    <p class="ml-1">{{trabajador.persona.dni}}</p>
+                </div>
+                <div class="row">
+                    <strong>
+                        <p>Correo electrónico:</p>
+                    </strong>
+                    <p class="ml-1">{{trabajador.persona.usuario.username}}</p>
+                </div>
+                <div class="row">
+                    <strong>
+                        <p>Teléfono: </p>
+                    </strong>
+                    <p class=" ml-1">{{trabajador.persona.telefono}}</p>
+                </div>
+
+                <div class="row">
+                    <strong>
+                        <p>Vehículo asociado: </p>
+                    </strong>
+                    {% if trabajador.vehiculo %}
+                    <a class="ml-1" href="/administrador/vehiculo/show/{{trabajador.vehiculo.id}}">
+                        {{trabajador.vehiculo.marca}} {{trabajador.vehiculo.modelo}} - {{trabajador.vehiculo.matricula}}
+                    </a>
+                    {% else %}
+                    <p class="ml-1 text-danger">Por definir</p>
+                    {% endif %}
+                </div>
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0"
+                       href="/administrador/trabajador/edit/{{trabajador.id}}">Editar</a>
+                    {% if trabajador_delete %}
+
+                    <a class="btn btn-outline-danger rounded-0 ml-3"
+                       href="/administrador/trabajador/delete/{{trabajador.id}}">Dar de baja</a>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="col-lg">
+                <div class="row">
+                    <strong>
+                        <p>Cualificación: </p>
+                    </strong>
+                    <p class="ml-1">{{trabajador.cualificacion}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if form %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1 class="mb-4"> Nuevo trabajador</h1>
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+
+        <form id='form' method='post'>
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="container center_div" style="margin-top:10px;">
+                {# uncomment to display field errors #}
+                {# {{ field.errors }} #}
+                {% if not field == form.descripcion %}
+                {{ field.label_tag }} {{ field }}
+                {% endif%}
+                {% if field == form.descripcion %}
+                <p>Descripción:</p>
+                {{field}}
+                {% endif%}
+            </div>
+            {% endfor %}
+            <div class=" container  my-3">
+                <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% if form_edit %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1 class="mb-4">{{trabajador_edit.persona.nombre}} {{trabajador_edit.persona.apellidos}}</h1>
+    <div class="container">
+        <div class="row">
+            {% if msg_error %}
+            <div class="alert alert-danger" style="width:100%">
+                <strong>{{msg_error}}</strong>
+            </div>
+            {% endif %}
+            {% if form_edit.errors %}
+            {% for field in form_edit %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger" style="width:100%">
+                <strong>{{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+            <strong>
+                <p>DNI:</p>
+            </strong>
+            <p class="ml-1">{{trabajador_edit.persona.dni}}</p>
+        </div>
+        <div class="row">
+            <strong>
+                <p>Correo electrónico:</p>
+            </strong>
+            <p class="ml-1">{{trabajador_edit.persona.usuario.username}}</p>
+        </div>
+        <div class="row">
+            <form id='form_edit' method='post'>
+                {% csrf_token %}
+
+                <div class="" style="margin-top:10px;">
+                    {% for field, valor in items %}
+                    {# uncomment to display field errors #}
+                    {# {{ field.errors }} #}
+                    <div style="margin-top:10px;">
+                        <label for="field">{{field.label_tag}}</label>
+                        <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
+                    </div>
+                    {% endfor %}
+
+                    {% for field in form_edit %}
+                    {% if field == form_edit.vehiculo %}
+                    <div style="margin-top:10px;">
+
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+                <div class="  my-3">
+                    <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

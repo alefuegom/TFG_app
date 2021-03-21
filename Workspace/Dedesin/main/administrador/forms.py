@@ -1,4 +1,6 @@
 from django import forms
+from django.views.decorators.cache import cache_control
+
 from ..models import *
 
 DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
@@ -25,6 +27,8 @@ class EditSolicitudServicioAdministradorForm(forms.Form):
     fecha = forms.CharField(error_messages={'required': 'El campo fecha no puede estar vacío'})
     tratamiento = forms.ChoiceField(choices=tratamientos,
                                     error_messages={'required': 'El campo tratamiento no puede estar vacío'})
+    trabajador = forms.ChoiceField(choices=trabajadores,
+                                   error_messages={'required': 'El campo trabajador no puede estar vacío'})
 
 
 class EditServicioAdministradorForm(forms.Form):
@@ -45,31 +49,82 @@ class CreateTratamientoAdministradorForm(forms.Form):
     for p in Plaga.objects.all():
         nombre_plagas.append([p.id, p.nombre])
     plaga = forms.ChoiceField(choices=nombre_plagas)
-    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0, max_value=99999999)
+    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0,
+                                max_value=99999999)
     abandono = forms.BooleanField(required=False)
     horasAbandono = forms.IntegerField(label='Horas de abandono', min_value=0, max_value=99999999)
-    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows":3, "cols":40}), label="Descripción",
+    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows": 3, "cols": 40}), label="Descripción",
                                   error_messages={'required': 'El campo descripción no puede estar vacío'})
-                    
+
+
 class EditTratamientoAdministradorForm(forms.Form):
     nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})
     nombre_plagas = []
     for p in Plaga.objects.all():
         nombre_plagas.append([p.id, p.nombre])
     plaga = forms.ChoiceField(choices=nombre_plagas)
-    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0, max_value=99999999)
+    precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0,
+                                max_value=99999999)
     abandono = forms.BooleanField(required=False)
     horasAbandono = forms.IntegerField(label='Horas de abandono', min_value=0, max_value=99999999)
-    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows":3, "cols":40}), label="Descripción",
+    descripcion = forms.CharField(widget=forms.Textarea(attrs={"rows": 3, "cols": 40}), label="Descripción",
                                   error_messages={'required': 'El campo descripción no puede estar vacío'})
+
 
 class CreateVehiculoAdministradorForm(forms.Form):
     modelo = forms.CharField(error_messages={'required': 'El campo modelo no puede estar vacío'})
     marca = forms.CharField(error_messages={'required': 'El campo marca no puede estar vacío'})
     matricula = forms.CharField(label="Matrícula", max_length=7, min_length=7, validators=[MATRICULA_REGEX])
-    fecha_matriculacion = forms.CharField(label="Fecha de matriculación",min_length= 10, max_length=10,error_messages={'required': 'El campo fecha matriculación no puede estar vacío'})
-    proxima_revision = forms.CharField(label="Fecha de próxima revisión",min_length= 10, max_length=10, error_messages={'required': 'El campo fecha de próxima revisión no puede estar vacío'})
+    fecha_matriculacion = forms.CharField(label="Fecha de matriculación", min_length=10, max_length=10, error_messages={
+        'required': 'El campo fecha matriculación no puede estar vacío'})
+    proxima_revision = forms.CharField(label="Fecha de próxima revisión", min_length=10, max_length=10, error_messages={
+        'required': 'El campo fecha de próxima revisión no puede estar vacío'})
+
 
 class EditVehiculoAdministradorForm(forms.Form):
     proxima_revision = forms.CharField(label="Fecha de próxima revisión", min_length=10, max_length=10, error_messages={
         'required': 'El campo fecha de próxima revisión no puede estar vacío'})
+
+
+class CreateTrabajadorForm(forms.Form):
+    vehiculos_matricula = [["-", "Ninguno"]]
+    for v in Vehiculo.objects.all():
+        try:
+            trabajador = Trabajador.objects.filter(vehiculo=v)[0]
+        except:
+            vehiculos_matricula.append([v.id, v.marca + "-" + v.modelo + " (" + v.matricula + ")"])
+
+    nombre = forms.CharField(label="Nombre", error_messages={'required': 'El campo nombre no puede estar vacío.'})
+    apellidos = forms.CharField(label="Apellidos",
+                                error_messages={'required': 'El campo apellidos no puede estar vacío.'})
+    dni = forms.CharField(validators=[DNI_REGEX], label="DNI",
+                          error_messages={'required': 'El campo dni no puede estar vacío.'})
+    email = forms.EmailField(label="E-mail", error_messages={'required': 'El campo email no puede estar vacío.'})
+    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",
+                               error_messages={'required': 'El campo teléfono no puede estar vacío.'})
+    cualificacion = forms.CharField(label="Cualificación",
+                                    error_messages={'required': 'El campo dirección no puede estar vacío.'})
+    vehiculo = forms.ChoiceField(choices=vehiculos_matricula, label="Vehículo")
+
+
+class EditTrabajadorAdministradorForm(forms.Form):
+    vehiculos_matricula = [["-", "Ninguno"]]
+    vehiculos_asignados = []
+    for t in Trabajador.objects.all():
+        try:
+            if t.vehiculo != None:
+                vehiculos_asignados.append(t.vehiculo)
+        except:
+            pass
+    for v in Vehiculo.objects.all():
+        if v not in vehiculos_asignados:
+            vehiculos_matricula.append([v.id, v.marca + "-" + v.modelo + " (" + v.matricula + ")"])
+    print("VEHICULOS ASIGNADOS" + str(vehiculos_asignados))
+    print("-------------------------------------------")
+    print("VEHICULOS MATRICULA" + str(vehiculos_matricula))
+    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",
+                               error_messages={'required': 'El campo teléfono no puede estar vacío.'})
+    cualificacion = forms.CharField(label="Cualificación",
+                                    error_messages={'required': 'El campo cualificación no puede estar vacío.'})
+    vehiculo = forms.ChoiceField(choices=vehiculos_matricula, label="Vehículo")
+

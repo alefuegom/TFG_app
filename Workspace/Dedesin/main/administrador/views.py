@@ -502,22 +502,23 @@ def edit_vehiculo_administrador(request, id):
                     if proxima_revision <= date.today():
                         msg_error = "La fecha de la próxima revisión debe ser posterior a la fecha actual."
                         return render(request, 'vehiculoAdministradorForm.html',
-                                      {'form_edit': form, 'vehiculo_edit':vehiculo,
+                                      {'form_edit': form, 'vehiculo_edit': vehiculo,
                                        'msg_error': msg_error})
                 except:
                     msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy) en el campo de  fecha de próxima revisión "
                     return render(request, 'vehiculoAdministradorForm.html',
-                                  {'form_edit': form, 'vehiculo_edit':vehiculo,
+                                  {'form_edit': form, 'vehiculo_edit': vehiculo,
                                    'msg_error': msg_error})
                 vehiculo.save()
                 return redirect('/administrador/vehiculo')
             else:
-                return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit':vehiculo})
+                return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit': vehiculo})
         else:
             form = EditVehiculoAdministradorForm()
-            return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit':vehiculo})
+            return render(request, 'vehiculoAdministradorForm.html', {'form_edit': form, 'vehiculo_edit': vehiculo})
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required()
 def delete_vehiculo_administrador(request, id):
@@ -527,13 +528,132 @@ def delete_vehiculo_administrador(request, id):
             trabajador = Trabajador.objects.filter(vehiculo=vehiculo)[0]
             vehiculos = Vehiculo.objects.all()
             msg_error = "No se puede dar de baja a un vehículo si está asociado a un trabajador."
-            return render(request, 'vehiculoAdministrador.html', {'msg_error':msg_error, 'vehiculos':vehiculos,
-                                                                  'num_vehiculos':len(vehiculos)})
+            return render(request, 'vehiculoAdministrador.html', {'msg_error': msg_error, 'vehiculos': vehiculos,
+                                                                  'num_vehiculos': len(vehiculos)})
         except:
             vehiculo.delete()
             return redirect('/administrador/vehiculo/')
     else:
         return redirect('/errorPermiso/')
 
-#CRUD TRABAJADORES
 
+# CRUD TRABAJADORES
+@login_required()
+def list_trabajador_administrador(request):
+    if esAdministrador(request):
+        trabajadores = Trabajador.objects.all()
+        if len(trabajadores) >= 0:
+            return render(request, 'trabajadorAdministrador.html', {'trabajadores': trabajadores,
+                                                                    'num_trabajadores': len(trabajadores)})
+        else:
+            return render(request, 'trabajadorAdministrador.html')
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def show_trabajador_administrador(request, id):
+    if esAdministrador(request):
+        trabajador = Trabajador.objects.get(id=id)
+        trabajador_delete = False
+        if len(Servicio.objects.filter(trabajador=trabajador)) == 0:
+            trabajador_delete = True
+        return render(request, 'trabajadorAdministradorForm.html', {'trabajador': trabajador,
+                                                                    'trabajador_delete':trabajador_delete})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def create_trabajador_administrador(request):
+    if esAdministrador(request):
+        if request.method == 'POST':
+            form = CreateTrabajadorForm(request.POST, request.FILES)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                nombre = form.cleaned_data['nombre']
+                apellidos = form.cleaned_data['apellidos']
+                dni = form.cleaned_data['dni']
+                telefono = form.cleaned_data['telefono']
+                cualificacion = form.cleaned_data['cualificacion']
+                password = nombre[0] + apellidos[0] + dni + "."
+                try:
+                    vehiculo = Vehiculo.object.get(id=form.cleaned_data['vehiculo'])
+                except:
+                    vehiculo = None
+                if User.objects.filter(username=email):
+                    msg_error = "Ya existe un usuario con el correo introducido."
+                    return render(request, 'trabajadorAdministradorForm.html', {'form': form, 'msg_error': msg_error})
+                else:
+                    usuario = User(username=email)
+                    usuario.set_password(password)
+                    usuario.save()
+                    if Persona.objects.filter(telefono=telefono):
+                        msg_error = "Ya existe un usuario con el teléfono introducido."
+                        usuario.delete()
+                        return render(request, 'trabajadorAdministradorForm.html',
+                                      {'form': form, 'msg_error': msg_error})
+                    if Persona.objects.filter(dni=dni):
+                        msg_error = "Ya existe un usuario con el DNI introducido."
+                        usuario.delete()
+                        return render(request, 'trabajadorAdministradorForm.html',
+                                      {'form': form, 'msg_error': msg_error})
+                    else:
+                        persona = Persona(usuario=usuario, nombre=nombre, apellidos=apellidos, telefono=telefono,
+                                          dni=dni)
+                        persona.save()
+                        trabajador = Trabajador(persona=persona, cualificacion=cualificacion, vehiculo=vehiculo)
+                        trabajador.save()
+                        return redirect('/administrador/trabajador/')
+            else:
+                return render(request, 'trabajadorAdministradorForm.html', {'form': form})
+        else:
+            form = CreateTrabajadorForm()
+            return render(request, 'trabajadorAdministradorForm.html', {'form': form})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def edit_trabajador_administrador(request, id):
+    if esAdministrador(request):
+        trabajador = Trabajador.objects.get(id=id)
+        if request.method == 'POST':
+            form = EditTrabajadorAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                trabajador.persona.telefono = form.cleaned_data['telefono']
+                trabajador.cualificacion = form.cleaned_data['cualificacion']
+                vehiculo_id = form.cleaned_data['vehiculo']
+                trabajador.vehiculo = None
+                if vehiculo_id != "-":
+                    trabajador.vehiculo = Vehiculo.objects.get(id=vehiculo_id)
+                trabajador.save()
+                return redirect('/administrador/trabajador/show/' + str(trabajador.id) + "/")
+            else:
+                valores = [trabajador.persona.telefono, trabajador.cualificacion]
+                items = zip(form, valores)
+                return render(request, 'trabajadorAdministradorForm.html',
+                              {'form_edit': form, 'trabajador_edit': trabajador, 'items': items})
+        else:
+            form = EditTrabajadorAdministradorForm()
+            valores = [trabajador.persona.telefono, trabajador.cualificacion]
+            items = zip(form, valores)
+            return render(request, 'trabajadorAdministradorForm.html',
+                          {'form_edit': form, 'trabajador_edit': trabajador, 'items': items})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def delete_trabajador_administrador(request, id):
+    if esAdministrador(request):
+        trabajador = Trabajador.objects.get(id=id)
+        if len(Servicio.objects.filter(trabajador=trabajador)) != 0:
+            msg_error = "No se puede eliminar un trabajador si está asignado a un servicio."
+            return render(request, 'trabajadorAdministradorForm.html',
+                          {'trabajador': trabajador, 'msg_error': msg_error})
+        else:
+            trabajador.delete()
+            return redirect('/administrador/trabajador/')
+    else:
+        return redirect('/errorPermiso/')

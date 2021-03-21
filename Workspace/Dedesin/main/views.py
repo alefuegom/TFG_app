@@ -72,7 +72,8 @@ def registroCliente(request):
                 cuenta_bancaria = None
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
-            usuario = User(username=email, password=contraseña)
+            usuario = User(username=email)
+            usuario.set_password(contraseña)
             try:
                 usuario.save()
             except:
@@ -135,7 +136,8 @@ def registroEmpresa(request):
             cuenta_bancaria = form.cleaned_data['cuenta_bancaria']
             email = form.cleaned_data['email']
             contraseña = form.cleaned_data['contraseña']
-            usuario = User(username=email, password=contraseña)
+            usuario = User(username=email)
+            usuario.set_password(contraseña)
             try:
                 usuario.save()
             except:

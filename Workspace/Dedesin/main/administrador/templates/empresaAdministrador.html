@@ -1,0 +1,37 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if num_empresas %}
+<div class="container">
+    <strong><h1 style="margin-top:10%;">Empresas</h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_empresas}} empresas</h2>
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col"> CIF</th>
+            <th scope="col">Nombre de la empresa</th>
+            <th scope="col">Teléfono</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for e in empresas %}
+        <tr>
+            <td><a href="show/{{e.id}}"> {{e.cif}}</a></td>
+            <td>{{e.nombre}}</td>
+            <td>{{e.telefono}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="container" style="margin-top:10%;">
+    <strong><h1 style="margin-top:10%;">Empresas</h1></strong>
+    <h2 class="text-muted mt-3 mb-5"> Actualmente no tiene ninguna empresa introducida</h2>
+</div>
+{% endif %}
+{% endblock %}

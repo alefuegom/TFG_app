@@ -47,6 +47,10 @@ urlpatterns = [
     path('trabajador/show/<int:id>/', views.show_trabajador_administrador),
     path('trabajador/create/', views.create_trabajador_administrador),
     path('trabajador/edit/<int:id>/', views.edit_trabajador_administrador),
-    path('trabajador/delete/<int:id>/', views.delete_trabajador_administrador)
+    path('trabajador/delete/<int:id>/', views.delete_trabajador_administrador),
+    path('cliente/', views.list_cliente_administrador),
+    path('cliente/show/<int:id>/', views.show_cliente_administrador),
+    path('empresa/', views.list_empresa_administrador),
+    path('empresa/show/<int:id>/', views.show_empresa_administrador),
 
 ]

@@ -119,9 +119,6 @@ class EditTrabajadorAdministradorForm(forms.Form):
     for v in Vehiculo.objects.all():
         if v not in vehiculos_asignados:
             vehiculos_matricula.append([v.id, v.marca + "-" + v.modelo + " (" + v.matricula + ")"])
-    print("VEHICULOS ASIGNADOS" + str(vehiculos_asignados))
-    print("-------------------------------------------")
-    print("VEHICULOS MATRICULA" + str(vehiculos_matricula))
     telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",
                                error_messages={'required': 'El campo teléfono no puede estar vacío.'})
     cualificacion = forms.CharField(label="Cualificación",

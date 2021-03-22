@@ -14,7 +14,6 @@
         <tr>
             <th scope="col">DNI</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Apellidos</th>
             <th scope="col">Vehículo</th>
         </tr>
         </thead>
@@ -22,10 +21,8 @@
         {% for t in trabajadores %}
         <tr>
             <td><a href="/administrador/trabajador/show/{{t.id}}">{{t.persona.dni}}</a>
-
             </td>
-            <td>{{t.persona.nombre}}</td>
-            <td>{{t.persona.apellidos}}</td>
+            <td>{{t.persona.nombre}} {{t.persona.apellidos}}</td>
             {% if t.vehiculo %}
             <td>{{t.vehiculo.matricula}}</td>
             {% else %}

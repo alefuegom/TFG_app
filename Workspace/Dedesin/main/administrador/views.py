@@ -559,7 +559,7 @@ def show_trabajador_administrador(request, id):
         if len(Servicio.objects.filter(trabajador=trabajador)) == 0:
             trabajador_delete = True
         return render(request, 'trabajadorAdministradorForm.html', {'trabajador': trabajador,
-                                                                    'trabajador_delete':trabajador_delete})
+                                                                    'trabajador_delete': trabajador_delete})
     else:
         return redirect('/errorPermiso/')
 
@@ -655,5 +655,47 @@ def delete_trabajador_administrador(request, id):
         else:
             trabajador.delete()
             return redirect('/administrador/trabajador/')
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def list_cliente_administrador(request):
+    if esAdministrador(request):
+        clientes = Cliente.objects.all()
+        if len(clientes) == 0:
+            return render(request, 'clienteAdministrador.html')
+        else:
+            return render(request, 'clienteAdministrador.html', {'num_clientes': len(clientes), 'clientes': clientes})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def show_cliente_administrador(request, id):
+    if esAdministrador(request):
+        cliente = Cliente.objects.get(id=id)
+        return render(request, 'clienteAdministradorForm.html', {'cliente': cliente})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def list_empresa_administrador(request):
+    if esAdministrador(request):
+        empresas = Empresa.objects.all()
+        if len(empresas) == 0:
+            return render(request, 'empresaAdministrador.html')
+        else:
+            return render(request, 'empresaAdministrador.html', {'num_empresas': len(empresas), 'empresas': empresas})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def show_empresa_administrador(request, id):
+    if esAdministrador(request):
+        empresa = Empresa.objects.get(id=id)
+        return render(request, 'empresaAdministradorForm.html', {'empresa': empresa})
     else:
         return redirect('/errorPermiso/')

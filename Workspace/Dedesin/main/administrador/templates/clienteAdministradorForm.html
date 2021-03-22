@@ -1,0 +1,32 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+{% if cliente %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1>Cliente {{cliente.persona.nombre}} {{cliente.persona.apellidos}} </h1>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm">
+                <div class="row">
+                    <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
+                    <strong><p>DNI: </p></strong>
+                    <p class=" ml-1">{{cliente.persona.dni}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Correo: </p></strong>
+                    <p class="ml-1">{{cliente.persona.usuario.username}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Teléfono: </p></strong>
+                    <p class="ml-1">{{cliente.persona.telefono}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Dirección: </p></strong>
+                    <p class="ml-1">{{cliente.direccion}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

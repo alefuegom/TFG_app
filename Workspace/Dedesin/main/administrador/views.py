@@ -699,3 +699,122 @@ def show_empresa_administrador(request, id):
         return render(request, 'empresaAdministradorForm.html', {'empresa': empresa})
     else:
         return redirect('/errorPermiso/')
+
+
+@login_required()
+def list_administrador_administrador(request):
+    if esAdministrador(request):
+        administradores = Administrador.objects.all()
+        if len(administradores) == 0:
+            return render(request, 'administradorAdministrador.html')
+        else:
+            return render(request, 'administradorAdministrador.html',
+                          {'administradores': administradores, 'num_administradores': len(administradores)})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def show_administrador_administrador(request, id):
+    if esAdministrador(request):
+        administrador = Administrador.objects.get(id=id)
+        return render(request, 'administradorAdministradorForm.html', {'administrador': administrador})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def create_administrador_administrador(request):
+    if esAdministrador(request):
+        if request.method == 'POST':
+            form = CreateAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                nombre = form.cleaned_data['nombre']
+                apellidos = form.cleaned_data['apellidos']
+                dni = form.cleaned_data['dni']
+                telefono = form.cleaned_data['telefono']
+                email = form.cleaned_data['email']
+                contrasena = form.cleaned_data['contrasena']
+                try:
+                    User.objects.filter(username=email)[0]
+                    msg_error = "Ya existe un usuario con la dirección de correo electrónico introducido."
+                    return render(request, 'administradorAdministradorForm.html', {'msg_error': msg_error,
+                                                                                   'form': form})
+                except:
+                    try:
+                        Persona.objects.filter(dni=dni)[0]
+                        msg_error = "Ya existe un usuario con el DNI introducido."
+                        return render(request, 'administradorAdministradorForm.html', {'msg_error': msg_error,
+                                                                                       'form': form})
+                    except:
+                        try:
+                            Persona.objects.filter(telefono=telefono)[0]
+                            msg_error = "Ya existe un usuario con el telefono introducido."
+                            return render(request, 'administradorAdministradorForm.html', {'msg_error': msg_error,
+                                                                                           'form': form})
+                        except:
+                            usuario = User(username=email, password=contrasena)
+                            usuario.save()
+                            persona = Persona(usuario=usuario, nombre=nombre, apellidos=apellidos, dni=dni,
+                                              telefono=telefono)
+                            persona.save()
+                            administrador = Administrador(persona=persona)
+                            administrador.save()
+                            return redirect('/administrador/administrador/')
+            else:
+                return redirect(request, 'administradorAdministradorForm.html', {'form': form})
+        else:
+            form = CreateAdministradorForm()
+            return render(request, 'administradorAdministradorForm.html', {'form': form})
+    else:
+        return redirect('/errorPermiso/')
+
+
+@login_required()
+def edit_administrador_administrador(request, id):
+    if esAdministrador(request):
+        administrador = Administrador.objects.get(id=id)
+        if request.method == 'POST':
+            form = EditAdministradorForm(request.POST, request.FILES)
+            if form.is_valid():
+                telefono = form.cleaned_data['telefono']
+                if telefono != administrador.persona.telefono:
+                    try:
+                        Persona.objects.filter(telefono=telefono)[0]
+                        msg_error = "Ya existe un usuario con el número de telefono introducido."
+                        return render(request, 'administradorAdministradorForm.html',
+                                      {'msg_error': msg_error, 'form_edit': form, 'administrador_edit':administrador})
+                    except:
+                        try:
+                            Empresa.objects.filter(telefono=telefono)[0]
+                            msg_error = "Ya existe un usuario con el número de telefono introducido."
+                            return render(request, 'administradorAdministradorForm.html',
+                                          {'msg_error': msg_error, 'form_edit': form, 'administrador_edit':administrador})
+                        except:
+                            administrador.persona.telefono = telefono
+                            administrador.save()
+                            return redirect('/administrador/administrador/show/' + str(administrador.id))
+                else:
+                    return redirect('/administrador/administrador/show/' + str(administrador.id))
+
+        else:
+            form = EditAdministradorForm()
+            return render(request, 'administradorAdministradorForm.html',
+                          {'form_edit': form, 'administrador_edit': administrador})
+    else:
+        return redirect('/errorPermiso/')
+
+@login_required()
+def delete_administrador_administrador(request, id):
+    if esAdministrador(request):
+        administrador = Administrador.objects.get(id=id)
+        if len(Administrador.objects.all()) == 1:
+            msg_error = "Al menos el sistema debe tener un administrador."
+            return render(request, 'administradorAdministradorForm.html', {'administrador': administrador,
+                                                                           'msg_error':msg_error})
+        else:
+            administrador.delete()
+            return redirect('/administrador/administrador')
+
+    else:
+        return redirect('/errorPermiso/')

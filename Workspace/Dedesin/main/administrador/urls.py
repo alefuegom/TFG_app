@@ -52,5 +52,10 @@ urlpatterns = [
     path('cliente/show/<int:id>/', views.show_cliente_administrador),
     path('empresa/', views.list_empresa_administrador),
     path('empresa/show/<int:id>/', views.show_empresa_administrador),
+    path('administrador/', views.list_administrador_administrador),
+    path('administrador/show/<int:id>/', views.show_administrador_administrador),
+    path('administrador/create/', views.create_administrador_administrador),
+    path('administrador/edit/<int:id>/', views.edit_administrador_administrador),
+    path('administrador/delete/<int:id>/', views.delete_administrador_administrador),
 
 ]

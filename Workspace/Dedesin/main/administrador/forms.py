@@ -29,8 +29,6 @@ class EditSolicitudServicioAdministradorForm(forms.Form):
     fecha = forms.CharField(error_messages={'required': 'El campo fecha no puede estar vacío'})
     tratamiento = forms.ChoiceField(choices=tratamientos,
                                     error_messages={'required': 'El campo tratamiento no puede estar vacío'})
-    trabajador = forms.ChoiceField(choices=trabajadores,
-                                   error_messages={'required': 'El campo trabajador no puede estar vacío'})
 
 
 class EditServicioAdministradorForm(forms.Form):
@@ -74,8 +72,8 @@ class EditTratamientoAdministradorForm(forms.Form):
 
 
 class CreateVehiculoAdministradorForm(forms.Form):
-    modelo = forms.CharField(error_messages={'required': 'El campo modelo no puede estar vacío'})
     marca = forms.CharField(error_messages={'required': 'El campo marca no puede estar vacío'})
+    modelo = forms.CharField(error_messages={'required': 'El campo modelo no puede estar vacío'})
     matricula = forms.CharField(label="Matrícula", max_length=7, min_length=7, validators=[MATRICULA_REGEX])
     fecha_matriculacion = forms.CharField(label="Fecha de matriculación", min_length=10, max_length=10, error_messages={
         'required': 'El campo fecha matriculación no puede estar vacío'})

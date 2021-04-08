@@ -186,18 +186,30 @@ def edit_servicio_administrador(request, id):
                 form = EditServicioAdministradorForm(
                     request.POST, request.FILES)
                 if form.is_valid():
-                    servicio.trabajador = Trabajador.objects.get(
+                    trabajador = Trabajador.objects.get(
                         id=form.cleaned_data['trabajador'])
-                    servicio.save()
-                    return redirect('/administrador/servicio/')
+                    if trabajador.vehiculo:
+                        servicio.trabajador = trabajador
+                        print(trabajador.vehiculo)
+                        servicio.save()
+                        return redirect('/administrador/servicio/')
+                    else:
+                        msg_error = 'El trabajador asignado debe poseer un vehículo asignado para realizar el servicio.'
+                        return render(request, 'servicioAdministradorForm.html',
+                                      {'servicio_edit': servicio, 'msg_error': msg_error, 'form':form})
+                else:
+                    return render(request, 'servicioAdministradorForm.html',
+                                  {'servicio_edit': servicio, 'form':form})
+
             else:
                 form = EditServicioAdministradorForm()
                 return render(request, 'servicioAdministradorForm.html', {'servicio_edit': servicio,
-                                                                          'form': form})
+                                                                              'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
                         'si su estado tiene el valor de "Pendiente".'
             return render(request, 'servicioAdministradorForm.html', {'servicio': servicio, 'msg_error': msg_error})
+
     else:
         return redirect('/errorPermiso/')
 
@@ -334,7 +346,7 @@ def edit_tratamiento_administrador(request, id):
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
-                                                                                 'form': form, 'msg_error': msg_error})
+                                                                                 'form_edit': form, 'msg_error': msg_error})
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
@@ -342,7 +354,7 @@ def edit_tratamiento_administrador(request, id):
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
-                                                                                 'form': form, 'msg_error': msg_error})
+                                                                                 'form_edit': form, 'msg_error': msg_error})
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']
@@ -353,7 +365,6 @@ def edit_tratamiento_administrador(request, id):
                     tratamiento.save()
                     return redirect("/administrador/tratamiento/show/" + str(tratamiento.id) + "/")
             else:
-                print(form.errors)
                 valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
                            tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                 items = zip(form, valores)
@@ -469,16 +480,24 @@ def create_vehiculo_administrador(request):
                         return render(request, 'vehiculoAdministradorForm.html',
                                       {'form': form,
                                        'msg_error': msg_error})
+                    try:
+                        vehiculo = Vehiculo.objects.filter(matricula=matricula)[0]
+                        msg_error = "Ya existe un vehículo con la matrícula introducida "
+                        return render(request, 'vehiculoAdministradorForm.html',
+                                      {'form': form,
+                                       'msg_error': msg_error})
+                    except:
+                        vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula,
+                                            fecha_matriculacion=fecha_matriculacion,
+                                            proxima_revision=proxima_revision)
+                        vehiculo.save()
+                        return redirect('/administrador/vehiculo')
                 except:
                     msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy) en el campo de fecha de próxima revisión "
                     return render(request, 'vehiculoAdministradorForm.html',
                                   {'form': form,
                                    'msg_error': msg_error})
-                vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula,
-                                    fecha_matriculacion=fecha_matriculacion,
-                                    proxima_revision=proxima_revision)
-                vehiculo.save()
-                return redirect('/administrador/vehiculo')
+
             else:
                 return render(request, 'vehiculoAdministradorForm.html', {'form': form})
         else:
@@ -783,13 +802,14 @@ def edit_administrador_administrador(request, id):
                         Persona.objects.filter(telefono=telefono)[0]
                         msg_error = "Ya existe un usuario con el número de telefono introducido."
                         return render(request, 'administradorAdministradorForm.html',
-                                      {'msg_error': msg_error, 'form_edit': form, 'administrador_edit':administrador})
+                                      {'msg_error': msg_error, 'form_edit': form, 'administrador_edit': administrador})
                     except:
                         try:
                             Empresa.objects.filter(telefono=telefono)[0]
                             msg_error = "Ya existe un usuario con el número de telefono introducido."
                             return render(request, 'administradorAdministradorForm.html',
-                                          {'msg_error': msg_error, 'form_edit': form, 'administrador_edit':administrador})
+                                          {'msg_error': msg_error, 'form_edit': form,
+                                           'administrador_edit': administrador})
                         except:
                             administrador.persona.telefono = telefono
                             administrador.save()
@@ -804,14 +824,15 @@ def edit_administrador_administrador(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required()
 def delete_administrador_administrador(request, id):
     if esAdministrador(request):
         administrador = Administrador.objects.get(id=id)
         if len(Administrador.objects.all()) == 1:
-            msg_error = "Al menos el sistema debe tener un administrador."
+            msg_error = "El sistema, al menos, debe tener un administrador."
             return render(request, 'administradorAdministradorForm.html', {'administrador': administrador,
-                                                                           'msg_error':msg_error})
+                                                                           'msg_error': msg_error})
         else:
             administrador.delete()
             return redirect('/administrador/administrador')

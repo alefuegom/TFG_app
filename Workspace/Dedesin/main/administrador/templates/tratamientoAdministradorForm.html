@@ -110,7 +110,7 @@
 {% endif %}
 {% if tratamiento_edit %}
 <div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Nuevo tratamiento</h1>
+    <h1 class="mb-4"> Editar tratamiento</h1>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -127,29 +127,29 @@
         {% endfor %}
         {% endif %}
 
-        <form id='form' method='post'>
+        <form id='form_edit' method='post'>
             {% csrf_token %}
 
             {% for field, valor in items %}
             <div class="container center_div" style="margin-top:10px;">
 
-                <!--{% if not field == form.descripcion %}
+                {% if not field == form.descripcion %}
                 <label for="field">{{field.label_tag}}</label>
                 <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
                 {% endif %}
                 {% if field == form.descripcion %}
                 <p>Descripción:</p>
                 <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
-                {% endif %}-->
+                {% endif %}
                 {# uncomment to display field errors #}
                 {# {{ field.errors }} #}
-                {% if not field == form.descripcion %}
+               <!-- {% if not field == form.descripcion %}
                 {{ field.label_tag }} {{ field }}
                 {% endif%}
                 {% if field == form.descripcion %}
                 <p>Descripción:</p>
                 {{field}}
-                {% endif%}
+                {% endif%}-->
             </div>
             {% endfor %}
             <div class=" container  my-3">

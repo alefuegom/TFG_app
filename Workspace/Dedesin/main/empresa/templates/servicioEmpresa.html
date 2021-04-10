@@ -4,30 +4,43 @@
 <div class="container mb-5">
     <strong><h1 style="margin-top:10%;"> Servicios </h1></strong>
     <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_servicios}} servicios</h2>
-    <table class="table">
+    <table class="table text-center">
         <thead class="thead-dark">
-        <tr>
+          <tr>
             <th scope="col">ID</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Estado</th>
             <th scope="col">Plaga</th>
-            <th scope="col"></th>
-        </tr>
+            <th scope="col">Trabajador</th>
+            <th scope="col">Estado</th>
+          </tr>
         </thead>
         <tbody>
-        {% for s in servicios %}
-        <tr>
-            <td>{{s.id}}</td>
-            <td>{{s.solicitudServicio.fecha}}</td>
-            <td>{{s.estado.title}}</td>
-            <td>{{s.solicitudServicio.plaga.nombre}}</td>
+          {% for servicio in servicios %}
+          <tr>
             <td>
-                <a class="btn btn-outline-dark rounded-0" href="show/{{s.id}}">Ver detalles</a>
+              <a class="text-decoration-none" href="show/{{servicio.id}}"
+                >{{servicio.id}}</a
+              >
             </td>
-        </tr>
-        {% endfor %}
+            <td>{{servicio.solicitudServicio.fecha}}</td>
+            <td>{{servicio.solicitudServicio.plaga.nombre}}</td>
+            {% if servicio.trabajador %}
+            <td>
+              {{servicio.trabajador.persona.nombre}}
+              {{servicio.trabajador.persona.apellidos}}
+            </td>
+            {% else %}
+            <td class="text-warning">Por definir</td>
+            {% endif %} {% if servicio.estado.title == "Realizado" %}
+            <td class="text-success">{{servicio.estado.title}}</td>
+            {% else %}
+            <td class="text-warning">{{servicio.estado.title}}</td>
+    
+            {% endif %}
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
 </div>
 
 {% else %}

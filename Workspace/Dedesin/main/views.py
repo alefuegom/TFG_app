@@ -12,6 +12,9 @@ from .forms import *
 def index(request):
     return render(request, 'home.html')
 
+def quienresSomos(request):
+    return render(request, 'quienesSomos.html')
+
 
 def tratamientos(request):
     return render(request, 'tratamientos.html')

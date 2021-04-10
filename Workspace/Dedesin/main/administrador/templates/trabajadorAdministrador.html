@@ -9,24 +9,27 @@
         <strong>{{msg_error}}</strong>
     </div>
     {% endif %}
-    <table class="table">
+    <table class="table text-center">
         <thead class="thead-dark">
         <tr>
             <th scope="col">DNI</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Vehículo</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Vehículo asociado</th>
         </tr>
         </thead>
         <tbody>
         {% for t in trabajadores %}
         <tr>
-            <td><a href="/administrador/trabajador/show/{{t.id}}">{{t.persona.dni}}</a>
+            <td><a class="text-decoration-none" href="/administrador/trabajador/show/{{t.id}}">{{t.persona.dni}}</a>
             </td>
             <td>{{t.persona.nombre}} {{t.persona.apellidos}}</td>
+            <td>{{t.persona.telefono}}</td>
+
             {% if t.vehiculo %}
             <td>{{t.vehiculo.matricula}}</td>
             {% else %}
-            <td>Por definir</td>
+            <td class="text-warning">Por definir</td>
             {% endif %}
         </tr>
         {% endfor %}

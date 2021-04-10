@@ -9,20 +9,24 @@
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
-    <table class="table">
+    <table class="table text-center">
         <thead class="thead-dark">
         <tr>
             <th scope="col"> CIF</th>
             <th scope="col">Nombre de la empresa</th>
             <th scope="col">Teléfono</th>
+            <th scope="col">Dirección</th>
+
         </tr>
         </thead>
         <tbody>
         {% for e in empresas %}
         <tr>
-            <td><a href="show/{{e.id}}"> {{e.cif}}</a></td>
+            <td><a class="text-decoration-none" href="show/{{e.id}}"> {{e.cif}}</a></td>
             <td>{{e.nombre}}</td>
             <td>{{e.telefono}}</td>
+            <td>{{e.direccion}}</td>
+
         </tr>
         {% endfor %}
         </tbody>

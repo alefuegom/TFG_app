@@ -2,7 +2,7 @@
 {% block contenido %}
 {% if vehiculo %}
 <div class="container mb-5" style="margin-top:10%;">
-    <h1> Vehículo {{vehiculo.modelo}}-{{vehiculo.marca}} </h1>
+    <h1> Vehículo {{vehiculo.marca}}-{{vehiculo.modelo}} </h1>
     {% if trabajador %}
     <h2>Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
     {% endif %}
@@ -33,6 +33,10 @@
                 <div class="row">
                     <a class="btn btn-outline-dark rounded-0 mt-2 mb-5"
                        href="/administrador/vehiculo/edit/{{vehiculo.id}}">Editar</a>
+
+                    <a class="btn btn-outline-danger rounded-0 ml-2 mt-2 mb-5"
+                    href="/administrador/vehiculo/delete/{{vehiculo.id}}">Eliminar Vehículo</a>
+                    
                 </div>
 
             </div>

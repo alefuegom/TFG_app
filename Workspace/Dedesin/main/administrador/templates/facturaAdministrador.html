@@ -9,27 +9,22 @@
         <strong>{{msg_error}}</strong>
     </div>
     {% endif %}
-    <table class="table">
+    <table class="table text-center">
         <thead class="thead-dark">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Fecha expedición</th>
             <th scope="col">Receptor</th>
             <th scope="col">Plaga</th>
-            <th scope="col">Acciones</th>
         </tr>
         </thead>
         <tbody>
         {% for s in servicios %}
         <tr>
-            <td>{{s.factura.id}}</td>
+            <td><a href="/administrador/factura/show/{{s.id}}">{{s.factura.id}}</a></td>
             <td>{{s.factura.fecha_expedicion}}</td>
             <td>{{s.factura.receptor}}</td>
             <td>{{s.solicitudServicio.plaga.nombre}}</td>
-            <td>
-                <a href="/administrador/factura/show/{{s.id}}"><i class="fa fa-info-circle fa-2x"
-                                                                  style="color:blue;"></i></a>
-            </td>
         </tr>
         {% endfor %}
         </tbody>

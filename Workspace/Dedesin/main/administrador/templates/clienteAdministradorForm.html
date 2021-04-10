@@ -23,6 +23,14 @@
                     <strong><p>Dirección: </p></strong>
                     <p class="ml-1">{{cliente.direccion}}</p>
                 </div>
+                <div class="row">
+                    <strong><p>Cuenta bancaria: </p></strong>
+                    {% if cliente.cuenta_bancaria %}
+                    <p class="ml-1">{{cliente.cuenta_bancaria}}</p>
+                    {% else %}
+                    <p class="ml-1 text-warning">Por definir</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

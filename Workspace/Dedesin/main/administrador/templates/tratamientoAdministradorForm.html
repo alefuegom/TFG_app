@@ -44,12 +44,6 @@
                     <p class="ml-1">{{tratamiento.horasAbandono}}</p>
                 </div>
                 {% endif %}
-                {% if not form %}
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0"
-                        href="/administrador/tratamiento/edit/{{tratamiento.id}}">Editar</a>
-                </div>
-                {% endif %}
 
             </div>
             <div class="col-sm">
@@ -61,7 +55,14 @@
                 </div>
             </div>
         </div>
+        {% if not form %}
+        <div class="row my-3">
+            <a class="btn btn-outline-dark rounded-0"
+                href="/administrador/tratamiento/edit/{{tratamiento.id}}">Editar</a>
+            <a class="ml-3 btn btn-outline-danger rounded-0" href="/administrador/tratamiento/delete/{{tratamiento.id}}">Eliminar tratamiento</a>
 
+        </div>
+        {% endif %}
     </div>
 
 </div>

@@ -78,8 +78,18 @@ def edit_perfil_administrador(request):
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
         solicitudes = SolicitudServicio.objects.all()
-        return render(request, 'solicitudServicioAdministrador.html', {'solicitudes': solicitudes, 'num_solicitudes':
-            len(solicitudes)})
+        solicitantes = []
+        for solicitud in solicitudes:
+            try:
+                empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
+                solicitantes.append(empresa.nombre)
+            except:
+                persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
+                solicitantes.append(persona.nombre+" "+persona.apellidos)
+
+        items = zip(solicitudes, solicitantes)
+        return render(request, 'solicitudServicioAdministrador.html', {'items': items, 'num_solicitudes':
+                                                                       len(solicitudes)})
     else:
         return redirect('/errorPermiso/')
 
@@ -155,7 +165,17 @@ def edit_solicitudServicio_administrador(request, id):
 def list_servicio_administrador(request):
     if esAdministrador(request):
         servicios = Servicio.objects.all()
-        return render(request, 'servicioAdministrador.html', {'servicios': servicios, 'num_servicios': len(servicios)})
+        clientes = []
+        for servicio in servicios:
+            try:
+                empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                clientes.append(empresa.nombre)
+            except:
+                persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                clientes.append(persona.nombre+" "+persona.apellidos)
+
+        items = zip(servicios, clientes)
+        return render(request, 'servicioAdministrador.html', {'items': items, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
 
@@ -196,15 +216,15 @@ def edit_servicio_administrador(request, id):
                     else:
                         msg_error = 'El trabajador asignado debe poseer un vehículo asignado para realizar el servicio.'
                         return render(request, 'servicioAdministradorForm.html',
-                                      {'servicio_edit': servicio, 'msg_error': msg_error, 'form':form})
+                                      {'servicio_edit': servicio, 'msg_error': msg_error, 'form': form})
                 else:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'form':form})
+                                  {'servicio_edit': servicio, 'form': form})
 
             else:
                 form = EditServicioAdministradorForm()
                 return render(request, 'servicioAdministradorForm.html', {'servicio_edit': servicio,
-                                                                              'form': form})
+                                                                          'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
                         'si su estado tiene el valor de "Pendiente".'
@@ -481,7 +501,8 @@ def create_vehiculo_administrador(request):
                                       {'form': form,
                                        'msg_error': msg_error})
                     try:
-                        vehiculo = Vehiculo.objects.filter(matricula=matricula)[0]
+                        vehiculo = Vehiculo.objects.filter(
+                            matricula=matricula)[0]
                         msg_error = "Ya existe un vehículo con la matrícula introducida "
                         return render(request, 'vehiculoAdministradorForm.html',
                                       {'form': form,
@@ -597,7 +618,8 @@ def create_trabajador_administrador(request):
                 cualificacion = form.cleaned_data['cualificacion']
                 password = nombre[0] + apellidos[0] + dni + "."
                 try:
-                    vehiculo = Vehiculo.object.get(id=form.cleaned_data['vehiculo'])
+                    vehiculo = Vehiculo.object.get(
+                        id=form.cleaned_data['vehiculo'])
                 except:
                     vehiculo = None
                 if User.objects.filter(username=email):
@@ -621,7 +643,8 @@ def create_trabajador_administrador(request):
                         persona = Persona(usuario=usuario, nombre=nombre, apellidos=apellidos, telefono=telefono,
                                           dni=dni)
                         persona.save()
-                        trabajador = Trabajador(persona=persona, cualificacion=cualificacion, vehiculo=vehiculo)
+                        trabajador = Trabajador(
+                            persona=persona, cualificacion=cualificacion, vehiculo=vehiculo)
                         trabajador.save()
                         return redirect('/administrador/trabajador/')
             else:
@@ -649,7 +672,8 @@ def edit_trabajador_administrador(request, id):
                 trabajador.save()
                 return redirect('/administrador/trabajador/show/' + str(trabajador.id) + "/")
             else:
-                valores = [trabajador.persona.telefono, trabajador.cualificacion]
+                valores = [trabajador.persona.telefono,
+                           trabajador.cualificacion]
                 items = zip(form, valores)
                 return render(request, 'trabajadorAdministradorForm.html',
                               {'form_edit': form, 'trabajador_edit': trabajador, 'items': items})

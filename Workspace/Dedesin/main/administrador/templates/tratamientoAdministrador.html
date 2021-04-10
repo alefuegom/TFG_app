@@ -9,25 +9,20 @@
     <strong>{{msg_error}}</strong>
 </div>
 {% endif %}
-<table class="table">
+<table class="table text-center">
     <thead class="thead-dark">
     <tr>
         <th scope="col">ID</th>
         <th scope="col">Nombre del tratamiento</th>
         <th scope="col">Plaga</th>
-        <th scope="col">Acciones</th>
     </tr>
     </thead>
     <tbody>
     {% for t in tratamientos %}
     <tr>
-        <td>{{t.id}}</td>
+        <td><a href="/administrador/tratamiento/show/{{t.id}}">{{t.id}}</a></td>
         <td>{{t.nombre}}</td>
         <td>{{t.plaga.nombre}}</td>
-        <td>
-            <a href="/administrador/tratamiento/show/{{t.id}}"><i class="fa fa-info-circle fa-2x" style="color:blue;"></i></a>
-            <a class="ml-4" href="/administrador/tratamiento/delete/{{t.id}}"><i class="fa fa-trash fa-2x" style="color:red;"></i></a>
-        </td>
     </tr>
     {% endfor %}
     </tbody>

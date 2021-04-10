@@ -5,30 +5,38 @@
     <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
     <h2 class="text-muted mt-3 mb-5"> Actualmente se tienen {{num_solicitudes}} solicitudes de servicio</h2>
 
-    <table class="table">
+    <table class="table text-center">
         <thead class="thead-dark">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Estado</th>
             <th scope="col">Plaga</th>
-            <th scope="col"></th>
+            <th scope="col">Estado</th>
+
         </tr>
         </thead>
         <tbody>
-        {% for s in solicitudes %}
+        {% for solicitud in solicitudes %}
         <tr>
-            <td>{{s.id}}</td>
-            {% if s.fecha %}
-            <td>{{s.fecha}}</td>
+            <td>               
+                <a class="text-decoration-none" href="show/{{solicitud.id}}/">{{solicitud.id}}</a>
+                </td>
+            {% if solicitud.fecha %}
+            <td>{{solicitud.fecha}}</td>
             {% else %}
-            <td>Por definir</td>
+            <td class="text-warning">Por definir</td>
             {% endif %}
-            <td>{{s.estado.title}}</td>
-            <td>{{s.plaga}}</td>
-            <td>
-                <a class="btn btn-outline-dark rounded-0" href="/cliente/solicitudServicio/show/{{s.id}}/">Ver detalles</a>
-            </td>
+            <td>{{solicitud.plaga}}</td>
+            {% if solicitud.estado.title == "Aceptada" %}
+            <td class="text-success">{{solicitud.estado.title}}</td>
+            {% elif solicitud.estado.title == "Atendida" %}
+            <td class="text-info">{{solicitud.estado.title}}</td>
+            {% elif solicitud.estado.title == "Rechazada" %}
+            <td class="text-danger">{{solicitud.estado.title}}</td>
+            {% else %}
+            <td class="text-warning">{{solicitud.estado.title}}</td>
+
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>

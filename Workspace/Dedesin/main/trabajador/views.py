@@ -63,7 +63,18 @@ def list_servicios_trabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         servicios = Servicio.objects.filter(trabajador=trabajador)
-        return render(request, 'servicioTrabajador.html', {'servicios': servicios, 'num_servicios': len(servicios)})
+        clientes = []
+        for servicio in servicios:
+            try:
+                empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                clientes.append(empresa.direccion)
+            except:
+                persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                cliente = Cliente.objects.filter(persona=persona)[0]
+                clientes.append(cliente.direccion)
+
+        items = zip(servicios, clientes)
+        return render(request, 'servicioTrabajador.html', {'items': items, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
 

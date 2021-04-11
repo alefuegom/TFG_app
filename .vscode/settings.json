@@ -1,11 +1,3 @@
 {
-    "json.schemas": [
-    {
-        "fileMatch": [
-            "/myfile"
-        ],
-        "url": "schemaURL",
-        "python.pythonPath": "dedesin_env/bin/python"
-    }
-    ]
+    "python.pythonPath": "dedesin_env\\Scripts\\python.exe"
 }

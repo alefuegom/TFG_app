@@ -30,9 +30,15 @@
                     {% if solicitud.tratamiento %}
                     <p class=" ml-1">{{solicitud.tratamiento.nombre}}</p>
                     {% else %}
-                    <p class=" ml-1">Por definir</p>
+                    <p class=" ml-1 text-warning">Por definir</p>
                     {% endif %}
                 </div>
+                {% if solicitud.tratamiento %}
+                <div class="row">
+                    <strong><p>Precio del tratamiento: </p></strong>
+                    <p class=" ml-1">{{solicitud.tratamiento.precio}}€</p>
+                </div>
+                {% endif %}
                 <div class="row">
                     <strong><p>Plaga: </p></strong>
                     <p class="ml-1">{{solicitud.plaga.nombre}}</p>

@@ -39,3 +39,4 @@ class EditPerfilClienteForm(forms.Form):
     direccion = forms.CharField(label="Dirección",
                                 error_messages={'required': 'El campo dirección no puede estar vacío.'})
     cuentaBancaria = forms.CharField(label="Cuenta bancaria", validators=[CUENTA_BANCARIA_REGEX], required=False)
+

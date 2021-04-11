@@ -57,41 +57,80 @@
                 {% endif %}
                 {% endif %}
             </div>
-            {% if cliente %}
             <div class="col-sm">
-                <div class="row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
-                    <strong><p>Cliente:</p></strong>
-                    <p class="ml-2">{{cliente.persona.nombre}},{{cliente.persona.apellidos}}</p>
+                {% if cliente %}
+                <div class="col-sm">
+                    <div class="row">
+                        <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
+                        <strong><p>Cliente:</p></strong>
+                        <p class="ml-2">{{cliente.persona.nombre}},{{cliente.persona.apellidos}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Correo electrónico:</p></strong>
+                        <p class="ml-2">{{cliente.persona.usuario.username}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>DNI:</p></strong>
+                        <p class="ml-2">{{cliente.persona.dni}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Dirección:</p></strong>
+                        <p class="ml-2">{{cliente.direccion}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Teléfono:</p></strong>
+                        <p class="ml-2">{{cliente.persona.telefono}}</p>
+                    </div>
+                    {% if cliente.cuenta_bancaria %}
+                    <div class="row">
+                        <strong><p>Cuenta bancaria:</p></strong>
+                        <p class="ml-2">{{cliente.cuenta_bancaria}}</p>
+                    </div>
+                    {% endif %}
+
                 </div>
-                <div class="row">
-                    <strong><p>Dirección:</p></strong>
-                    <p class="ml-2">{{cliente.direccion}}</p>
+                {% endif %}
+                {% if empresa %}
+                <div class="col-sm">
+                    <div class="row">
+                        <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
+                        <strong><p>Empresa:</p></strong>
+                        <p class="ml-2">{{empresa.nombre}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>CIF:</p></strong>
+                        <p class="ml-2">{{empresa.cif}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Correo electrónico:</p></strong>
+                        <p class="ml-2">{{empresa.usuario.username}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Dirección:</p></strong>
+                        <p class="ml-2">{{empresa.direccion}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Teléfono:</p></strong>
+                        <p class="ml-2">{{empresa.telefono}}</p>
+                    </div>
+                    {% if empresa.cuenta_bancaria %}
+                    <div class="row">
+                        <strong><p>Cuenta bancaria:</p></strong>
+                        <p class="ml-2">{{empresa.cuenta_bancaria}}</p>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="row">
-                    <strong><p>Teléfono:</p></strong>
-                    <p class="ml-2">{{cliente.persona.telefono}}</p>
-                </div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if empresa %}
-            <div class="col-sm">
-                <div class="row">
-                    <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
-                    <strong><p>Empresa:</p></strong>
-                    <p class="ml-2">{{empresa.nombre}}</p>
-                </div>
-                <div class="row">
-                    <strong><p>Dirección:</p></strong>
-                    <p class="ml-2">{{empresa.direccion}}</p>
-                </div>
-                <div class="row">
-                    <strong><p>Teléfono:</p></strong>
-                    <p class="ml-2">{{empresa.telefono}}</p>
-                </div>
-            </div>
-            {% endif %}
         </div>
+        {% if solicitud.estado == 'Pendiente'%}
+                {% if not form %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0"
+                       href="/administrador/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
+                </div>
+                {% endif %}
+                {% endif %}
     </div>
 </div>
 {% endif %}
@@ -99,6 +138,11 @@
 <div class="container mb-5" style="margin-top:10%;">
     <h1> Servicio {{servicio_edit.id}} </h1>
     <h2>Solicitud de servicio asociada: {{servicio_edit.solicitudServicio.id}}</h2>
+    {% if msg_error %}
+    <div class="alert alert-danger" style="width:100%">
+        <strong>{{msg_error}}</strong>
+    </div>
+    {% endif %}
 
     <div class="container mt-4">
         <div class="row">

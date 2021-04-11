@@ -1,0 +1,43 @@
+{% extends 'headerAdministrador.html' %}
+{% block contenido %}
+<div class="container mb-5" style="margin-top:10%;">
+    <h1> Nueva plaga</h1>
+    <div class="container mt-4">
+        {% if msg_error %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{msg_error}}</strong>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+        <div class="row">
+            <form id='form' method='post'>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="container center_div" style="margin-top:10px;">
+                    {# uncomment to display field errors #}
+                    {# {{ field.errors }} #}
+
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-center ">
+                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
+                              style=""/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

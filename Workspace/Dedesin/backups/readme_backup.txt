@@ -1,0 +1,1 @@
+Para restablecer un backup sólo es necesario copiar el archivo y ponerle el nombre de db.sqlite3 en la carpeta Dedesin

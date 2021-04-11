@@ -10,26 +10,26 @@ CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
 
 
 class RegistroClienteForm(forms.Form):
-    nombre = forms.CharField(label="Nombre")
-    apellidos = forms.CharField(label="Apellidos")
-    dni = forms.CharField(validators=[DNI_REGEX], label="DNI")
-    email = forms.EmailField(label="E-mail")
-    contraseña = forms.CharField(widget=forms.PasswordInput, validators=[CONTRASEÑA_REGEX], label="Contraseña")
-    direccion = forms.CharField(label="Dirección")
-    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono")
-    cuenta_bancaria = forms.CharField(validators=[CUENTA_BANCARIA_REGEX], required=False, label="Cuenta bancaria")
+    nombre = forms.CharField(label="Nombre", widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
+    apellidos = forms.CharField(label="Apellidos",  widget=forms.TextInput(attrs={'placeholder': 'Apellidos'}))
+    dni = forms.CharField(validators=[DNI_REGEX], label="DNI",  widget=forms.TextInput(attrs={'placeholder': 'DNI'}))
+    email = forms.EmailField(label="E-mail",  widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    contraseña = forms.CharField(validators=[CONTRASEÑA_REGEX], label="Contraseña", widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
+    direccion = forms.CharField(label="Dirección",  widget=forms.TextInput(attrs={'placeholder': 'Dirección'}))
+    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",  widget=forms.TextInput(attrs={'placeholder': 'Teléfono'}))
+    cuenta_bancaria = forms.CharField(validators=[CUENTA_BANCARIA_REGEX], widget=forms.TextInput(attrs={'placeholder': 'Cuenta Bancaria'}), required=False, label="Cuenta bancaria")
 
 
 class RegistroEmpresaForm(forms.Form):
-    nombre = forms.CharField(label="Nombre")
-    CIF = forms.CharField(validators=[CIF_REGEX],label="CIF")
-    email = forms.EmailField(label="E-mail")
-    contraseña = forms.CharField(widget=forms.PasswordInput, validators=[CONTRASEÑA_REGEX], label="Contraseña")
-    direccion = forms.CharField(label="Dirección")
-    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono")
-    cuenta_bancaria = forms.CharField(validators=[CUENTA_BANCARIA_REGEX], required=True,label="Cuenta bancaria")
+    nombre = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Nombre de la empresa'}), label="Nombre",)
+    CIF = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'CIF'}), validators=[CIF_REGEX],label="CIF")
+    email = forms.EmailField(label="E-mail", widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}), validators=[CONTRASEÑA_REGEX], label="Contraseña")
+    telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono", widget=forms.TextInput(attrs={'placeholder': 'Teléfono'}))
+    cuenta_bancaria = forms.CharField(validators=[CUENTA_BANCARIA_REGEX], required=True,label="Cuenta bancaria", widget=forms.TextInput(attrs={'placeholder': 'Cuenta bancaria'}))
+    direccion = forms.CharField(label="Dirección", widget=forms.Textarea(attrs={'placeholder': 'Dirección'}))
 
 
 class InicioSesionForm(forms.Form):
-    email = forms.EmailField(label="E-mail")
-    contraseña = forms.CharField(widget=forms.PasswordInput, label="Contraseña")
+    email = forms.EmailField(label="E-mail", widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))

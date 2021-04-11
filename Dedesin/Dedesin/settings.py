@@ -60,7 +60,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Dedesin.urls'
 
-STATIC_ROOT= "/Users/alesk/Desktop/Universidad/TFG_app/TFG_app/Dedesin/main/static"
+STATIC_ROOT= "/Users/alesk/Desktop/Universidad/TFG_app/TFG_app/Dedesin/static"
 
 TEMPLATES = [
     {

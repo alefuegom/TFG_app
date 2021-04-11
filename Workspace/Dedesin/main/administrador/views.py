@@ -362,7 +362,7 @@ def edit_tratamiento_administrador(request, id):
                 horasAbandono = form.cleaned_data['horasAbandono']
                 if not abandono and horasAbandono != 0:
                     msg_error = "No se puede rellenar el tiempo de abandono, si el tratamiento no requiere abandono."
-                    valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
+                    valores = [tratamiento.nombre, tratamiento.precio,
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
@@ -370,7 +370,7 @@ def edit_tratamiento_administrador(request, id):
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
-                    valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
+                    valores = [tratamiento.nombre, tratamiento.precio,
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
@@ -378,21 +378,19 @@ def edit_tratamiento_administrador(request, id):
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']
-                    tratamiento.plaga = Plaga.objects.get(
-                        id=form.cleaned_data['plaga'])
                     tratamiento.abandono = abandono
                     tratamiento.horasAbandono = horasAbandono
                     tratamiento.save()
                     return redirect("/administrador/tratamiento/show/" + str(tratamiento.id) + "/")
             else:
-                valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
+                valores = [tratamiento.nombre, tratamiento.precio,
                            tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                 items = zip(form, valores)
                 return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form, 'items': items,
                                                                              'tratamiento_edit': tratamiento})
         else:
             form = EditTratamientoAdministradorForm()
-            valores = [tratamiento.nombre, tratamiento.plaga, tratamiento.precio,
+            valores = [tratamiento.nombre, tratamiento.precio,
                        tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
             items = zip(form, valores)
             return render(request, 'tratamientoAdministradorForm.html', {'form_edit': form, 'items': items,

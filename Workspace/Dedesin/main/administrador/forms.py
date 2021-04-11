@@ -59,10 +59,6 @@ class CreateTratamientoAdministradorForm(forms.Form):
 
 class EditTratamientoAdministradorForm(forms.Form):
     nombre = forms.CharField(error_messages={'required': 'El campo nombre no puede estar vacío'})
-    nombre_plagas = []
-    for p in Plaga.objects.all():
-        nombre_plagas.append([p.id, p.nombre])
-    plaga = forms.ChoiceField(choices=nombre_plagas)
     precio = forms.IntegerField(error_messages={'required': 'El campo precio no puede estar vacío'}, min_value=0,
                                 max_value=99999999)
     abandono = forms.BooleanField(required=False)

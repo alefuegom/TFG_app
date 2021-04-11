@@ -127,6 +127,12 @@
         {% endfor %}
         {% endfor %}
         {% endif %}
+        <div class="row">
+            <strong>
+                <p>Plaga: </p>
+            </strong>
+            <p class=" ml-1">{{tratamiento_edit.plaga}}</p>
+        </div>
 
         <form id='form_edit' method='post'>
             {% csrf_token %}
@@ -144,13 +150,6 @@
                 {% endif %}
                 {# uncomment to display field errors #}
                 {# {{ field.errors }} #}
-               <!-- {% if not field == form.descripcion %}
-                {{ field.label_tag }} {{ field }}
-                {% endif%}
-                {% if field == form.descripcion %}
-                <p>Descripción:</p>
-                {{field}}
-                {% endif%}-->
             </div>
             {% endfor %}
             <div class=" container  my-3">

@@ -3,11 +3,12 @@ from django.shortcuts import render, redirect
 from ..models import *
 from .forms import *
 from django.contrib.auth import logout as do_logout
+from datetime import date
 
 
 @login_required
 def inicioTrabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         return render(request, 'inicioTrabajador.html')
     else:
         return redirect('/errorPermiso/')
@@ -15,7 +16,7 @@ def inicioTrabajador(request):
 
 @login_required
 def show_perfil_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         return render(request, 'perfilTrabajador.html', {'trabajador': trabajador})
@@ -25,7 +26,7 @@ def show_perfil_trabajador(request):
 
 @login_required
 def edit_perfil_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         if request.method == 'POST':
@@ -58,18 +59,29 @@ def edit_perfil_trabajador(request):
 
 @login_required
 def list_servicios_trabajador(request):
-    if esTrabajador():
+    if esTrabajador(request):
         persona = Persona.objects.filter(usuario=request.user)[0]
         trabajador = Trabajador.objects.filter(persona=persona)[0]
         servicios = Servicio.objects.filter(trabajador=trabajador)
-        return render(request, 'servicioTrabajador.html', {'servicios': servicios, 'num_servicios': len(servicios)})
+        clientes = []
+        for servicio in servicios:
+            try:
+                empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                clientes.append(empresa.direccion)
+            except:
+                persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                cliente = Cliente.objects.filter(persona=persona)[0]
+                clientes.append(cliente.direccion)
+
+        items = zip(servicios, clientes)
+        return render(request, 'servicioTrabajador.html', {'items': items, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
 
 
 @login_required
 def show_servicios_trabajador(request, id):
-    if esTrabajador():
+    if esTrabajador(request):
         servicio = Servicio.objects.get(id=id)
         if request.user == servicio.trabajador.persona.usuario:
             try:
@@ -86,7 +98,7 @@ def show_servicios_trabajador(request, id):
 
 @login_required
 def edit_servicio_trabajador(request, id):
-    if esTrabajador():
+    if esTrabajador(request):
         servicio = Servicio.objects.get(id=id)
         if request.user == servicio.trabajador.persona.usuario:
             if request.method == 'POST':
@@ -96,6 +108,7 @@ def edit_servicio_trabajador(request, id):
                         servicio.observaciones = form.cleaned_data['observaciones']
                         servicio.estado = 'realizado'
                         servicio.save()
+                        creacionFactura(servicio)
                         return redirect('/trabajador/servicios/')
                     else:
                         msg_error = 'No se puede editar un servicio que ya ha sido realizado.'
@@ -158,3 +171,27 @@ def esTrabajador(request):
         return trabajador
     except:
         return None
+
+
+def creacionFactura(servicio):
+    fecha_expedicion = date.today()
+    emisor = "Dedesin S.L"
+    usuario = servicio.solicitudServicio.usuario
+    try:
+        empresa = Empresa.objects.filter(usuario=usuario)[0]
+        receptor = empresa.nombre
+    except:
+        persona = Persona.objects.filter(usuario=usuario)[0]
+        receptor = persona.apellidos + ", " + persona.nombre
+    descripcion = "Tratamiento para combatir  la plaga de " + servicio.solicitudServicio.plaga.nombre + \
+                  ". Especialmente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
+                  ". Realizado el día: " + str(servicio.solicitudServicio.fecha)
+    importe = servicio.solicitudServicio.tratamiento.precio
+    tipo_impositivo = 21
+    fecha_operaciones = fecha_expedicion
+
+    factura = Factura(fecha_expedicion=fecha_expedicion, emisor=emisor, receptor=receptor, descripcion=descripcion,
+                      importe=importe, tipo_impositivo=tipo_impositivo, fecha_operaciones=fecha_operaciones)
+    factura.save()
+    servicio.factura = factura
+    servicio.save()

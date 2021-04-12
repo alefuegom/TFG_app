@@ -1,1 +1,1 @@
-web: gunicorn DEDESIN.wsgi --log-file
+web: gunicorn DEDESIN.wsgi

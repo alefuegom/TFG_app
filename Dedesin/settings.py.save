@@ -57,10 +57,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'Dedesin.urls'
 
-STATIC_ROOT= os.path.join(BASE_DIR, 'static')
+STATIC_ROOT= "/home/fuentea/Documentos/TFG_app/static"
 
 TEMPLATES = [
     {

@@ -1,0 +1,75 @@
+{% extends 'header.html' %}
+{% block contenido %}
+{% load static %}
+<div class="container-fluid">
+  <div class="row snippet-fondo" id="home-1">
+    <h1 class="title mx-5">Quiénes Somos</h1>
+    <h4 class="subtitle mx-5 w-100">
+      Inicio / Quiénes Somos
+    </h4>
+    <hr>
+  </div>
+</div>
+<div class="container snippet-principal">
+  <div class="row">
+    <h1 class="title text-center w-100">Sobre nosotros</h1>
+  </div>
+  <div class="row">
+    <h5 class="subtitle text-justify mt-3">
+      Somos una empresa andaluza, con sede en Sevilla y desarrollamos nuestra actividad en el campo del Control Medioambiental desde hace más de 40 años. A lo largo de los años hemos logrado constituirnos como empresa líder, precursora, reconocida y motor del desarrollo en el sector.
+      En Dedesin, S.L. desarrollamos nuestros servicios bajo la premisa de una completa filosofía y código deontológico de trabajo. Contamos con las más novedosas técnicas en diagnosis, seguimiento y control del sector. Consolidados como un referente indiscutible en nuestra actividad, nos caracterizamos por utilizar siempre productos de calidad y contar con un personal profesional, 
+      cualificado y formado de forma precisa, para el desarrollo de su actividad laboral.
+    </h5>
+  </div>
+</div>
+<div class="container snippet-principal">
+    <h1 class="text-center font-weight-bolder" style="width: 100%">
+      Nuestros certificados
+    </h1>
+    <div class="row text-center align-items-center mt-5">
+      <div class="col-lg-3 col-md-6 col-xs-6">
+        <img
+          class="rounded mx-auto d-block mt-4 img-fluid"
+          style="width: 30%"
+          src="{% static 'main/images/gestion-ambiental.jpg' %}"
+          alt="Certificado AENOR de medio ambiente"
+        />
+      </div>
+      <div class="col-lg-3 col-md-6 col-xs-6">
+        <img
+          class="rounded mx-auto d-block mt-4"
+          style="width: 30%"
+          src="{% static 'main/images/empresa-registrada.png' %}"
+          alt="Certificado AENOR de empresa registrada"
+        />
+      </div>
+  
+      <div class="col-lg-3 col-md-6 col-xs-6">
+        <img
+          class="rounded mx-auto d-block mt-4"
+          style="width: 90%"
+          src="{% static 'main/images/anecpla.jpg' %}"
+          alt="Certificado Anecpla"
+        />
+      </div>
+  
+      <div class="col-lg-3 col-md-6 col-xs-6">
+        <img
+          class="rounded mx-auto d-block mt-4"
+          style="width: 90%"
+          src="{% static 'main/images//ministerio.png' %}"
+          alt="Ministerio de sanidad"
+        />
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="container-fluid snippet-principal">
+  <div class="row">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3169.5693327245654!2d-6.04484064968078!3d37.40001594130681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126b61e87aa351%3A0x7389ae0054f1c140!2sDedesin!5e0!3m2!1sen!2ses!4v1618095558795!5m2!1sen!2ses" width="1400" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+</div>
+{% endblock %}
+
+

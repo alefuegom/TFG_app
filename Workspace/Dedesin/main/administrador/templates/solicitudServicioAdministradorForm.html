@@ -58,15 +58,7 @@
                     <strong><p>Observaciones</p></strong>
                     <p class="ml-2">{{solicitud.observaciones}}</p>
                 </div>
-                {% if solicitud.estado == 'Pendiente'%}
-                {% if not form %}
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0"
-                       href="/administrador/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
-                </div>
-                {% endif %}
-                {% endif %}
-
+                
             </div>
             <div class="col-sm">
                 {% if cliente %}
@@ -77,6 +69,14 @@
                         <p class="ml-2">{{cliente.persona.nombre}},{{cliente.persona.apellidos}}</p>
                     </div>
                     <div class="row">
+                        <strong><p>Correo electrónico:</p></strong>
+                        <p class="ml-2">{{cliente.persona.usuario.username}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>DNI:</p></strong>
+                        <p class="ml-2">{{cliente.persona.dni}}</p>
+                    </div>
+                    <div class="row">
                         <strong><p>Dirección:</p></strong>
                         <p class="ml-2">{{cliente.direccion}}</p>
                     </div>
@@ -84,6 +84,13 @@
                         <strong><p>Teléfono:</p></strong>
                         <p class="ml-2">{{cliente.persona.telefono}}</p>
                     </div>
+                    {% if cliente.cuenta_bancaria %}
+                    <div class="row">
+                        <strong><p>Cuenta bancaria:</p></strong>
+                        <p class="ml-2">{{cliente.cuenta_bancaria}}</p>
+                    </div>
+                    {% endif %}
+
                 </div>
                 {% endif %}
                 {% if empresa %}
@@ -94,6 +101,14 @@
                         <p class="ml-2">{{empresa.nombre}}</p>
                     </div>
                     <div class="row">
+                        <strong><p>CIF:</p></strong>
+                        <p class="ml-2">{{empresa.cif}}</p>
+                    </div>
+                    <div class="row">
+                        <strong><p>Correo electrónico:</p></strong>
+                        <p class="ml-2">{{empresa.usuario.username}}</p>
+                    </div>
+                    <div class="row">
                         <strong><p>Dirección:</p></strong>
                         <p class="ml-2">{{empresa.direccion}}</p>
                     </div>
@@ -101,10 +116,24 @@
                         <strong><p>Teléfono:</p></strong>
                         <p class="ml-2">{{empresa.telefono}}</p>
                     </div>
+                    {% if empresa.cuenta_bancaria %}
+                    <div class="row">
+                        <strong><p>Cuenta bancaria:</p></strong>
+                        <p class="ml-2">{{empresa.cuenta_bancaria}}</p>
+                    </div>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
         </div>
+        {% if solicitud.estado == 'Pendiente'%}
+                {% if not form %}
+                <div class="row my-3">
+                    <a class="btn btn-outline-dark rounded-0"
+                       href="/administrador/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
+                </div>
+                {% endif %}
+                {% endif %}
     </div>
 
 </div>
@@ -112,7 +141,6 @@
 {% if solicitud_edit %}
 <div class="container mb-5" style="margin-top:10%;">
     <h1> Solicitud de servicio {{solicitud_edit.id}}</h1>
-    <div class="row">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
             <strong>{{msg_error}}</strong>
@@ -128,7 +156,11 @@
             {% endfor %}
             {% endfor %}
             {% endif %}
-            <div class="row">
+        </div>
+        <div class="row">
+
+            <div class="col-lg">
+                    <h3 class="text-muted mb-3 w-100">Editar la solicitud de servicio</h3>
                 <form id='form' method='post'>
                     {% csrf_token %}
                     {% for field in form %}
@@ -139,48 +171,33 @@
                         {{ field.label_tag }} {{ field }}
                     </div>
                     {% endfor %}
-                    <div class="d-flex justify-content-center ">
+                    <div class="my-3">
                         <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
-                                  style=""/>
+                                  />
                     </div>
                 </form>
             </div>
-        </div>
-        {% if cliente %}
-        <div class="col-sm">
-            <div class="row">
-                <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
-                <strong><p>Cliente:</p></strong>
-                <p class="ml-2">{{cliente.persona.nombre}},{{cliente.persona.apellidos}}</p>
-            </div>
-            <div class="row">
-                <strong><p>Dirección:</p></strong>
-                <p class="ml-2">{{cliente.direccion}}</p>
-            </div>
-            <div class="row">
-                <strong><p>Teléfono:</p></strong>
-                <p class="ml-2">{{cliente.persona.telefono}}</p>
-            </div>
-        </div>
-        {% endif %}
-        {% if empresa %}
-        <div class="col-sm">
-            <div class="row">
-                <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
-                <strong><p>Empresa:</p></strong>
-                <p class="ml-2">{{empresa.nombre}}</p>
-            </div>
-            <div class="row">
-                <strong><p>Dirección:</p></strong>
-                <p class="ml-2">{{empresa.direccion}}</p>
-            </div>
-            <div class="row">
-                <strong><p>Teléfono:</p></strong>
-                <p class="ml-2">{{empresa.telefono}}</p>
-            </div>
-        </div>
-        {% endif %}
+            <div class="col-lg">
+                <div class="row">
+                    <h3 class="text-muted mb-3 w-100">Detalles de la solicitud de servicio</h3>
+                </div>
+                <div class="row">
+                    <strong><p>Plaga:</p></strong>
+                    <p class="ml-1">{{solicitud_edit.plaga}}</p>
+                </div>
+                <div class="row">
+                    <strong><p>Estado:</p></strong>
+                    <p class="ml-1">{{solicitud_edit.estado.title}}</p>
+                </div>
+
+                <div class="row">
+                    <strong><p>Observaciones</p></strong>
+                    <p class="ml-2">{{solicitud_edit.observaciones}}</p>
+                </div>
+
     </div>
+</div>
+
 </div>
 
 {% endif %}

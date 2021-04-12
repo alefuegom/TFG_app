@@ -7,10 +7,19 @@ from ..models import *
 from django.contrib.auth import logout as do_logout
 
 
+# MÉTODOS AUXILIARES
+def esEmpresa(request):
+    try:
+        empresa = Empresa.objects.filter(usuario=request.user)[0]
+        return empresa
+    except:
+        return None
+
+
 # VISTAS GENERALES
 @login_required
 def inicio_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         return render(request, 'inicioEmpresa.html')
     else:
         return redirect('/errorPermiso/')
@@ -18,15 +27,16 @@ def inicio_empresa(request):
 
 @login_required
 def show_perfil_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         empresa = Empresa.objects.filter(usuario=request.user)[0]
         return render(request, 'perfilEmpresa.html', {'empresa': empresa})
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def edit_perfil_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         empresa = Empresa.objects.filter(usuario=request.user)[0]
         if request.method == 'POST':
             form = EditPerfilEmpresaForm(request.POST, request.FILES)
@@ -54,10 +64,16 @@ def edit_perfil_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
+def logout(request):
+    do_logout(request)
+    return redirect('/')
+
+
 # CRUD SERVICIOS
 @login_required
 def list_servicios_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
         servicios = []
@@ -72,9 +88,10 @@ def list_servicios_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def show_servicios_empresa(request, id):
-    if esEmpresa():
+    if esEmpresa(request):
         servicio = Servicio.objects.get(id=id)
         if servicio:
             if request.user == servicio.solicitudServicio.usuario:
@@ -86,10 +103,11 @@ def show_servicios_empresa(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 # CRUD SOLICITUD DE SERVICIO
 @login_required
 def list_solicitud_servicio_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
         if solicitudes:
@@ -100,11 +118,13 @@ def list_solicitud_servicio_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def create_solicitud_servicio_empresa(request):
-    if esEmpresa():
+    if esEmpresa(request):
         if request.method == 'POST':
-            form = CreateSolicitudServicioEmpresaForm(request.POST, request.FILES)
+            form = CreateSolicitudServicioEmpresaForm(
+                request.POST, request.FILES)
             if form.is_valid():
                 usuario = request.user
                 estado = 'Pendiente'
@@ -124,9 +144,10 @@ def create_solicitud_servicio_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def show_solicitud_servicio_empresa(request, id):
-    if esEmpresa():
+    if esEmpresa(request):
         solicitud = SolicitudServicio.objects.get(id=id)
         if request.user == solicitud.usuario:
             return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud})
@@ -135,24 +156,27 @@ def show_solicitud_servicio_empresa(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required
 def edit_solicitud_servicio_empresa(request, id):
-    if esEmpresa():
+    if esEmpresa(request):
         solicitud = SolicitudServicio.objects.get(id=id)
         if request.user == solicitud.usuario:
             if request.method == 'POST':
                 if solicitud.estado == 'Atendida':
-                    form = EditSolicitudServicioEmpresaForm(request.POST, request.FILES)
+                    form = EditSolicitudServicioEmpresaForm(
+                        request.POST, request.FILES)
                     if form.is_valid():
                         estado = form.cleaned_data['estado']
                         solicitud.estado = estado
                         solicitud.save()
                         if estado == 'Rechazada':
-                            return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+                            return redirect("/empresa/solicitudServicio/show/" + str(solicitud.id))
                         elif estado == 'Aceptada':
-                            servicio = Servicio(solicitudServicio=solicitud, estado="Pendiente")
+                            servicio = Servicio(
+                                solicitudServicio=solicitud, estado="Pendiente")
                             servicio.save()
-                            return redirect("/cliente/servicio/show/" + str(servicio.id))
+                            return redirect("/empresa/servicio/show/" + str(servicio.id))
                 else:
                     msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
                     return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
@@ -164,15 +188,4 @@ def edit_solicitud_servicio_empresa(request, id):
             return redirect('/errorPermiso')
     else:
         return redirect('/errorPermiso/')
-
-def logout(request):
-    do_logout(request)
-    return redirect('/')
-
-
-def esEmpresa(request):
-    try:
-        empresa = Empresa.objects.filter(usuario=request.user)[0]
-        return empresa
-    except:
-        return None
+ 

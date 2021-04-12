@@ -23,6 +23,8 @@ urlpatterns = [
     path('registroCliente/', views.registroCliente),
     path('registroEmpresa/', views.registroEmpresa),
     path('errorPermiso/', views.errorPermiso),
+        path('quienesSomos/', views.quienresSomos),
+
 
 ]
 

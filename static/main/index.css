@@ -59,7 +59,7 @@ body {
   font-weight: 200;
   font-size: 15px;
 }
-.nav-link {
+.nav-link, .dropdown-item {
   color: 2a9d8f;
   text-transform: uppercase;
 }

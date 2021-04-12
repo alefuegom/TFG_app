@@ -1,1 +1,1 @@
-web: gunicorn DEDESIN.wsgi
+web: gunicorn Dedesin.wsgi

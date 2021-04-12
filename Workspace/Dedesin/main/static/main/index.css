@@ -5,6 +5,8 @@ footer {
 body {
   font-family: "Ubuntu", sans-serif;
 }
+
+
 #home-1 {
   padding-top: 10rem;
   padding-bottom: 8rem;
@@ -16,6 +18,10 @@ body {
   padding-bottom: 8rem;
   background-image: url("images/fondo_texto_ladeado.png");
   background-size: cover;
+}
+.snippet-principal{
+  margin-top: 10rem!important;
+  margin-bottom: 10rem!important;
 }
 .btn-outline {
   border: 2px solid black;

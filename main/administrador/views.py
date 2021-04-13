@@ -86,7 +86,7 @@ def list_solicitudServicio_administrador(request):
             except:
                 persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
                 solicitantes.append(persona.nombre+" "+persona.apellidos)
-
+                
         items = zip(solicitudes, solicitantes)
         return render(request, 'solicitudServicioAdministrador.html', {'items': items, 'num_solicitudes':
                                                                        len(solicitudes)})

@@ -40,3 +40,5 @@ class EditPerfilClienteForm(forms.Form):
                                 error_messages={'required': 'El campo dirección no puede estar vacío.'})
     cuentaBancaria = forms.CharField(label="Cuenta bancaria", validators=[CUENTA_BANCARIA_REGEX], required=False)
 
+class FiltradoFechaSolicitudServicioClienteForm(forms.Form):
+    fecha = forms.CharField(error_messages={'required': 'El campo fecha no puede estar vacío'})

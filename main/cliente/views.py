@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
-# Create your views here.
+from django.core.paginator import Paginator
 from .forms import *
+from datetime import datetime, date
 from ..models import *
 from django.contrib.auth import logout as do_logout
 
@@ -78,7 +78,10 @@ def list_servicios_cliente(request):
             if servicio:
                 servicios.append(servicio[0])
         if servicios:
-            return render(request, 'servicioCliente.html', {'servicios': servicios, 'num_servicios': len(servicios)})
+            paginator = Paginator(servicios, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'servicioCliente.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
         else:
             return render(request, 'servicioCliente.html')
     else:
@@ -106,8 +109,12 @@ def list_solicitud_servicio_cliente(request):
     if esCliente(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
+        solicitudes = solicitudes.order_by('-fecha')
+        paginator = Paginator(solicitudes, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         if solicitudes:
-            return render(request, 'solicitudServicioCliente.html', {'solicitudes': solicitudes,
+            return render(request, 'solicitudServicioCliente.html', {'page_obj': page_obj,
                                                                      'num_solicitudes': solicitudes.count()})
         else:
             return render(request, 'solicitudServicioCliente.html')

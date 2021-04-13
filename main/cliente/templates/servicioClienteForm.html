@@ -1,11 +1,11 @@
 {% extends 'headerCliente.html' %}
 {% block contenido %}
 {% if servicio %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Servicio {{servicio.id}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Servicio {{servicio.id}} </h1>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-xs-12">
                 <div class="row">
                     <strong><p>Fecha: </p></strong>
                     <p class=" ml-1">{{servicio.solicitudServicio.fecha}}</p>
@@ -30,15 +30,9 @@
                     <strong><p>Tiempo de abandono: </p></strong>
                     <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
-                {% if servicio.estado == 'realizado' %}
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0" href="/cliente/servicio/factura/{{servicio.id}}/">Mostrar factura</a>
-                </div>
-                {% endif %}
-
             </div>
             {% if servicio.estado == 'realizado' %}
-            <div class="col-sm">
+            <div class="col-lg-6 col-xs-12">
                 <div class="row">
                     <strong><p>Observaciones del trabajador</p></strong>
                     <p class="ml-2">{{servicio.observaciones}}</p>
@@ -50,6 +44,13 @@
             </div>
             {% endif %}
         </div>
+        {% if servicio.estado == 'realizado' %}
+        <div class="row my-3">
+            <a class="page-link btn-dedesin" href="/cliente/servicio/factura/{{servicio.id}}/">Mostrar
+                factura</a>
+        </div>
+        {% endif %}
+
     </div>
 </div>
 {% endif %}

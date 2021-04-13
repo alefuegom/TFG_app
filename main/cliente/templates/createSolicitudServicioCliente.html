@@ -1,12 +1,12 @@
 {% extends 'headerCliente.html' %}
 {% block contenido %}
 <div class="container">
-    <form id='form' method='post' style="margin-top:10%">
+    <form id='form' method='post'>
         {% csrf_token %}
-        <strong><h1 style="margin-top:10%;"> Solicitudes de servicio </h1></strong>
-        <h2 class="text-muted mt-3 mb-5">Nueva solicitud</h2>
+        <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
+        <h2 class="subtitle mt-3 mb-5">Nueva solicitud</h2>
 
-        <div class="center_div" style="margin-top:10px;">
+        <div class="center_div">
             {% csrf_token %}
             {% for field in form %}
             <div class="center_div" style="margin-top:10px;">
@@ -19,7 +19,7 @@
             </div>
             {% endfor %}
 
-            <input type='submit' class="btn btn-outline-dark rounded-0 my-3" value='Confirmar'
+            <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'
                    style=""/>
         </div>
     </form>

@@ -1,8 +1,8 @@
 {% extends 'headerEmpresa.html' %}
 {% block contenido %}
 {% if solicitud %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Solicitud de servicio {{solicitud.id}}</h1>
+<div class="container mb-5">
+    <h1 class="title"> Solicitud de servicio {{solicitud.id}}</h1>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -10,7 +10,7 @@
         </div>
         {% endif %}
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong><p>Fecha: </p></strong>
                     {% if solicitud.fecha %}
@@ -53,29 +53,34 @@
                     <p class=" ml-1">Por definir</p>
                     {% endif %}
                 </div>
-                {% if solicitud.estado == 'Atendida'%}
-                {% if not form %}
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0" href="/empresa/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
-                </div>
-                {% endif %}
-                {% endif %}
+
 
             </div>
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong><p>Observaciones</p></strong>
                     <p class="ml-2">{{solicitud.observaciones}}</p>
                 </div>
                 {% if form %}
-                <form id='form' method='post'>
-                    {% csrf_token %}
-                    {{form}}
-                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/></p>
-                </form>
+                <div class="row">
+
+                    <form id='form' method='post'>
+                        {% csrf_token %}
+                        {{form}}
+                        <p><input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/></p>
+                    </form>
+                </div>
+
                 {% endif %}
             </div>
         </div>
+        {% if solicitud.estado == 'Atendida' %}
+        {% if not form %}
+        <div class="row my-3">
+            <a class="page-link btn-dedesin" href="/empresa/solicitudServicio/edit/{{solicitud.id}}">Editar</a>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
 
 </div>

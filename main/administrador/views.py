@@ -1,5 +1,5 @@
 from datetime import datetime, date
-
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
@@ -66,7 +66,7 @@ def edit_perfil_administrador(request):
         else:
             form = EditPerfilAdministrador()
             valores = [persona.nombre, persona.apellidos,
-                       persona.usuario.email, persona.dni, persona.telefono]
+                       persona.usuario.username, persona.dni, persona.telefono]
             items = zip(form, valores)
             return render(request, 'perfilAdministrador.html', {'form': form, 'items': items})
     else:
@@ -78,18 +78,23 @@ def edit_perfil_administrador(request):
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
         solicitudes = SolicitudServicio.objects.all()
-        solicitantes = []
-        for solicitud in solicitudes:
-            try:
-                empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
-                solicitantes.append(empresa.nombre)
-            except:
-                persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
-                solicitantes.append(persona.nombre+" "+persona.apellidos)
-                
-        items = zip(solicitudes, solicitantes)
-        return render(request, 'solicitudServicioAdministrador.html', {'items': items, 'num_solicitudes':
-                                                                       len(solicitudes)})
+        if len(solicitudes) > 0:
+            resultado = []
+            for solicitud in solicitudes:
+                try:
+                    empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
+                    resultado.append([solicitud, empresa.nombre])
+                except:
+                    persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
+                    resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
+            paginator = Paginator(resultado, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj, 'num_solicitudes':
+                len(solicitudes)})
+        else:
+            return render(request, 'solicitudServicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
 
@@ -115,6 +120,14 @@ def show_solicitudServicio_administrador(request, id):
 def edit_solicitudServicio_administrador(request, id):
     if esAdministrador(request):
         solicitud = SolicitudServicio.objects.get(id=id)
+        usuario = solicitud.usuario
+        empresa = None
+        cliente = None
+        try:
+            empresa = Empresa.objects.filter(usuario=usuario)[0]
+        except:
+            persona = Persona.objects.filter(usuario=usuario)[0]
+            cliente = Cliente.objects.filter(persona=persona)[0]
         if solicitud.estado == 'Pendiente':
             if request.method == 'POST':
                 form = EditSolicitudServicioAdministradorForm(
@@ -141,16 +154,30 @@ def edit_solicitudServicio_administrador(request, id):
                         return redirect('/administrador/solicitudServicio/')
                     except:
                         msg_error = "Introduzca un formato de fecha correcto (dd/mm/yyyy)"
-                        return render(request, 'solicitudServicioAdministradorForm.html',
-                                      {'form': form, 'solicitud_edit': solicitud,
-                                       'msg_error': msg_error})
+                        if empresa:
+                            return render(request, 'solicitudServicioAdministradorForm.html',
+                                          {'form': form, 'empresa':empresa, 'solicitud_edit': solicitud,
+                                           'msg_error': msg_error})
+                        if cliente:
+                            return render(request, 'solicitudServicioAdministradorForm.html',
+                                          {'form': form, 'cliente': cliente, 'solicitud_edit': solicitud,
+                                           'msg_error': msg_error})
+
                 else:
-                    return render(request, 'solicitudServicioAdministradorForm.html',
-                                  {'solicitud_edit': solicitud, 'form': form})
+                    if cliente:
+                        return render(request, 'solicitudServicioAdministradorForm.html',
+                                      {'solicitud_edit': solicitud, 'cliente':cliente, 'form': form})
+                    if empresa:
+                        return render(request, 'solicitudServicioAdministradorForm.html',
+                                      {'solicitud_edit': solicitud, 'empresa': empresa, 'form': form})
             else:
                 form = EditSolicitudServicioAdministradorForm()
-                return render(request, 'solicitudServicioAdministradorForm.html',
-                              {'solicitud_edit': solicitud, 'form': form})
+                if cliente:
+                    return render(request, 'solicitudServicioAdministradorForm.html',
+                                  {'solicitud_edit': solicitud, 'cliente':cliente, 'form': form})
+                if empresa:
+                    return render(request, 'solicitudServicioAdministradorForm.html',
+                                  {'solicitud_edit': solicitud, 'empresa':empresa, 'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar una solicitud de servicio ' \
                         'si su estado tiene el valor de "Pendiente".'
@@ -165,17 +192,23 @@ def edit_solicitudServicio_administrador(request, id):
 def list_servicio_administrador(request):
     if esAdministrador(request):
         servicios = Servicio.objects.all()
-        clientes = []
-        for servicio in servicios:
-            try:
-                empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                clientes.append(empresa.nombre)
-            except:
-                persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                clientes.append(persona.nombre+" "+persona.apellidos)
+        if len(servicios) > 0:
+            resultado = []
+            for servicio in servicios:
+                try:
+                    empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                    resultado.append([servicio, empresa.nombre])
+                except:
+                    persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                    resultado.append([servicio, persona.nombre + " " + persona.apellidos])
+            paginator = Paginator(resultado, 25)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'servicioAdministrador.html',
+                          {'page_obj': page_obj, 'num_servicios': len(servicios)})
+        else:
+            return render(request, 'servicioAdministrador.html')
 
-        items = zip(servicios, clientes)
-        return render(request, 'servicioAdministrador.html', {'items': items, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
 
@@ -201,6 +234,14 @@ def show_servicio_administrador(request, id):
 def edit_servicio_administrador(request, id):
     if esAdministrador(request):
         servicio = Servicio.objects.get(id=id)
+        usuario = servicio.solicitudServicio.usuario
+        empresa = None
+        cliente = None
+        try:
+            empresa = Empresa.objects.filter(usuario=usuario)[0]
+        except:
+            persona = Persona.objects.filter(usuario=usuario)[0]
+            cliente = Cliente.objects.filter(persona=persona)[0]
         if servicio.estado == "Pendiente":
             if request.method == 'POST':
                 form = EditServicioAdministradorForm(
@@ -215,16 +256,31 @@ def edit_servicio_administrador(request, id):
                         return redirect('/administrador/servicio/')
                     else:
                         msg_error = 'El trabajador asignado debe poseer un vehículo asignado para realizar el servicio.'
-                        return render(request, 'servicioAdministradorForm.html',
-                                      {'servicio_edit': servicio, 'msg_error': msg_error, 'form': form})
+                        if cliente:
+                            return render(request, 'servicioAdministradorForm.html',
+                                          {'servicio_edit': servicio,'cliente':cliente ,'msg_error': msg_error, 'form': form})
+                        if empresa:
+                            return render(request, 'servicioAdministradorForm.html',
+                                          {'servicio_edit': servicio, 'empresa': empresa, 'msg_error': msg_error,
+                                           'form': form})
                 else:
-                    return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'form': form})
+                    if cliente:
+                        return render(request, 'servicioAdministradorForm.html',
+                                      {'servicio_edit': servicio, 'form': form, 'cliente':cliente})
+                    if empresa:
+                        return render(request, 'servicioAdministradorForm.html',
+                                      {'servicio_edit': servicio, 'form': form, 'empresa': empresa})
 
             else:
                 form = EditServicioAdministradorForm()
-                return render(request, 'servicioAdministradorForm.html', {'servicio_edit': servicio,
-                                                                          'form': form})
+                if cliente:
+                    return render(request, 'servicioAdministradorForm.html',
+                                  {'servicio_edit': servicio, 'cliente': cliente,
+                                   'form': form})
+                if empresa:
+                    return render(request, 'servicioAdministradorForm.html',
+                                  {'servicio_edit': servicio, 'empresa': empresa,
+                                   'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
                         'si su estado tiene el valor de "Pendiente".'
@@ -366,7 +422,8 @@ def edit_tratamiento_administrador(request, id):
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
-                                                                                 'form_edit': form, 'msg_error': msg_error})
+                                                                                 'form_edit': form,
+                                                                                 'msg_error': msg_error})
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
@@ -374,7 +431,8 @@ def edit_tratamiento_administrador(request, id):
                                tratamiento.abandono, tratamiento.horasAbandono, tratamiento.descripcion]
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
-                                                                                 'form_edit': form, 'msg_error': msg_error})
+                                                                                 'form_edit': form,
+                                                                                 'msg_error': msg_error})
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']

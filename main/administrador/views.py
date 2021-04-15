@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
-
+from django.db.models.functions import Lower
 from .forms import *
 from ..models import *
 
@@ -296,7 +296,10 @@ def list_plaga_administrador(request):
     if esAdministrador(request):
         plagas = Plaga.objects.all()
         if len(plagas) > 0:
-            return render(request, 'plagaAdministrador.html', {'plagas': plagas, 'num_plagas': len(plagas)})
+            paginator = Paginator(plagas, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'plagaAdministrador.html', {'page_obj': page_obj, 'num_plagas': len(plagas)})
         else:
             return render(request, 'plagaAdministrador.html')
 
@@ -355,8 +358,11 @@ def list_tratamiento_administrador(request):
     if esAdministrador(request):
         tratamientos = Tratamiento.objects.all()
         if len(tratamientos) > 0:
+            paginator = Paginator(tratamientos, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
             return render(request, 'tratamientoAdministrador.html',
-                          {'tratamientos': tratamientos, 'num_tratamientos': len(tratamientos)})
+                          {'page_obj': page_obj, 'num_tratamientos': len(tratamientos)})
         else:
             return render(request, 'tratamientoAdministrador.html')
     else:
@@ -481,7 +487,13 @@ def delete_tratamiento_administrador(request, id):
 def list_facturas_administrador(request):
     if esAdministrador(request):
         servicios = Servicio.objects.exclude(factura=None)
-        return render(request, 'facturaAdministrador.html', {'servicios': servicios, 'num_servicios': len(servicios)})
+        if len(servicios) > 0:
+            paginator = Paginator(servicios, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
+        else:
+            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
     else:
         return redirect('/errorPermiso/')
 

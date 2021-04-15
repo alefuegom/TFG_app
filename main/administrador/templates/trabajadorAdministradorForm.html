@@ -1,9 +1,9 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
 {% if trabajador %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Trabajador {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h1>
-    <h3 class="text-muted mb-3 w-100">Detalles del trabajador</h3>
+<div class="container mb-5">
+    <h1 class="title "> Trabajador {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h1>
+    <h3 class="subtitle mt-2 mb-3 w-100">Detalles del trabajador</h3>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -12,7 +12,7 @@
         {% endif %}
 
         <div class="row">
-            <div class="col-lg">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong>
                         <p>Nombre del trabajador: </p>
@@ -50,18 +50,9 @@
                     <p class="ml-1 text-danger">Por definir</p>
                     {% endif %}
                 </div>
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0"
-                       href="/administrador/trabajador/edit/{{trabajador.id}}">Editar</a>
-                    {% if trabajador_delete %}
 
-                    <a class="btn btn-outline-danger rounded-0 ml-3"
-                       href="/administrador/trabajador/delete/{{trabajador.id}}">Dar de baja</a>
-                    {% endif %}
-
-                </div>
             </div>
-            <div class="col-lg">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong>
                         <p>Cualificación: </p>
@@ -70,12 +61,22 @@
                 </div>
             </div>
         </div>
+        <div class="row my-3">
+                    <a class="page-link btn-dedesin"
+                       href="/administrador/trabajador/edit/{{trabajador.id}}">Editar</a>
+                    {% if trabajador_delete %}
+
+                    <a class="page-link btn-outline-danger ml-3"
+                       href="/administrador/trabajador/delete/{{trabajador.id}}">Dar de baja</a>
+                    {% endif %}
+
+                </div>
     </div>
 </div>
 {% endif %}
 {% if form %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Nuevo trabajador</h1>
+<div class="container mb-5" >
+    <h1 class="title"> Nuevo trabajador</h1>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -96,7 +97,7 @@
             {% csrf_token %}
 
             {% for field in form %}
-            <div class="container center_div" style="margin-top:10px;">
+            <div class="group-form my-3">
                 {# uncomment to display field errors #}
                 {# {{ field.errors }} #}
                 {% if not field == form.descripcion %}
@@ -109,15 +110,15 @@
             </div>
             {% endfor %}
             <div class=" container  my-3">
-                <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/>
+                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
             </div>
         </form>
     </div>
 </div>
 {% endif %}
 {% if form_edit %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4">{{trabajador_edit.persona.nombre}} {{trabajador_edit.persona.apellidos}}</h1>
+<div class="container mb-5" >
+    <h1 class="title mb-4">{{trabajador_edit.persona.nombre}} {{trabajador_edit.persona.apellidos}}</h1>
     <div class="container">
         <div class="row">
             {% if msg_error %}
@@ -171,7 +172,7 @@
 
                 </div>
                 <div class="  my-3">
-                    <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/>
+                    <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
                 </div>
             </form>
         </div>

@@ -1,10 +1,9 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
 {% if tratamiento %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Tratamiento {{tratamiento.id}}</h1>
-    <h3 class="text-muted mb-3 w-100">Detalles del tratamiento</h3>
-
+<div class="container mt-3 mb-5">
+    <h1 class="title mb-4"> Tratamiento {{tratamiento.id}}</h1>
+    <h2 class="subtitle mb-3 w-100">Detalles del tratamiento</h2>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -13,7 +12,7 @@
         {% endif %}
 
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong>
                         <p>Nombre del tratamiento: </p>
@@ -46,20 +45,20 @@
                 {% endif %}
 
             </div>
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong>
                         <p>Descripción del tratamiento: </p>
                     </strong>
-                    <p class="ml-1">{{tratamiento.descripcion}}</p>
+                    <p class="ml-1 text-justify">{{tratamiento.descripcion}}</p>
                 </div>
             </div>
         </div>
         {% if not form %}
         <div class="row my-3">
-            <a class="btn btn-outline-dark rounded-0"
+            <a class="page-link btn-dedesin"
                 href="/administrador/tratamiento/edit/{{tratamiento.id}}">Editar</a>
-            <a class="ml-3 btn btn-outline-danger rounded-0" href="/administrador/tratamiento/delete/{{tratamiento.id}}">Eliminar tratamiento</a>
+            <a class=" btn btn-outline-danger rounded-0 ml-3" href="/administrador/tratamiento/delete/{{tratamiento.id}}">Eliminar tratamiento</a>
 
         </div>
         {% endif %}
@@ -68,18 +67,17 @@
 </div>
 {% endif %}
 {% if form %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Nuevo tratamiento</h1>
-    <div class="container mt-4">
+<div class="container mb-5">
+    <h1 class="mt-3 mb-4"> Nuevo tratamiento</h1>
         {% if msg_error %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100">
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100" >
             <strong>{{ error|escape }}</strong>
         </div>
         {% endfor %}
@@ -90,7 +88,7 @@
             {% csrf_token %}
 
             {% for field in form %}
-            <div class="container center_div" style="margin-top:10px;">
+            <div class="form-group my-3">
                 {# uncomment to display field errors #}
                 {# {{ field.errors }} #}
                 {% if not field == form.descripcion %}
@@ -102,26 +100,25 @@
                 {% endif%}
             </div>
             {% endfor %}
-            <div class=" container  my-3">
-                <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'/>
-            </div>
+
+                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
+
         </form>
-    </div>
 </div>
 {% endif %}
 {% if tratamiento_edit %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1 class="mb-4"> Editar tratamiento</h1>
+<div class="container mb-5" >
+    <h1 class="title mt-3 mb-4"> Editar tratamiento</h1>
     <div class="container mt-4">
         {% if msg_error %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100" >
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100" >
             <strong>{{ error|escape }}</strong>
         </div>
         {% endfor %}
@@ -138,7 +135,7 @@
             {% csrf_token %}
 
             {% for field, valor in items %}
-            <div class="container center_div" style="margin-top:10px;">
+            <div class="form-group my-3">
 
                 {% if not field == form.descripcion %}
                 <label for="field">{{field.label_tag}}</label>
@@ -152,9 +149,8 @@
                 {# {{ field.errors }} #}
             </div>
             {% endfor %}
-            <div class=" container  my-3">
-                <input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar' />
-            </div>
+             <input type='submit' class="page-link btn-dedesin " value='Confirmar' />
+
         </form>
     </div>
 </div>

@@ -72,6 +72,7 @@ def list_servicios_cliente(request):
     if esCliente(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
+        solicitudes = solicitudes.order_by('-fecha')
         servicios = []
         for solicitud in solicitudes:
             servicio = Servicio.objects.filter(solicitudServicio=solicitud)

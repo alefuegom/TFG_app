@@ -186,7 +186,7 @@ def creacionFactura(servicio):
         persona = Persona.objects.filter(usuario=usuario)[0]
         receptor = persona.apellidos + ", " + persona.nombre
     descripcion = "Tratamiento para combatir  la plaga de " + servicio.solicitudServicio.plaga.nombre + \
-                  ". Especialmente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
+                  ". Concretamente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
                   ". Realizado el día: " + str(servicio.solicitudServicio.fecha)
     importe = servicio.solicitudServicio.tratamiento.precio
     tipo_impositivo = 21

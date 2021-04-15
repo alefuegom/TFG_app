@@ -1,11 +1,11 @@
 {% extends 'headerTrabajador.html' %}
 {% block contenido %}
 {% if trabajador %}
-<div class="container" style="margin-top:10%;">
-    <strong><h1>Mi perfil</h1></strong>
+<div class="container">
+    <strong><h1 class="title">Mi perfil</h1></strong>
     <div class="container mt-4 mb-5">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong><p>Nombre: </p></strong>
                     <p class="ml-1">{{trabajador.persona.nombre}}</p>
@@ -22,12 +22,9 @@
                     <strong><p> Email:</p></strong>
                     <p class="ml-1">{{trabajador.persona.usuario.username}}</p>
                 </div>
-                <div class="row my-3">
-                    <a class="btn btn-outline-dark rounded-0" href="edit/">Editar</a>
-                </div>
             </div>
 
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <strong><p>Teléfono: </p></strong>
                     <p class="ml-1">{{trabajador.persona.telefono}}</p>
@@ -42,11 +39,15 @@
                 </div>
             </div>
         </div>
+        <div class="row my-3">
+            <a class=" page-link btn-dedesin" href="edit/">Editar</a>
+        </div>
     </div>
 </div>
 {% endif %}
 {% if form %}
-<div class="container" style="margin-top:10%;">
+<div class="container">
+    <strong><h1 class="title mb-4">Mi perfil</h1></strong>
     <form id='form' method='post'>
         {% csrf_token %}
         {% if form.errors %}
@@ -64,12 +65,12 @@
         {% endfor %}
         {% endif %}
         {% for field, valor in items %}
-        <div class="container center_div" style="margin-top:10px;">
+        <div class=" my-3">
             <label for="field">{{field.label_tag}}</label>
             <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
         </div>
         {% endfor %}
-        <p><input type='submit' class="btn btn-outline-dark rounded-0 my-3" value='Confirmar'
+        <p><input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'
                   style=""/>
     </form>
 

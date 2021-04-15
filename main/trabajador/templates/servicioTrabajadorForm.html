@@ -1,8 +1,8 @@
 {% extends 'headerTrabajador.html' %}
 {% block contenido %}
 {% if servicio %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Servicio {{servicio.id}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Servicio {{servicio.id}} </h1>
     <div class="container mt-4">
         {% if msg_error%}
         <div class="alert alert-danger" style="width:100%">
@@ -10,9 +10,9 @@
         </div>
         {% endif %}
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="mt-3 row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del servicio</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del servicio</h3>
                     <strong><p>Fecha: </p></strong>
                     <p class=" ml-1">{{servicio.solicitudServicio.fecha}}</p>
                 </div>
@@ -32,16 +32,12 @@
                     <strong><p>Observaciones del trabajador</p></strong>
                     <p class="ml-2">{{servicio.observaciones}}</p>
                 </div>
-                {% if servicio.estado != 'realizado'%}
-                <div class="row">
-                    <a class="btn btn-outline-dark rounded-0 mt-3" href="/trabajador/servicios/edit/{{servicio.id}}/">Editar</a>
-                </div>
-                {% endif %}
+
             </div>
             {% if persona %}
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="mt-3 row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del cliente</h3>
                     <strong><p>Nombre del cliente</p></strong>
                     <p class="ml-2">{{persona.apellidos}}, {{persona.nombre}}</p>
                 </div>
@@ -55,9 +51,9 @@
                 </div>
             </div>
             {% elif empresa %}
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row mt-3">
-                    <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles de la empresa</h3>
                     <strong><p>Nombre de la empresa</p></strong>
                     <p class="ml-2">{{empresa.nombre}}</p>
                 </div>
@@ -72,12 +68,17 @@
             </div>
             {% endif %}
         </div>
+        {% if servicio.estado != 'realizado'%}
+        <div class="row">
+            <a class="page-link btn-dedesin mt-3" href="/trabajador/servicios/edit/{{servicio.id}}/">Editar</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endif %}
 {% if servicio_edit %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Servicio {{servicio_edit.id}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Servicio {{servicio_edit.id}} </h1>
     <div class="container mt-4">
         {% if form.errors %}
         {% for field in form %}
@@ -89,9 +90,9 @@
         {% endfor %}
         {% endif %}
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="mt-3 row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del servicio</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del servicio</h3>
                     <strong><p>Fecha: </p></strong>
                     <p class=" ml-1">{{servicio_edit.solicitudServicio.fecha}}</p>
                 </div>
@@ -111,22 +112,22 @@
                     <form id='form' method='post'>
                         {% csrf_token %}
                         {% for field in form %}
-                        <div style="margin-top:10px;">
+                        <div class="my-3">
                             {# uncomment to display field errors #}
                             {# {{ field.errors }} #}
 
                             {{ field.label_tag }} {{ field }}
                         </div>
                         {% endfor %}
-                        <input type='submit' class="btn btn-outline-dark rounded-0 mt-3" value='Finalizar el servicio'
+                        <input type='submit' class="page-link btn-dedesin mt-3" value='Finalizar el servicio'
                                style=""/>
                     </form>
                 </div>
             </div>
             {% if persona %}
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="mt-3 row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del cliente</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del cliente</h3>
                     <hr class="style2">
                     <strong><p>Nombre del cliente</p></strong>
                     <p class="ml-2">{{persona.apellidos}}, {{persona.nombre}}</p>
@@ -141,9 +142,9 @@
                 </div>
             </div>
             {% elif empresa %}
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row mt-3">
-                    <h3 class="text-muted mb-3 w-100">Detalles de la empresa</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles de la empresa</h3>
                     <strong><p>Nombre de la empresa</p></strong>
                     <p class="ml-2">{{empresa.nombre}}</p>
                 </div>

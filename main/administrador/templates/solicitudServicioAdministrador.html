@@ -15,10 +15,10 @@
                 Filtrar por estado
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/administrador/solicitudServicio/Pendiente/">Pendiente</a>
-                <a class="dropdown-item" href="/administrador/solicitudServicio/Atendida/">Atendida</a>
-                <a class="dropdown-item" href="/administrador/solicitudServicio/Aceptada/">Aceptada</a>
-                <a class="dropdown-item" href="/administrador/solicitudServicio/Rechazada/">Rechazada</a>
+                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Pendiente/">Pendiente</a>
+                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Atendida/">Atendida</a>
+                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Aceptada/">Aceptada</a>
+                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Rechazada/">Rechazada</a>
             </div>
         </div>
         <form id='form' method='get'>
@@ -34,7 +34,9 @@
                 <input type='submit' class="page-link btn-dedesin" value='Filtrar por fecha'/>
             </div>
         </form>
-        <form id='filter_clientDni_form' action="/administrador/solicitudServicio/filterByClientDNI" method='get'>
+        <form id='filter_clientDni_form' action="/administrador/solicitudServicio/filterByClientDNI/{{field.dni}}"
+              method='post'>
+            {% csrf_token %}
             {% for field in filter_clientDni_form %}
             <div class="form-group my-3 ml-1">
                 {# uncomment to display field errors #}
@@ -44,7 +46,7 @@
 
             {% endfor %}
             <div class="my-3 ml-1">
-                    <input type='submit' class="page-link btn-dedesin" value='Filtrar por Dni del cliente'/>
+                <input type='submit' class="page-link btn-dedesin" value='Filtrar por Dni del cliente'/>
             </div>
         </form>
     </div>

@@ -125,10 +125,10 @@ class CreateAdministradorForm(forms.Form):
     nombre = forms.CharField(error_messages={'required':'El campo nombre no puede estar vacío.'})
     apellidos = forms.CharField(error_messages={'required': 'El campo apellidos no puede estar vacío.'})
     dni = forms.CharField(validators=[DNI_REGEX],error_messages={'required': 'El campo dni no puede estar vacío.'})
-    telefono = forms.CharField(validators= [TELEFONO_REGEX], error_messages={'required': 'El campo telefono no puede estar vacío.'})
+    telefono = forms.CharField(label="Teléfono", validators= [TELEFONO_REGEX], error_messages={'required': 'El campo telefono no puede estar vacío.'})
     email = forms.EmailField(label="Dirección de correo electrónico",error_messages={'required': 'El campo email no puede estar vacío.'})
     contrasena = forms.CharField(widget=forms.PasswordInput,label="Contraseña",validators=[CONTRASEÑA_REGEX],error_messages={'required': 'El campo contraseña no puede estar vacío.'})
 
 class EditAdministradorForm(forms.Form):
-    telefono = forms.CharField(validators= [TELEFONO_REGEX], error_messages={'required': 'El campo telefono no puede estar vacío.'})
+    telefono = forms.CharField(label ="Teléfono",  validators= [TELEFONO_REGEX], error_messages={'required': 'El campo telefono no puede estar vacío.'})
 

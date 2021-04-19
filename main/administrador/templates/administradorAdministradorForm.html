@@ -1,20 +1,20 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
 {% if administrador %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Administrador {{administrador.persona.nombre}} {{administrador.persona.apellidos}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Administrador {{administrador.persona.nombre}} {{administrador.persona.apellidos}} </h1>
     <div class="container mt-4">
         <div class="row mt-4">
             {% if msg_error %}
-            <div class="alert alert-danger" style="width:100%">
+            <div class="alert alert-danger w-100">
                 <strong>{{msg_error}}</strong>
             </div>
             {% endif %}
         </div>
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del administrador</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del administrador</h3>
                     <strong><p>DNI: </p></strong>
                     <p class=" ml-1">{{administrador.persona.dni}}</p>
                 </div>
@@ -27,7 +27,7 @@
                     <p class="ml-1">{{administrador.persona.telefono}}</p>
                 </div>
                 <div class="row">
-                    <a class="btn btn-outline-dark rounded-0"
+                    <a class="page-link btn-dedesin"
                        href="/administrador/administrador/edit/{{administrador.id}}">Editar</a>
                     <a class="btn btn-outline-danger rounded-0 mx-3"
                        href="/administrador/administrador/delete/{{administrador.id}}">Eliminar</a>
@@ -38,53 +38,50 @@
 </div>
 {% endif %}
 {% if form %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Nuevo administrador</h1>
-    <div class="container mt-4">
+<div class="container mb-5">
+    <div class="row">
+        <h1 class="title"> Nuevo administrador</h1>
+    </div>
+    <div class="row mt-4">
         {% if msg_error %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100">
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
     </div>
 
-    <div class="container">
+    <div class="row">
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100">
             <strong>{{ error|escape }}</strong>
         </div>
         {% endfor %}
         {% endfor %}
         {% endif %}
-        <div class="row">
-            <form id='form' method='post'>
-                {% csrf_token %}
-                {% for field in form %}
-                <div class="container center_div" style="margin-top:10px;">
-                    {# uncomment to display field errors #}
-                    {# {{ field.errors }} #}
+        <form id='form' method='post'>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group my-2">
+                {# uncomment to display field errors #}
+                {# {{ field.errors }} #}
 
-                    {{ field.label_tag }} {{ field }}
-                </div>
-                {% endfor %}
-                <div class="container mt-3">
-                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
-                              style=""/>
-                </div>
-            </form>
-        </div>
+                {{ field.label_tag }} {{ field }}
+            </div>
+            {% endfor %}
+            <input type='submit' class="page-link btn-dedesin my-4" value='Confirmar'/>
+        </form>
     </div>
 
 </div>
 {% endif %}
 {% if form_edit %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Editar administrador</h1>
+<div class="container mb-5">
+    <h1 class="title"> Editar administrador</h1>
     <div class="container mt-4">
         {% if msg_error %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100">
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
@@ -94,14 +91,14 @@
         {% if form.errors %}
         {% for field in form_edit %}
         {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
+        <div class="alert alert-danger w-100">
             <strong>{{ error|escape }}</strong>
         </div>
         {% endfor %}
         {% endfor %}
         {% endif %}
         <div class="row">
-            <h3 class="text-muted mb-3 w-100">Detalles del administrador</h3>
+            <h3 class="subtitle mb-3 w-100">Detalles del administrador</h3>
             <strong><p>Nombre: </p></strong>
             <p class="ml-1">{{administrador_edit.persona.nombre}} {{administrador_edit.persona.apellidos}}</p>
         </div>
@@ -117,7 +114,7 @@
             <form id='form_edit' method='post'>
                 {% csrf_token %}
                 {% for field in form_edit %}
-                <div class="" style="margin-top:10px;">
+                <div class="form-group my-2">
                     {# uncomment to display field errors #}
                     {# {{ field.errors }} #}
                     <label for="field">{{field.label_tag}}</label>
@@ -125,10 +122,7 @@
                            value="{{administrador_edit.persona.telefono}}">
                 </div>
                 {% endfor %}
-                <div class="container mt-3">
-                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
-                              style=""/>
-                </div>
+                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
             </form>
         </div>
     </div>

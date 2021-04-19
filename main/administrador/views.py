@@ -514,8 +514,11 @@ def list_vehiculo_administrador(request):
     if esAdministrador(request):
         vehiculos = Vehiculo.objects.all()
         if len(vehiculos) > 0:
+            paginator = Paginator(vehiculos, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
             return render(request, 'vehiculoAdministrador.html',
-                          {'vehiculos': vehiculos, 'num_vehiculos': len(vehiculos)})
+                          {'page_obj': page_obj, 'num_vehiculos': len(vehiculos)})
         else:
             return render(request, 'vehiculoAdministrador.html')
     else:
@@ -650,8 +653,11 @@ def delete_vehiculo_administrador(request, id):
 def list_trabajador_administrador(request):
     if esAdministrador(request):
         trabajadores = Trabajador.objects.all()
-        if len(trabajadores) >= 0:
-            return render(request, 'trabajadorAdministrador.html', {'trabajadores': trabajadores,
+        if len(trabajadores) > 0:
+            paginator = Paginator(trabajadores, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'trabajadorAdministrador.html', {'page_obj': page_obj,
                                                                     'num_trabajadores': len(trabajadores)})
         else:
             return render(request, 'trabajadorAdministrador.html')
@@ -777,7 +783,10 @@ def list_cliente_administrador(request):
         if len(clientes) == 0:
             return render(request, 'clienteAdministrador.html')
         else:
-            return render(request, 'clienteAdministrador.html', {'num_clientes': len(clientes), 'clientes': clientes})
+            paginator = Paginator(clientes, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'clienteAdministrador.html', {'num_clientes': len(clientes), 'page_obj': page_obj})
     else:
         return redirect('/errorPermiso/')
 
@@ -798,7 +807,10 @@ def list_empresa_administrador(request):
         if len(empresas) == 0:
             return render(request, 'empresaAdministrador.html')
         else:
-            return render(request, 'empresaAdministrador.html', {'num_empresas': len(empresas), 'empresas': empresas})
+            paginator = Paginator(empresas, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, 'empresaAdministrador.html', {'num_empresas': len(empresas), 'page_obj': page_obj})
     else:
         return redirect('/errorPermiso/')
 
@@ -819,8 +831,11 @@ def list_administrador_administrador(request):
         if len(administradores) == 0:
             return render(request, 'administradorAdministrador.html')
         else:
+            paginator = Paginator(administradores, 20)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
             return render(request, 'administradorAdministrador.html',
-                          {'administradores': administradores, 'num_administradores': len(administradores)})
+                          {'page_obj': page_obj, 'num_administradores': len(administradores)})
     else:
         return redirect('/errorPermiso/')
 

@@ -1,16 +1,16 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
 {% if vehiculo %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Vehículo {{vehiculo.marca}}-{{vehiculo.modelo}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Vehículo {{vehiculo.marca}}-{{vehiculo.modelo}} </h1>
     {% if trabajador %}
-    <h2>Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
+    <h2 class="subtitle">Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
     {% endif %}
     <div class="container mt-4">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
-                    <h3 class="text-muted mb-3 w-100">Detalles del vehículo</h3>
+                    <h3 class="subtitle mb-3 w-100">Detalles del vehículo</h3>
                     <strong><p>Marca: </p></strong>
                     <p class=" ml-1">{{vehiculo.marca}}</p>
                 </div>
@@ -31,12 +31,12 @@
                     <p class="ml-1">{{vehiculo.fecha_matriculacion}}</p>
                 </div>
                 <div class="row">
-                    <a class="btn btn-outline-dark rounded-0 mt-2 mb-5"
+                    <a class="page-link btn-dedesin mt-2 mb-5"
                        href="/administrador/vehiculo/edit/{{vehiculo.id}}">Editar</a>
 
                     <a class="btn btn-outline-danger rounded-0 ml-2 mt-2 mb-5"
-                    href="/administrador/vehiculo/delete/{{vehiculo.id}}">Eliminar Vehículo</a>
-                    
+                       href="/administrador/vehiculo/delete/{{vehiculo.id}}">Eliminar Vehículo</a>
+
                 </div>
 
             </div>
@@ -45,8 +45,8 @@
 </div>
 {% endif %}
 {% if form %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Nuevo vehículo </h1>
+<div class="container mb-5">
+    <h1 class="title"> Nuevo vehículo </h1>
     <div class="container mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
@@ -69,17 +69,15 @@
             <form id='form' method='post'>
                 {% csrf_token %}
                 {% for field in form %}
-                <div class="container center_div" style="margin-top:10px;">
+                <div class="form-group">
                     {# uncomment to display field errors #}
                     {# {{ field.errors }} #}
 
                     {{ field.label_tag }} {{ field }}
                 </div>
                 {% endfor %}
-                <div class="container mt-4">
-                    <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
-                              style=""/>
-                </div>
+                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
+
             </form>
         </div>
     </div>
@@ -88,10 +86,10 @@
 
 {% endif %}
 {% if form_edit %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Vehículo {{vehiculo_edit.modelo}}-{{vehiculo_edit.marca}} </h1>
+<div class="container mb-5">
+    <h1 class="title"> Vehículo {{vehiculo_edit.modelo}}-{{vehiculo_edit.marca}} </h1>
     {% if trabajador %}
-    <h2>Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
+    <h2 class="subtitle">Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
     {% endif %}
     <div class="container mt-4">
         {% if msg_error %}
@@ -102,7 +100,7 @@
     </div>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="row">
                     <h3 class="text-muted mb-3 w-100"></h3>
                     <strong><p>Marca: </p></strong>
@@ -124,14 +122,13 @@
                     <form id='form_edit' method='post'>
                         {% csrf_token %}
                         {% for field in form_edit %}
-                        <div class="container center_div" style="margin-top:10px;">
+                        <div class="form-group">
                             {# uncomment to display field errors #}
                             {# {{ field.errors }} #}
                             {{ field.label_tag }} {{ field }}
                         </div>
                         {% endfor %}
-                        <p><input type='submit' class="btn btn-outline-dark rounded-0" value='Confirmar'
-                                  style=""/>
+                        <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
                     </form>
                 </div>
             </div>

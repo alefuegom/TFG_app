@@ -1,52 +1,26 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
 {% if num_solicitudes %}
+{% load extraFiltros %}
 <div class="container">
     <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
     <h2 class="subtitle mt-3"> Actualmente se tienen {{num_solicitudes}} solicitudes de servicio</h2>
     {% if msg %}
     <h6 class="subtitle">{{msg}}</h6>
     {% endif %}
-    <div class="row">
-        <div class="dropdown mt-3">
-            <button class="page-link btn-dedesin dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                Filtrar por estado
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Pendiente/">Pendiente</a>
-                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Atendida/">Atendida</a>
-                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Aceptada/">Aceptada</a>
-                <a class="dropdown-item" href="/administrador/filterByState/solicitudServicio/Rechazada/">Rechazada</a>
-            </div>
-        </div>
+    <div class="container">
         <form id='form' method='get'>
-            {% for field in filter_date_form %}
-            <div class="form-group my-3 ml-1">
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
-                {{ field }}
-            </div>
+            <div class="row">
 
-            {% endfor %}
-            <div class="my-3 ml-1">
-                <input type='submit' class="page-link btn-dedesin" value='Filtrar por fecha'/>
-            </div>
-        </form>
-        <form id='filter_clientDni_form' action="/administrador/solicitudServicio/filterByClientDNI/{{field.dni}}"
-              method='post'>
-            {% csrf_token %}
-            {% for field in filter_clientDni_form %}
-            <div class="form-group my-3 ml-1">
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
-                {{ field }}
-            </div>
+                {% for field in solicitudServicioFilter.form %}
+                <div class="col-lg-3 col-md-3 col-xs-6 my-2 filter-row">
+                    {{field.label}}{{field}}
+                </div>
 
-            {% endfor %}
-            <div class="my-3 ml-1">
-                <input type='submit' class="page-link btn-dedesin" value='Filtrar por Dni del cliente'/>
+                {% endfor %}
+                <div class="col-12 my-2">
+                    <input type='submit' class="page-link btn-dedesin" value='Filtrar'/>
+                </div>
             </div>
         </form>
     </div>
@@ -94,16 +68,21 @@
                 Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
             </div>
             <div class=" row ">
-
                 {% if page_obj.has_previous %}
-                <a class="page-link btn-dedesin" href="?page=1">&laquo;</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.previous_page_number }}">Anterior página</a>
+                <a class="page-link btn-dedesin"
+                   href="{% extraFiltros 1 'page' request.GET.urlencode %}">&laquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.previous_page_number 'page' request.GET.urlencode %}">Anterior
+                    página</a>
 
                 {% endif %}
 
                 {% if page_obj.has_next %}
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.next_page_number }}">Próxima página</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.next_page_number 'page' request.GET.urlencode %}">Próxima
+                    página</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
             </div>
         </div>

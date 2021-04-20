@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 from django.db.models.functions import Lower
+from .filters import *
 from .forms import *
 from ..models import *
 
@@ -80,6 +81,8 @@ def list_solicitudServicio_administrador(request):
         solicitudes = SolicitudServicio.objects.all()
         if len(solicitudes) > 0:
             resultado = []
+            solicitudServicioFilter = SolicitudServicioFilter(request.GET, queryset=solicitudes)
+            solicitudes = solicitudServicioFilter.qs
             for solicitud in solicitudes:
                 try:
                     empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
@@ -87,63 +90,18 @@ def list_solicitudServicio_administrador(request):
                 except:
                     persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
                     resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
-            paginator = Paginator(resultado, 20)
+
+            paginator = Paginator(resultado, 2)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
-            filter_date_form = FilterByDateForm()
-            filter_clientDni_form = FilterByClientDniForm()
             return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj,
                                                                            'num_solicitudes': len(solicitudes),
-                                                                           'filter_date_form': filter_date_form,
-                                                                           'filter_clientDni_form': filter_clientDni_form, })
+                                                                           'solicitudServicioFilter': solicitudServicioFilter})
         else:
             return render(request, 'solicitudServicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
 
-
-def list_solicitudServicioByClientDni_administrador(request, dni):
-    persona = Persona.objects.filter(dni=dni)[0]
-    solicitudes = SolicitudServicio.objects.filter(usuario=persona.usuario)
-    resultado = []
-    for solicitud in solicitudes:
-        resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
-    if len(resultado) > 0:
-        paginator = Paginator(resultado, 20)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        filter_date_form = FilterByDateForm()
-        return render(request, 'solicitudServicioAdministrador.html',
-                      {'page_obj': page_obj, 'num_solicitudes': len(solicitudes),
-                       'filter_date_form': filter_date_form})
-    else:
-        return redirect('/administrador/servicio')
-
-
-@login_required
-def list_solicitudServicioByState_administrador(request, estado):
-    if esAdministrador(request):
-        solicitudes = SolicitudServicio.objects.filter(estado=estado)
-        if len(solicitudes) > 0:
-            resultado = []
-            for solicitud in solicitudes:
-                try:
-                    empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
-                    resultado.append([solicitud, empresa.nombre])
-                except:
-                    persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
-                    resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
-            paginator = Paginator(resultado, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            msg = "Solicitudes de servicio filtradas por el estado " + estado + "."
-            return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj, 'num_solicitudes':
-                len(solicitudes), 'msg': msg})
-        else:
-            msg_error = "No existe ninguna solicitud de servicio con el estado " + estado + "."
-            return render(request, 'solicitudServicioAdministrador.html', {'msg_error': msg_error})
-    else:
-        return redirect('/errorPermiso/')
 
 
 @login_required

@@ -3,12 +3,31 @@
 {% if num_clientes %}
 <div class="container">
     <strong><h1 class="title">Clientes particulares</h1></strong>
-    <h2 class="subtitle mt-3 mb-5"> Actualmente se tienen {{num_clientes}} clientes</h2>
+    <h2 class="subtitle mt-3"> Actualmente se tienen {{num_clientes}} clientes</h2>
         {% if msg_error %}
         <div class="alert alert-danger w-100">
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
+    <div class="container">
+        <form id='form' method='get'>
+            <div class="row">
+                {% for field in clientesFilter.form %}
+                <div class="col-lg-4 col-md-4 col-xs-6 my-1 filter-row text-left">
+                    {{field.label}}{{field}}
+                </div>
+                {% endfor %}
+                <div class="col-12 mt-2 ">
+                    <div class="row">
+                        <input type='submit' class="page-link btn-dedesin" value='Filtrar'/>
+                        <a href="/administrador/cliente" class="btn btn-outline-danger rounded-0 ml-2">
+                            Borrar filtros
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <table class="table text-center">
         <thead class="bg-dedesin-primary text-white">
         <tr>

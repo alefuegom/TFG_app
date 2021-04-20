@@ -81,7 +81,7 @@ def list_solicitudServicio_administrador(request):
         solicitudes = SolicitudServicio.objects.all()
         if len(solicitudes) > 0:
             resultado = []
-            solicitudServicioFilter = SolicitudServicioFilter(request.GET, queryset=solicitudes)
+            solicitudServicioFilter = SolicitudServicioAdministradorFilter(request.GET, queryset=solicitudes)
             solicitudes = solicitudServicioFilter.qs
             for solicitud in solicitudes:
                 try:
@@ -101,7 +101,6 @@ def list_solicitudServicio_administrador(request):
             return render(request, 'solicitudServicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
-
 
 
 @login_required
@@ -199,6 +198,8 @@ def list_servicio_administrador(request):
         servicios = Servicio.objects.all()
         if len(servicios) > 0:
             resultado = []
+            servicioFilter = ServicioAdministradorFilter(request.GET, queryset=servicios)
+            servicios = servicioFilter.qs
             for servicio in servicios:
                 try:
                     empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
@@ -210,7 +211,7 @@ def list_servicio_administrador(request):
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'servicioAdministrador.html',
-                          {'page_obj': page_obj, 'num_servicios': len(servicios)})
+                          {'page_obj': page_obj, 'num_servicios': len(servicios), 'servicioFilter': servicioFilter})
         else:
             return render(request, 'servicioAdministrador.html')
 
@@ -364,11 +365,15 @@ def list_tratamiento_administrador(request):
     if esAdministrador(request):
         tratamientos = Tratamiento.objects.all()
         if len(tratamientos) > 0:
+            tratamientoFilter = TratamientoAdministradorFilter(request.GET, queryset=tratamientos)
+            tratamientos = tratamientoFilter.qs
             paginator = Paginator(tratamientos, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'tratamientoAdministrador.html',
-                          {'page_obj': page_obj, 'num_tratamientos': len(tratamientos)})
+                          {'page_obj': page_obj,
+                           'tratamientoFilter': tratamientoFilter,
+                           'num_tratamientos': len(tratamientos)})
         else:
             return render(request, 'tratamientoAdministrador.html')
     else:
@@ -492,14 +497,22 @@ def delete_tratamiento_administrador(request, id):
 @login_required()
 def list_facturas_administrador(request):
     if esAdministrador(request):
-        servicios = Servicio.objects.exclude(factura=None)
-        if len(servicios) > 0:
-            paginator = Paginator(servicios, 20)
+        facturas = Factura.objects.all()
+        if len(facturas) > 0:
+            facturaFilter = FacturaAdministradorFilter(request.GET, queryset=facturas)
+            facturas = facturaFilter.qs
+            resultado = []
+            for factura in facturas:
+                servicio = Servicio.objects.filter(factura=factura)[0]
+                resultado.append([factura, servicio])
+            paginator = Paginator(resultado, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
-            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
+            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj,
+                                                                 'num_servicios': len(facturas),
+                                                                 'facturaFilter': facturaFilter})
         else:
-            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
+            return render(request, 'facturaAdministrador.html')
     else:
         return redirect('/errorPermiso/')
 
@@ -520,11 +533,15 @@ def list_vehiculo_administrador(request):
     if esAdministrador(request):
         vehiculos = Vehiculo.objects.all()
         if len(vehiculos) > 0:
+            vehiculosFilter = VehiculoAdministradorFilter(request.GET, queryset=vehiculos)
+            vehiculos = vehiculosFilter.qs
+            vehiculos = vehiculos.order_by('proxima_revision')
+
             paginator = Paginator(vehiculos, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'vehiculoAdministrador.html',
-                          {'page_obj': page_obj, 'num_vehiculos': len(vehiculos)})
+                          {'page_obj': page_obj, 'vehiculosFilter':vehiculosFilter, 'num_vehiculos': len(vehiculos)})
         else:
             return render(request, 'vehiculoAdministrador.html')
     else:
@@ -660,11 +677,14 @@ def list_trabajador_administrador(request):
     if esAdministrador(request):
         trabajadores = Trabajador.objects.all()
         if len(trabajadores) > 0:
+            trabajadoresFilter = TrabajadorAdministradorFilter(request.GET, queryset=trabajadores)
+            trabajadores = trabajadoresFilter.qs
             paginator = Paginator(trabajadores, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
-            return render(request, 'trabajadorAdministrador.html', {'page_obj': page_obj,
-                                                                    'num_trabajadores': len(trabajadores)})
+            return render(request, 'trabajadorAdministrador.html',
+                          {'page_obj': page_obj, 'trabajadoresFilter': trabajadoresFilter,
+                           'num_trabajadores': len(trabajadores)})
         else:
             return render(request, 'trabajadorAdministrador.html')
     else:
@@ -789,10 +809,14 @@ def list_cliente_administrador(request):
         if len(clientes) == 0:
             return render(request, 'clienteAdministrador.html')
         else:
+            clientesFilter = ClienteAdministradorFilter(request.GET, queryset=clientes)
+            clientes = clientesFilter.qs
             paginator = Paginator(clientes, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
-            return render(request, 'clienteAdministrador.html', {'num_clientes': len(clientes), 'page_obj': page_obj})
+            return render(request, 'clienteAdministrador.html', {'num_clientes': len(clientes),
+                                                                 'page_obj': page_obj,
+                                                                 'clientesFilter': clientesFilter})
     else:
         return redirect('/errorPermiso/')
 
@@ -813,10 +837,14 @@ def list_empresa_administrador(request):
         if len(empresas) == 0:
             return render(request, 'empresaAdministrador.html')
         else:
+            empresaFilter = EmpresaAdministradorFilter(request.GET, queryset=empresas)
+            empresas = empresaFilter.qs
             paginator = Paginator(empresas, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
-            return render(request, 'empresaAdministrador.html', {'num_empresas': len(empresas), 'page_obj': page_obj})
+            return render(request, 'empresaAdministrador.html',
+                          {'num_empresas': len(empresas), 'page_obj': page_obj,
+                           'empresaFilter': empresaFilter})
     else:
         return redirect('/errorPermiso/')
 
@@ -834,14 +862,21 @@ def show_empresa_administrador(request, id):
 def list_administrador_administrador(request):
     if esAdministrador(request):
         administradores = Administrador.objects.all()
+        administradoresFilter = AdministradorAdministradorFilter(request.GET, queryset=administradores)
+        administradores = administradoresFilter.qs
         if len(administradores) == 0:
-            return render(request, 'administradorAdministrador.html')
+            if administradoresFilter:
+                msg_error = "No existe ningún administrador con los filtros introducidos. "
+                return render(request, 'administradorAdministrador.html', {'msg_error':msg_error})
+            else:
+                return render(request, 'administradorAdministrador.html')
         else:
             paginator = Paginator(administradores, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'administradorAdministrador.html',
-                          {'page_obj': page_obj, 'num_administradores': len(administradores)})
+                          {'page_obj': page_obj, 'num_administradores': len(administradores),
+                           'administradoresFilter':administradoresFilter})
     else:
         return redirect('/errorPermiso/')
 

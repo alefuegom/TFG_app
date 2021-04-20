@@ -132,13 +132,3 @@ class CreateAdministradorForm(forms.Form):
 class EditAdministradorForm(forms.Form):
     telefono = forms.CharField(label ="Teléfono",  validators= [TELEFONO_REGEX], error_messages={'required': 'El campo telefono no puede estar vacío.'})
 
-#FILTROS
-class FilterByDateForm(forms.Form):
-    fecha = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Filtrar por fecha'}),
-                            error_messages={'required': 'El campo fecha no puede estar vacío'})
-
-class FilterByClientDniForm(forms.Form):
-    dni = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Filtar por DNI de cliente'}),
-        validators=[DNI_REGEX], error_messages={'required': 'El campo dni no puede estar vacío.'})
-
-

@@ -13,13 +13,18 @@
             <div class="row">
 
                 {% for field in solicitudServicioFilter.form %}
-                <div class="col-lg-3 col-md-4 col-xs-6 my-2 filter-row">
+                <div class="col-lg-3 col-md-4 col-xs-6 my-1 filter-row text-left">
                     {{field.label}}{{field}}
                 </div>
 
                 {% endfor %}
-                <div class="col-12 my-2">
-                    <input type='submit' class="page-link btn-dedesin" value='Filtrar'/>
+                <div class="col-12 mt-2 ">
+                    <div class="row">
+                        <input type='submit' class="page-link btn-dedesin" value='Filtrar'/>
+                        <a href="/administrador/solicitudServicio" class="btn btn-outline-danger rounded-0 ml-2">
+                        Borrar filtros
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>

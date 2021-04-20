@@ -91,7 +91,7 @@ def list_solicitudServicio_administrador(request):
                     persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
                     resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
 
-            paginator = Paginator(resultado, 2)
+            paginator = Paginator(resultado, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
             return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj,

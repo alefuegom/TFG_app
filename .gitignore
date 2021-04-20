@@ -1,3 +1,8 @@
 *.txt
 /dedesin_env
 /documentación
+/Dedesin/administrador/__pycache__
+/Dedesin/trabajador/__pycache__
+/Dedesin/cliente/__pycache__
+/Dedesin/empresa/__pycache__
+

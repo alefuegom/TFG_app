@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from ..models import *
 from .forms import *
+from .filters import *
 from django.contrib.auth import logout as do_logout
 from datetime import date
 
@@ -61,22 +62,34 @@ def edit_perfil_trabajador(request):
 @login_required
 def list_servicios_trabajador(request):
     if esTrabajador(request):
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        trabajador = Trabajador.objects.filter(persona=persona)[0]
+        trabajador = Trabajador.objects.filter(persona__usuario=request.user)[0]
         servicios = Servicio.objects.filter(trabajador=trabajador)
-        resultado = []
-        for servicio in servicios:
-            try:
-                empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                resultado.append([servicio, empresa.direccion])
-            except:
-                persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                cliente = Cliente.objects.filter(persona=persona)[0]
-                resultado.append([servicio, cliente.direccion])
-        paginator = Paginator(resultado, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'servicioTrabajador.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
+        if len(servicios) > 0:
+            servicios = servicios.order_by('-solicitudServicio__fecha')
+            servicioFilter = ServicioTrabajadorFilter(request.GET, queryset=servicios)
+            servicios = servicioFilter.qs
+            if len(servicios) > 0:
+                resultado = []
+                for servicio in servicios:
+                    usuario = servicio.solicitudServicio.usuario
+                    try:
+                        cliente = Cliente.objects.filter(persona__usuario=usuario)[0]
+                        resultado.append([servicio, cliente.direccion])
+
+                    except:
+                        empresa = Empresa.objects.filter(usuario=usuario)[0]
+                        resultado.append([servicio, empresa.direccion])
+                paginator = Paginator(resultado, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'servicioTrabajador.html', {'page_obj': page_obj,
+                                                                   'num_servicios': len(servicios),
+                                                                   'servicioFilter': servicioFilter})
+            else:
+                msg_error = "No existe ningún servicio con los filtros introducidos."
+                return render(request, 'servicioTrabajador.html', {'msg_error': msg_error})
+        else:
+            return render(request, 'servicioCliente.html')
     else:
         return redirect('/errorPermiso/')
 

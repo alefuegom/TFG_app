@@ -1,9 +1,30 @@
 {% extends 'headerEmpresa.html' %}
 {% block contenido %}
+{% load extraFiltros %}
 {% if num_servicios %}
 <div class="container mb-5">
     <strong><h1 class="title"> Servicios </h1></strong>
-    <h2 class="subtitle mt-3 mb-5"> Actualmente se tienen {{num_servicios}} servicios</h2>
+    <h2 class="subtitle mt-3"> Actualmente se tienen {{num_servicios}} servicios</h2>
+    <div class="container">
+        <form id='form' method='get'>
+            <div class="row">
+                {% for field in servicioFilter.form %}
+                <div class="col-lg-3 col-md-3 col-xs-6 my-1 filter-row text-left">
+                    {{field.label}}{{field}}
+                </div>
+
+                {% endfor %}
+                <div class="col-12 mt-2 ">
+                    <div class="row">
+                        <input type='submit' class="page-link btn-dedesin" value='Filtrar'/>
+                        <a href="/empresa/servicio" class="btn btn-outline-danger rounded-0 ml-2">
+                            Borrar filtros
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <table class="table text-center">
         <thead class="bg-dedesin-primary text-white">
         <tr>
@@ -47,16 +68,21 @@
                 Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
             </div>
             <div class=" row ">
-
                 {% if page_obj.has_previous %}
-                <a class="page-link btn-dedesin" href="?page=1">&laquo;</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.previous_page_number }}">Anterior página</a>
+                <a class="page-link btn-dedesin"
+                   href="{% extraFiltros 1 'page' request.GET.urlencode %}">&laquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.previous_page_number 'page' request.GET.urlencode %}">Anterior
+                    página</a>
 
                 {% endif %}
 
                 {% if page_obj.has_next %}
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.next_page_number }}">Próxima página</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.next_page_number 'page' request.GET.urlencode %}">Próxima
+                    página</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
             </div>
         </div>
@@ -65,8 +91,20 @@
 
 {% else %}
 <div class="container mb-5">
-    <strong><h1 class="title"> Servicios </h1></strong>
-    <h2 class="subtitle mt-3 mb-5"> Actualmente no se tiene ningun servicio.</h2>
+    <div class="row">
+        <strong><h1 class="title">Servicios</h1></strong>
+        {% if msg_error %}
+        <h2 class="text-danger my-3 w-100">{{msg_error}}</h2>
+        {% else %}
+        <h2 class="subtitle my-3 w-100">Actualmente no tiene ningún servicio.</h2>
+        {% endif %}
+    </div>
+    {% if msg_error %}
+    <div class="row">
+        <a class="mr-auto page-link btn-dedesin mt-2"
+           href="/empresa/servicio/">Atrás</a>
+    </div>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

@@ -5,6 +5,7 @@ from .forms import *
 from datetime import datetime, date
 from ..models import *
 from django.contrib.auth import logout as do_logout
+from .filters import *
 
 
 # VISTAS GENERALES
@@ -71,18 +72,21 @@ def edit_perfil_cliente(request):
 def list_servicios_cliente(request):
     if esCliente(request):
         usuario = User.objects.filter(username=request.user.username)[0]
-        solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
-        solicitudes = solicitudes.order_by('-fecha')
-        servicios = []
-        for solicitud in solicitudes:
-            servicio = Servicio.objects.filter(solicitudServicio=solicitud)
-            if servicio:
-                servicios.append(servicio[0])
-        if servicios:
-            paginator = Paginator(servicios, 10)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'servicioCliente.html', {'page_obj': page_obj, 'num_servicios': len(servicios)})
+        servicios = Servicio.objects.filter(solicitudServicio__usuario=usuario)
+        if len(servicios)>0:
+            servicios = servicios.order_by('-solicitudServicio__fecha')
+            servicioFilter = ServicioClienteFilter(request.GET, queryset=servicios)
+            servicios = servicioFilter.qs
+            if len(servicios)>0:
+                paginator = Paginator(servicios, 10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'servicioCliente.html', {'page_obj': page_obj,
+                                                                'num_servicios': len(servicios),
+                                                                'servicioFilter':servicioFilter})
+            else:
+                msg_error = "No existe ningún servicio con los filtros introducidos."
+                return render(request, 'servicioCliente.html', {'msg_error':msg_error})
         else:
             return render(request, 'servicioCliente.html')
     else:
@@ -110,13 +114,20 @@ def list_solicitud_servicio_cliente(request):
     if esCliente(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
-        solicitudes = solicitudes.order_by('-fecha')
-        paginator = Paginator(solicitudes, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        if solicitudes:
-            return render(request, 'solicitudServicioCliente.html', {'page_obj': page_obj,
-                                                                     'num_solicitudes': solicitudes.count()})
+        if len(solicitudes) > 0:
+            solicitudServicioFilter = SolicitudServicioClienteFilter(request.GET, queryset=solicitudes)
+            solicitudes = solicitudServicioFilter.qs
+            if len(solicitudes) > 0:
+                solicitudes = solicitudes.order_by('-fecha')
+                paginator = Paginator(solicitudes, 10)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'solicitudServicioCliente.html', {'page_obj': page_obj,
+                                                                     'num_solicitudes': solicitudes.count(),
+                                                                         'solicitudServicioFilter':solicitudServicioFilter})
+            else:
+                msg_error = "No existe ninguna solicitud de servicio con los filtros introducidos."
+                return render(request, 'solicitudServicioCliente.html', {'msg_error':msg_error})
         else:
             return render(request, 'solicitudServicioCliente.html')
     else:

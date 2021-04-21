@@ -5,7 +5,8 @@ from ..models import *
 
 
 class SolicitudServicioAdministradorFilter(django_filters.FilterSet):
-    fecha = DateFilter(field_name="fecha", lookup_expr="iexact")
+    fecha = DateFilter(field_name="fecha", lookup_expr="iexact", label="Fecha",
+                                      widget=TextInput(attrs={'placeholder': 'mm/dd/YYYY'}))
     id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact')
 
     class Meta:

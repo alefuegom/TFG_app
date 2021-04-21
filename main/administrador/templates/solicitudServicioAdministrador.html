@@ -1,7 +1,7 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
-{% if num_solicitudes %}
 {% load extraFiltros %}
+{% if num_solicitudes %}
 <div class="container">
     <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
     <h2 class="subtitle mt-3"> Actualmente se tienen {{num_solicitudes}} solicitudes de servicio</h2>
@@ -94,12 +94,20 @@
     </div>
 </div>
 {% else %}
-<div class="container">
-    <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
+<div class="container mb-5">
+    <div class="row">
+        <strong><h1 class="title">Solicitud de servicio</h1></strong>
+        {% if msg_error %}
+        <h2 class="text-danger my-3 w-100">{{msg_error}}</h2>
+        {% else %}
+        <h2 class="subtitle my-3 w-100">Actualmente no tiene ninguna solicitud de servicio.</h2>
+        {% endif %}
+    </div>
     {% if msg_error %}
-    <h2 class="subtitle mt-3 mb-5">{{msg_error}}</h2>
-    {% else %}
-    <h2 class="subtitle mt-3 mb-5">No existe ninguna solicitud de servicio.</h2>
+    <div class="row">
+        <a class="mr-auto page-link btn-dedesin mt-2 mb-5"
+           href="/administrador/solicitudServicio/">Atrás</a>
+    </div>
     {% endif %}
 
 </div>

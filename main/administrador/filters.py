@@ -13,16 +13,20 @@ class SolicitudServicioAdministradorFilter(django_filters.FilterSet):
         fields = "__all__"
         exclude = ['observaciones', 'usuario', 'tratamiento']
 
+ESTADO_SERVICIO = (
+        ('Pendiente', 'Pendiente'),
+        ('realizado', 'Realizado'),
+    )
 
 class ServicioAdministradorFilter(django_filters.FilterSet):
     fecha = django_filters.DateFilter(field_name="solicitudServicio__fecha", label="Fecha",
                                       widget=TextInput(attrs={'placeholder': 'mm/dd/YYYY'}))
     plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="solicitudServicio__plaga",
                                              label="Plaga")
-
+    estado =django_filters.ChoiceFilter(choices=ESTADO_SERVICIO,field_name="estado", label="Estado")
     class Meta:
         model = Servicio
-        fields = ["id", "estado", "trabajador"]
+        fields = ["id", "trabajador"]
 
 
 class FacturaAdministradorFilter(django_filters.FilterSet):

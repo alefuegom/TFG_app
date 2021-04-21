@@ -1,6 +1,8 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
+{% load extraFiltros %}
 {% if num_servicios %}
+
 <div class="container">
     <strong><h1 class="title">Facturas</h1></strong>
     <h2 class="subtitle mt-3"> Actualmente se tienen {{num_servicios}} facturas</h2>
@@ -56,16 +58,21 @@
                 Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
             </div>
             <div class=" row ">
-
                 {% if page_obj.has_previous %}
-                <a class="page-link btn-dedesin" href="?page=1">&laquo;</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.previous_page_number }}">Anterior página</a>
+                <a class="page-link btn-dedesin"
+                   href="{% extraFiltros 1 'page' request.GET.urlencode %}">&laquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.previous_page_number 'page' request.GET.urlencode %}">Anterior
+                    página</a>
 
                 {% endif %}
 
                 {% if page_obj.has_next %}
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.next_page_number }}">Próxima página</a>
-                <a class="page-link btn-dedesin" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.next_page_number 'page' request.GET.urlencode %}">Próxima
+                    página</a>
+                <a class="page-link btn-dedesin" href="
+                {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
             </div>
         </div>
@@ -73,9 +80,22 @@
 </div>
 
 {% else %}
-<div class="container">
-    <strong><h1 class="title">Facturas</h1></strong>
-    <h2 class="subtitle mt-3 mb-5"> Actualmente no tiene ninguna factura</h2>
+<div class="container mb-5">
+    <div class="row">
+        <strong><h1 class="title">Facturas</h1></strong>
+        {% if msg_error %}
+        <h2 class="text-danger my-3 w-100">{{msg_error}}</h2>
+        {% else %}
+        <h2 class="subtitle my-3 w-100">Actualmente no tiene ninguna factura.</h2>
+        {% endif %}
+    </div>
+            {% if msg_error %}
+
+    <div class="row">
+        <a class="mr-auto page-link btn-dedesin mt-2 mb-5"
+           href="/administrador/factura/">Atrás</a>
+    </div>
+            {% endif %}
 
 </div>
 {% endif %}

@@ -1,5 +1,6 @@
 {% extends 'headerAdministrador.html' %}
 {% block contenido %}
+{% load extraFiltros %}
 {% if tratamiento %}
 <div class="container mt-3 mb-5">
     <h1 class="title mb-4"> Tratamiento {{tratamiento.id}}</h1>

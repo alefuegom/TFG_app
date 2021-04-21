@@ -83,20 +83,24 @@ def list_solicitudServicio_administrador(request):
             resultado = []
             solicitudServicioFilter = SolicitudServicioAdministradorFilter(request.GET, queryset=solicitudes)
             solicitudes = solicitudServicioFilter.qs
-            for solicitud in solicitudes:
-                try:
-                    empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
-                    resultado.append([solicitud, empresa.nombre])
-                except:
-                    persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
-                    resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
+            if len(solicitudes) == 0:
+                msg_error = "No existe ninguna solicitud de servicio con los filtros introducidos."
+                return render(request, 'solicitudServicioAdministrador.html', {'msg_error':msg_error})
+            else:
+                for solicitud in solicitudes:
+                    try:
+                        empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
+                        resultado.append([solicitud, empresa.nombre])
+                    except:
+                        persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
+                        resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
 
-            paginator = Paginator(resultado, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj,
-                                                                           'num_solicitudes': len(solicitudes),
-                                                                           'solicitudServicioFilter': solicitudServicioFilter})
+                paginator = Paginator(resultado, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'solicitudServicioAdministrador.html', {'page_obj': page_obj,
+                                                                               'num_solicitudes': len(solicitudes),
+                                                                               'solicitudServicioFilter': solicitudServicioFilter})
         else:
             return render(request, 'solicitudServicioAdministrador.html')
     else:
@@ -200,18 +204,22 @@ def list_servicio_administrador(request):
             resultado = []
             servicioFilter = ServicioAdministradorFilter(request.GET, queryset=servicios)
             servicios = servicioFilter.qs
-            for servicio in servicios:
-                try:
-                    empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                    resultado.append([servicio, empresa.nombre])
-                except:
-                    persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                    resultado.append([servicio, persona.nombre + " " + persona.apellidos])
-            paginator = Paginator(resultado, 25)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'servicioAdministrador.html',
-                          {'page_obj': page_obj, 'num_servicios': len(servicios), 'servicioFilter': servicioFilter})
+            if len(servicios) == 0:
+                msg_error = "No existe ningún servicio con los filtros seleccionados."
+                return render(request, "servicioAdministrador.html", {'msg_error':msg_error})
+            else:
+                for servicio in servicios:
+                    try:
+                        empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                        resultado.append([servicio, empresa.nombre])
+                    except:
+                        persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                        resultado.append([servicio, persona.nombre + " " + persona.apellidos])
+                paginator = Paginator(resultado, 25)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'servicioAdministrador.html',
+                              {'page_obj': page_obj, 'num_servicios': len(servicios), 'servicioFilter': servicioFilter})
         else:
             return render(request, 'servicioAdministrador.html')
 
@@ -367,6 +375,9 @@ def list_tratamiento_administrador(request):
         if len(tratamientos) > 0:
             tratamientoFilter = TratamientoAdministradorFilter(request.GET, queryset=tratamientos)
             tratamientos = tratamientoFilter.qs
+            if len(tratamientos) == 0:
+                msg_error = "No existe ningún tratamiento con los filtros introducidos."
+                return render(request, 'tratamientoAdministrador.html', {'msg_error':msg_error})
             paginator = Paginator(tratamientos, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -501,16 +512,20 @@ def list_facturas_administrador(request):
         if len(facturas) > 0:
             facturaFilter = FacturaAdministradorFilter(request.GET, queryset=facturas)
             facturas = facturaFilter.qs
-            resultado = []
-            for factura in facturas:
-                servicio = Servicio.objects.filter(factura=factura)[0]
-                resultado.append([factura, servicio])
-            paginator = Paginator(resultado, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'facturaAdministrador.html', {'page_obj': page_obj,
-                                                                 'num_servicios': len(facturas),
-                                                                 'facturaFilter': facturaFilter})
+            if len(facturas)==0:
+                msg_error = "No existe ninguna factura con los filtros seleccionados."
+                return render(request, 'facturaAdministrador.html', {'msg_error':msg_error})
+            else:
+                resultado = []
+                for factura in facturas:
+                    servicio = Servicio.objects.filter(factura=factura)[0]
+                    resultado.append([factura, servicio])
+                paginator = Paginator(resultado, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'facturaAdministrador.html', {'page_obj': page_obj,
+                                                                     'num_servicios': len(facturas),
+                                                                     'facturaFilter': facturaFilter})
         else:
             return render(request, 'facturaAdministrador.html')
     else:
@@ -535,13 +550,16 @@ def list_vehiculo_administrador(request):
         if len(vehiculos) > 0:
             vehiculosFilter = VehiculoAdministradorFilter(request.GET, queryset=vehiculos)
             vehiculos = vehiculosFilter.qs
-            vehiculos = vehiculos.order_by('proxima_revision')
-
-            paginator = Paginator(vehiculos, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'vehiculoAdministrador.html',
-                          {'page_obj': page_obj, 'vehiculosFilter':vehiculosFilter, 'num_vehiculos': len(vehiculos)})
+            if len(vehiculos) == 0:
+                msg_error = "No existe ningún vehículo con los filtros seleccionados."
+                return render(request, 'vehiculoAdministrador.html', {'msg_error':msg_error})
+            else:
+                vehiculos = vehiculos.order_by('proxima_revision')
+                paginator = Paginator(vehiculos, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'vehiculoAdministrador.html',
+                              {'page_obj': page_obj, 'vehiculosFilter': vehiculosFilter, 'num_vehiculos': len(vehiculos)})
         else:
             return render(request, 'vehiculoAdministrador.html')
     else:
@@ -679,12 +697,16 @@ def list_trabajador_administrador(request):
         if len(trabajadores) > 0:
             trabajadoresFilter = TrabajadorAdministradorFilter(request.GET, queryset=trabajadores)
             trabajadores = trabajadoresFilter.qs
-            paginator = Paginator(trabajadores, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'trabajadorAdministrador.html',
-                          {'page_obj': page_obj, 'trabajadoresFilter': trabajadoresFilter,
-                           'num_trabajadores': len(trabajadores)})
+            if len(trabajadores) == 0:
+                msg_error = "No existe ningún trabajador con los filtros introducidos."
+                return render(request, 'trabajadorAdministrador.html', {'msg_error':msg_error})
+            else:
+                paginator = Paginator(trabajadores, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'trabajadorAdministrador.html',
+                              {'page_obj': page_obj, 'trabajadoresFilter': trabajadoresFilter,
+                               'num_trabajadores': len(trabajadores)})
         else:
             return render(request, 'trabajadorAdministrador.html')
     else:
@@ -811,6 +833,9 @@ def list_cliente_administrador(request):
         else:
             clientesFilter = ClienteAdministradorFilter(request.GET, queryset=clientes)
             clientes = clientesFilter.qs
+            if len(clientes) == 0:
+                msg_error = "No existe ningún cliente con los filtros seleccionados."
+                return render(request, 'clienteAdministrador.html', {'msg_error':msg_error})
             paginator = Paginator(clientes, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -839,12 +864,16 @@ def list_empresa_administrador(request):
         else:
             empresaFilter = EmpresaAdministradorFilter(request.GET, queryset=empresas)
             empresas = empresaFilter.qs
-            paginator = Paginator(empresas, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'empresaAdministrador.html',
-                          {'num_empresas': len(empresas), 'page_obj': page_obj,
-                           'empresaFilter': empresaFilter})
+            if len(empresas) == 0:
+                msg_error = "No existe ninguna empresa con los filtros seleccionados."
+                return render(request, 'empresaAdministrador.html', {'msg_error': msg_error})
+            else:
+                paginator = Paginator(empresas, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'empresaAdministrador.html',
+                              {'num_empresas': len(empresas), 'page_obj': page_obj,
+                               'empresaFilter': empresaFilter})
     else:
         return redirect('/errorPermiso/')
 
@@ -862,21 +891,21 @@ def show_empresa_administrador(request, id):
 def list_administrador_administrador(request):
     if esAdministrador(request):
         administradores = Administrador.objects.all()
-        administradoresFilter = AdministradorAdministradorFilter(request.GET, queryset=administradores)
-        administradores = administradoresFilter.qs
-        if len(administradores) == 0:
-            if administradoresFilter:
+        if len(administradores) > 0:
+            administradoresFilter = AdministradorAdministradorFilter(request.GET, queryset=administradores)
+            administradores = administradoresFilter.qs
+            if len(administradores) == 0:
                 msg_error = "No existe ningún administrador con los filtros introducidos. "
-                return render(request, 'administradorAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'administradorAdministrador.html', {'msg_error': msg_error})
             else:
-                return render(request, 'administradorAdministrador.html')
+                paginator = Paginator(administradores, 20)
+                page_number = request.GET.get('page')
+                page_obj = paginator.get_page(page_number)
+                return render(request, 'administradorAdministrador.html',
+                              {'page_obj': page_obj, 'num_administradores': len(administradores),
+                               'administradoresFilter': administradoresFilter})
         else:
-            paginator = Paginator(administradores, 20)
-            page_number = request.GET.get('page')
-            page_obj = paginator.get_page(page_number)
-            return render(request, 'administradorAdministrador.html',
-                          {'page_obj': page_obj, 'num_administradores': len(administradores),
-                           'administradoresFilter':administradoresFilter})
+            return render(request, 'administradorAdministrador.html')
     else:
         return redirect('/errorPermiso/')
 

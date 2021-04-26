@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 from django.db.models.functions import Lower
+from django.http import JsonResponse
 from .filters import *
 from .forms import *
 from ..models import *
@@ -1016,3 +1017,13 @@ def delete_administrador_administrador(request, id):
 
     else:
         return redirect('/errorPermiso/')
+
+def show_chart_solicitudServicio(request):
+    data = [SolicitudServicio.objects.filter(estado="Pendiente").count(),
+            SolicitudServicio.objects.filter(estado="Atendida").count(),
+            SolicitudServicio.objects.filter(estado="Aceptada").count(),
+            SolicitudServicio.objects.filter(estado="Rechazada").count()]
+    total_data = 0
+    for d in data:
+        total_data+=d
+    return render(request, 'panelControlAdministrador.html', {'data':data, 'total_data':total_data})

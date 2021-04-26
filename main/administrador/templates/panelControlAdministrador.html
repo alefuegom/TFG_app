@@ -1,0 +1,49 @@
+{% extends 'headerAdministrador.html' %} {% block contenido %}
+<div class="container mb-5">
+  <h1 class="title">Panel de control</h1>
+  <div class="container ">
+      <div class="row my-3">
+          <div class="col-lg-6 col-md-6 col-xs-12">
+              <h3>Gráfica de las solicitudes de servicio</h3>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-12">
+            <h3 class="text-center">Número total de solicitudes: {{total_data}}</h3>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+      </div>
+  </div>
+  
+  <script>
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Pendiente", "Atendida", "Aceptada", "Rechazada", ],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: {{data}},
+            backgroundColor: [
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              'rgba(75, 192, 192, 0.2)',
+              "rgba(255, 99, 132, 0.2)",
+
+
+            ],
+            borderColor: [
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              'rgba(75, 192, 192, 1)',
+              "rgba(255, 99, 132, 1)",
+
+            ],
+            hoverOffset: 4,
+            borderWidth: 1,
+          },
+        ],
+      },
+    });
+  </script>
+</div>
+{% endblock %}

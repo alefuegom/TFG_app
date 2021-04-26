@@ -57,5 +57,6 @@ urlpatterns = [
     path('administrador/create/', views.create_administrador_administrador),
     path('administrador/edit/<int:id>/', views.edit_administrador_administrador),
     path('administrador/delete/<int:id>/', views.delete_administrador_administrador),
+    path('panelControl/', views.show_chart_solicitudServicio)
 
 ]

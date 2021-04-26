@@ -2,7 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dedesin SL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.0/dist/chart.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="{% static 'main/index.css' %}" rel='stylesheet' type='text/css'>
@@ -70,7 +71,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/administrador/#">Panel de control</a>
+                    <a class="nav-link" href="/administrador/panelControl">Panel de control</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/administrador/miPerfil">Mi perfil</a>
@@ -82,6 +83,9 @@
         </div>
     </div>
 </nav>
+{% block script %}
+
+{% endblock %}
 {% block contenido %}
 
 {% endblock %}

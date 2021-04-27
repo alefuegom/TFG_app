@@ -82,19 +82,23 @@ def list_solicitudServicio_administrador(request):
         solicitudes = SolicitudServicio.objects.all()
         if len(solicitudes) > 0:
             resultado = []
-            solicitudServicioFilter = SolicitudServicioAdministradorFilter(request.GET, queryset=solicitudes)
+            solicitudServicioFilter = SolicitudServicioAdministradorFilter(
+                request.GET, queryset=solicitudes)
             solicitudes = solicitudServicioFilter.qs
             if len(solicitudes) == 0:
                 msg_error = "No existe ninguna solicitud de servicio con los filtros introducidos."
-                return render(request, 'solicitudServicioAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'solicitudServicioAdministrador.html', {'msg_error': msg_error})
             else:
                 for solicitud in solicitudes:
                     try:
-                        empresa = Empresa.objects.filter(usuario=solicitud.usuario)[0]
+                        empresa = Empresa.objects.filter(
+                            usuario=solicitud.usuario)[0]
                         resultado.append([solicitud, empresa.nombre])
                     except:
-                        persona = Persona.objects.filter(usuario=solicitud.usuario)[0]
-                        resultado.append([solicitud, persona.nombre + " " + persona.apellidos])
+                        persona = Persona.objects.filter(
+                            usuario=solicitud.usuario)[0]
+                        resultado.append(
+                            [solicitud, persona.nombre + " " + persona.apellidos])
 
                 paginator = Paginator(resultado, 20)
                 page_number = request.GET.get('page')
@@ -203,19 +207,23 @@ def list_servicio_administrador(request):
         servicios = Servicio.objects.all()
         if len(servicios) > 0:
             resultado = []
-            servicioFilter = ServicioAdministradorFilter(request.GET, queryset=servicios)
+            servicioFilter = ServicioAdministradorFilter(
+                request.GET, queryset=servicios)
             servicios = servicioFilter.qs
             if len(servicios) == 0:
                 msg_error = "No existe ningún servicio con los filtros seleccionados."
-                return render(request, "servicioAdministrador.html", {'msg_error':msg_error})
+                return render(request, "servicioAdministrador.html", {'msg_error': msg_error})
             else:
                 for servicio in servicios:
                     try:
-                        empresa = Empresa.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
+                        empresa = Empresa.objects.filter(
+                            usuario=servicio.solicitudServicio.usuario)[0]
                         resultado.append([servicio, empresa.nombre])
                     except:
-                        persona = Persona.objects.filter(usuario=servicio.solicitudServicio.usuario)[0]
-                        resultado.append([servicio, persona.nombre + " " + persona.apellidos])
+                        persona = Persona.objects.filter(
+                            usuario=servicio.solicitudServicio.usuario)[0]
+                        resultado.append(
+                            [servicio, persona.nombre + " " + persona.apellidos])
                 paginator = Paginator(resultado, 25)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
@@ -374,11 +382,12 @@ def list_tratamiento_administrador(request):
     if esAdministrador(request):
         tratamientos = Tratamiento.objects.all()
         if len(tratamientos) > 0:
-            tratamientoFilter = TratamientoAdministradorFilter(request.GET, queryset=tratamientos)
+            tratamientoFilter = TratamientoAdministradorFilter(
+                request.GET, queryset=tratamientos)
             tratamientos = tratamientoFilter.qs
             if len(tratamientos) == 0:
                 msg_error = "No existe ningún tratamiento con los filtros introducidos."
-                return render(request, 'tratamientoAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'tratamientoAdministrador.html', {'msg_error': msg_error})
             paginator = Paginator(tratamientos, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -511,11 +520,12 @@ def list_facturas_administrador(request):
     if esAdministrador(request):
         facturas = Factura.objects.all()
         if len(facturas) > 0:
-            facturaFilter = FacturaAdministradorFilter(request.GET, queryset=facturas)
+            facturaFilter = FacturaAdministradorFilter(
+                request.GET, queryset=facturas)
             facturas = facturaFilter.qs
-            if len(facturas)==0:
+            if len(facturas) == 0:
                 msg_error = "No existe ninguna factura con los filtros seleccionados."
-                return render(request, 'facturaAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'facturaAdministrador.html', {'msg_error': msg_error})
             else:
                 resultado = []
                 for factura in facturas:
@@ -549,11 +559,12 @@ def list_vehiculo_administrador(request):
     if esAdministrador(request):
         vehiculos = Vehiculo.objects.all()
         if len(vehiculos) > 0:
-            vehiculosFilter = VehiculoAdministradorFilter(request.GET, queryset=vehiculos)
+            vehiculosFilter = VehiculoAdministradorFilter(
+                request.GET, queryset=vehiculos)
             vehiculos = vehiculosFilter.qs
             if len(vehiculos) == 0:
                 msg_error = "No existe ningún vehículo con los filtros seleccionados."
-                return render(request, 'vehiculoAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'vehiculoAdministrador.html', {'msg_error': msg_error})
             else:
                 vehiculos = vehiculos.order_by('proxima_revision')
                 paginator = Paginator(vehiculos, 20)
@@ -696,11 +707,12 @@ def list_trabajador_administrador(request):
     if esAdministrador(request):
         trabajadores = Trabajador.objects.all()
         if len(trabajadores) > 0:
-            trabajadoresFilter = TrabajadorAdministradorFilter(request.GET, queryset=trabajadores)
+            trabajadoresFilter = TrabajadorAdministradorFilter(
+                request.GET, queryset=trabajadores)
             trabajadores = trabajadoresFilter.qs
             if len(trabajadores) == 0:
                 msg_error = "No existe ningún trabajador con los filtros introducidos."
-                return render(request, 'trabajadorAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'trabajadorAdministrador.html', {'msg_error': msg_error})
             else:
                 paginator = Paginator(trabajadores, 20)
                 page_number = request.GET.get('page')
@@ -832,11 +844,12 @@ def list_cliente_administrador(request):
         if len(clientes) == 0:
             return render(request, 'clienteAdministrador.html')
         else:
-            clientesFilter = ClienteAdministradorFilter(request.GET, queryset=clientes)
+            clientesFilter = ClienteAdministradorFilter(
+                request.GET, queryset=clientes)
             clientes = clientesFilter.qs
             if len(clientes) == 0:
                 msg_error = "No existe ningún cliente con los filtros seleccionados."
-                return render(request, 'clienteAdministrador.html', {'msg_error':msg_error})
+                return render(request, 'clienteAdministrador.html', {'msg_error': msg_error})
             paginator = Paginator(clientes, 20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -863,7 +876,8 @@ def list_empresa_administrador(request):
         if len(empresas) == 0:
             return render(request, 'empresaAdministrador.html')
         else:
-            empresaFilter = EmpresaAdministradorFilter(request.GET, queryset=empresas)
+            empresaFilter = EmpresaAdministradorFilter(
+                request.GET, queryset=empresas)
             empresas = empresaFilter.qs
             if len(empresas) == 0:
                 msg_error = "No existe ninguna empresa con los filtros seleccionados."
@@ -893,7 +907,8 @@ def list_administrador_administrador(request):
     if esAdministrador(request):
         administradores = Administrador.objects.all()
         if len(administradores) > 0:
-            administradoresFilter = AdministradorAdministradorFilter(request.GET, queryset=administradores)
+            administradoresFilter = AdministradorAdministradorFilter(
+                request.GET, queryset=administradores)
             administradores = administradoresFilter.qs
             if len(administradores) == 0:
                 msg_error = "No existe ningún administrador con los filtros introducidos. "
@@ -1018,12 +1033,55 @@ def delete_administrador_administrador(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 def show_chart_solicitudServicio(request):
-    data = [SolicitudServicio.objects.filter(estado="Pendiente").count(),
-            SolicitudServicio.objects.filter(estado="Atendida").count(),
-            SolicitudServicio.objects.filter(estado="Aceptada").count(),
-            SolicitudServicio.objects.filter(estado="Rechazada").count()]
-    total_data = 0
-    for d in data:
-        total_data+=d
-    return render(request, 'panelControlAdministrador.html', {'data':data, 'total_data':total_data})
+    total_solicitud_servicio_pendiente = SolicitudServicio.objects.filter(
+        estado="Pendiente").count()
+    total_solicitud_servicio_atendida = SolicitudServicio.objects.filter(
+        estado="Atendida").count()
+    total_solicitud_servicio_aceptada = SolicitudServicio.objects.filter(
+        estado="Aceptada").count()
+    total_solicitud_servicio_rechazada = SolicitudServicio.objects.filter(
+        estado="Rechazada").count()
+    total_data = total_solicitud_servicio_pendiente + total_solicitud_servicio_atendida + \
+        total_solicitud_servicio_aceptada + total_solicitud_servicio_rechazada
+    data = [100 * total_solicitud_servicio_pendiente/total_data,
+            100 * total_solicitud_servicio_atendida/total_data,
+            100 * total_solicitud_servicio_aceptada/total_data,
+            100 * total_solicitud_servicio_rechazada/total_data]
+
+    today = datetime.now()
+    current_month = today.month
+    current_year = today.year
+    loop_number = 5
+    months = [0,0,0,0,0,0]
+    servicios_mes = [0,0,0,0,0,0]
+    plaga_mas_tratada =""
+    total_plaga = 0
+    tratamiento_mas_empleado =""
+    total_tratamiento = 0
+    total_servicios = Servicio.objects.all().count
+    total_servicios_pendiente = Servicio.objects.filter(estado='Pendiente').count()
+    total_servicios_realizado = Servicio.objects.filter(estado='realizado').count()
+    while loop_number >= 0:
+        if current_month == 0:
+            current_month = 12
+            months[loop_number] = current_month
+            current_year = today.year - 1
+            servicios_mes[loop_number]=(Servicio.objects.filter(solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
+        else:
+            months[loop_number] = current_month
+            servicios_mes[loop_number] = (Servicio.objects.filter(solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
+        current_month = current_month - 1
+        loop_number = loop_number-1
+    for plaga in Plaga.objects.all():
+        if Servicio.objects.filter(solicitudServicio__tratamiento__plaga = plaga).count() > total_plaga:
+            plaga_mas_tratada = plaga.nombre
+    for tratamiento in Tratamiento.objects.all():
+        if Servicio.objects.filter(solicitudServicio__tratamiento = tratamiento).count() > total_tratamiento:
+            tratamiento_mas_empleado = tratamiento.nombre
+    return render(request, 'panelControlAdministrador.html', 
+    {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes, 
+    'months':months, 'tratamiento_mas_empleado':tratamiento_mas_empleado,
+    'plaga_mas_tratada':plaga_mas_tratada, 'total_servicios':total_servicios,
+    'total_servicios_pendiente':total_servicios_pendiente, 'total_servicios_realizado':total_servicios_realizado })

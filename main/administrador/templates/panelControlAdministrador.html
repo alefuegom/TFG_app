@@ -1,20 +1,183 @@
-{% extends 'headerAdministrador.html' %} {% block contenido %}
+{% extends 'headerAdministrador.html' %} {% load mathfilters %} 
+{% block contenido %}
 <div class="container mb-5">
   <h1 class="title">Panel de control</h1>
-  <div class="container ">
-      <div class="row my-3">
-          <div class="col-lg-6 col-md-6 col-xs-12">
-              <h3>Gráfica de las solicitudes de servicio</h3>
+  <div class="container">
+    <div class="row my-3">
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <div class="row text-center font-weight-bold">
+          <div class="col-lg-12 col-md-12 col-xs-12 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(0, 0, 0, 0.2)"
+              >
+                Número total de solicitudes de servicio.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">{{total_data}}</h5>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-xs-12">
-            <h3 class="text-center">Número total de solicitudes: {{total_data}}</h3>
-            <canvas id="myChart" width="400" height="400"></canvas>
+
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(54, 162, 235, 0.2)"
+              >
+                Solicitudes de servicio pendientes.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.0 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 206, 86, 0.2)"
+              >
+                Solicitudes de servicio atendidas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.1 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(75, 192, 192, 0.2)"
+              >
+                Solicitudes de servicio aceptadas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.2 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 99, 132, 0.2)"
+              >
+                Solicitudes de servicio rechazadas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.3 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <canvas
+          id="solicitudesServiciosChart"
+          width="400"
+          height="400"
+        ></canvas>
+      </div>
+    </div>
   </div>
-  
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-lg-6">
+        <canvas id="serviciosMesChart" width="400" height="400"></canvas>
+      </div>
+      <div class="col-lg-6">
+        <div class="row text-center font-weight-bold">
+          <div class="col-lg-12 col-md-12 col-xs-12 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 206, 86, 0.2)"
+              >
+                Número total de servicios.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">{{total_servicios}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 99, 132, 0.2)"
+              >
+                Número total de servicios pendientes.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{total_servicios_pendiente}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(75, 192, 192, 0.2)"
+              >
+                Número total de servicios realizados.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{total_servicios_realizado}}
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(54, 162, 235, 0.2)"
+              >
+                
+                Plaga más tratada
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{plaga_mas_tratada}}                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(54, 162, 235, 0.2)"
+              >
+              Tratamiento más empleado.
+                          </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{tratamiento_mas_empleado}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          
+        </div>      </div>
+    </div>
+  </div>
   <script>
-    var ctx = document.getElementById("myChart").getContext("2d");
+    var ctx = document.getElementById("solicitudesServiciosChart").getContext("2d");
     var myChart = new Chart(ctx, {
       type: "doughnut",
       data: {
@@ -38,12 +201,29 @@
               "rgba(255, 99, 132, 1)",
 
             ],
+
             hoverOffset: 4,
             borderWidth: 1,
           },
         ],
       },
     });
+  </script>
+  <script>
+      var ctx = document.getElementById("serviciosMesChart").getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: {{months}},
+          datasets: [{
+      label: '# Número de servicios agrupados por mes',
+      data: {{serviciosMesData}},
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  }
+      });
   </script>
 </div>
 {% endblock %}

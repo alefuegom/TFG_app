@@ -148,12 +148,15 @@
                 class="card-header"
                 style="background-color: rgba(54, 162, 235, 0.2)"
               >
-                
-                Plaga más tratada
+                Trabajador con más servicios este mes.
               </div>
               <div class="card-body">
                 <h5 class="card-title text-center">
-                  {{plaga_mas_tratada}}                </h5>
+                  {% if trabajador_mes %} {{trabajador_mes}} 
+                  {% else %} 
+                  Por determinar
+                  {% endif %}
+                </h5>
               </div>
             </div>
           </div>
@@ -163,17 +166,15 @@
                 class="card-header"
                 style="background-color: rgba(54, 162, 235, 0.2)"
               >
-              Tratamiento más empleado.
-                          </div>
+                Trabajador con más servicios en total
+              </div>
               <div class="card-body">
-                <h5 class="card-title text-center">
-                  {{tratamiento_mas_empleado}}
-                </h5>
+                <h5 class="card-title text-center">{{trabajador_total}}</h5>
               </div>
             </div>
           </div>
-          
-        </div>      </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="container">
@@ -184,12 +185,12 @@
             <div class="card">
               <div
                 class="card-header"
-                style="background-color: rgba(0, 0, 0, 0.2)"
+                style="background-color: rgba(255, 238, 0, 0.2)"
               >
-                Número total de solicitudes de servicio.
+                Número total de plagas
               </div>
               <div class="card-body">
-                <h5 class="card-title text-center">{{total_data}}</h5>
+                <h5 class="card-title text-center">{{total_plagas}}</h5>
               </div>
             </div>
           </div>
@@ -200,12 +201,10 @@
                 class="card-header"
                 style="background-color: rgba(54, 162, 235, 0.2)"
               >
-                Solicitudes de servicio pendientes.
+                Plaga más tratada
               </div>
               <div class="card-body">
-                <h5 class="card-title text-center">
-                  {{data.0 |mul:total_data |div:100}}
-                </h5>
+                <h5 class="card-title text-center">{{plaga_mas_tratada}}</h5>
               </div>
             </div>
           </div>
@@ -213,43 +212,13 @@
             <div class="card">
               <div
                 class="card-header"
-                style="background-color: rgba(255, 206, 86, 0.2)"
+                style="background-color: rgba(54, 162, 235, 0.2)"
               >
-                Solicitudes de servicio atendidas.
+                Tratamiento más empleado.
               </div>
               <div class="card-body">
                 <h5 class="card-title text-center">
-                  {{data.1 |mul:total_data |div:100}}
-                </h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
-            <div class="card">
-              <div
-                class="card-header"
-                style="background-color: rgba(75, 192, 192, 0.2)"
-              >
-                Solicitudes de servicio aceptadas.
-              </div>
-              <div class="card-body">
-                <h5 class="card-title text-center">
-                  {{data.2 |mul:total_data |div:100}}
-                </h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
-            <div class="card">
-              <div
-                class="card-header"
-                style="background-color: rgba(255, 99, 132, 0.2)"
-              >
-                Solicitudes de servicio rechazadas.
-              </div>
-              <div class="card-body">
-                <h5 class="card-title text-center">
-                  {{data.3 |mul:total_data |div:100}}
+                  {{tratamiento_mas_empleado}}
                 </h5>
               </div>
             </div>
@@ -257,11 +226,7 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-xs-12">
-        <canvas
-          id="plagasMasTratadas"
-          width="400"
-          height="400"
-        ></canvas>
+        <canvas id="plagasMasTratadas" width="400" height="400"></canvas>
       </div>
     </div>
   </div>
@@ -299,27 +264,27 @@
     });
   </script>
   <script>
-      var ctx = document.getElementById("serviciosMesChart").getContext("2d");
-      var myChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: {{months}},
-          datasets: [{
-      label: '# Número de servicios agrupados por mes',
-      data: {{serviciosMesData}},
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
-    }]
-  }
-      });
+        var ctx = document.getElementById("serviciosMesChart").getContext("2d");
+        var myChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: {{months}},
+            datasets: [{
+        label: '# Número de servicios agrupados por mes',
+        data: {{serviciosMesData}},
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    }
+        });
   </script>
   <script>
     var ctx = document.getElementById("plagasMasTratadas").getContext("2d");
     var myChart = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: ["Hormigas", "Cucarachas"],
+        labels: [{% for p in plagas %}"{{p}}",{% endfor %}],
         datasets: [
           {
             label: "# of Votes",
@@ -329,6 +294,11 @@
               "rgba(255, 206, 86, 0.2)",
               'rgba(75, 192, 192, 0.2)',
               "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 0, 255, 0.2)",
+              "rgba(148, 255, 0, 0.2)",
+              "rgba(255, 0, 0, 0.2)",
+              "rgba(0, 0, 255, 0.2)",
+              "rgba(0, 255, 255, 0.2)",
 
 
             ],
@@ -336,8 +306,11 @@
               "rgba(54, 162, 235, 1)",
               "rgba(255, 206, 86, 1)",
               'rgba(75, 192, 192, 1)',
-              "rgba(255, 99, 132, 1)",
-
+              "rgba(255, 99, 132, 1)",,
+              "rgba(148, 255, 0, 1)",
+              "rgba(255, 0, 0, 1)",
+              "rgba(0, 0, 255, 1)",
+              "rgba(0, 255, 255, 1)"
             ],
 
             hoverOffset: 4,
@@ -347,6 +320,5 @@
       },
     });
   </script>
-
 </div>
 {% endblock %}

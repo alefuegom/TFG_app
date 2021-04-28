@@ -1080,8 +1080,14 @@ def show_chart_solicitudServicio(request):
     for tratamiento in Tratamiento.objects.all():
         if Servicio.objects.filter(solicitudServicio__tratamiento = tratamiento).count() > total_tratamiento:
             tratamiento_mas_empleado = tratamiento.nombre
+    data_plagas = []
+    plagas = []
+    for plaga in Plaga.objects.all():
+        plagas.append(plaga.nombre)
+        data_plagas.append(Servicio.objects.filter(solicitudServicio__plaga =plaga).count())
     return render(request, 'panelControlAdministrador.html', 
     {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes, 
     'months':months, 'tratamiento_mas_empleado':tratamiento_mas_empleado,
     'plaga_mas_tratada':plaga_mas_tratada, 'total_servicios':total_servicios,
-    'total_servicios_pendiente':total_servicios_pendiente, 'total_servicios_realizado':total_servicios_realizado })
+    'total_servicios_pendiente':total_servicios_pendiente, 'total_servicios_realizado':total_servicios_realizado,
+    'plagas':plagas, 'data_plagas':data_plagas })

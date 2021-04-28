@@ -176,6 +176,95 @@
         </div>      </div>
     </div>
   </div>
+  <div class="container">
+    <div class="row my-3">
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <div class="row text-center font-weight-bold">
+          <div class="col-lg-12 col-md-12 col-xs-12 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(0, 0, 0, 0.2)"
+              >
+                Número total de solicitudes de servicio.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">{{total_data}}</h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(54, 162, 235, 0.2)"
+              >
+                Solicitudes de servicio pendientes.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.0 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 206, 86, 0.2)"
+              >
+                Solicitudes de servicio atendidas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.1 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(75, 192, 192, 0.2)"
+              >
+                Solicitudes de servicio aceptadas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.2 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-6 my-3">
+            <div class="card">
+              <div
+                class="card-header"
+                style="background-color: rgba(255, 99, 132, 0.2)"
+              >
+                Solicitudes de servicio rechazadas.
+              </div>
+              <div class="card-body">
+                <h5 class="card-title text-center">
+                  {{data.3 |mul:total_data |div:100}}
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-xs-12">
+        <canvas
+          id="plagasMasTratadas"
+          width="400"
+          height="400"
+        ></canvas>
+      </div>
+    </div>
+  </div>
   <script>
     var ctx = document.getElementById("solicitudesServiciosChart").getContext("2d");
     var myChart = new Chart(ctx, {
@@ -225,5 +314,39 @@
   }
       });
   </script>
+  <script>
+    var ctx = document.getElementById("plagasMasTratadas").getContext("2d");
+    var myChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Hormigas", "Cucarachas"],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: {{data_plagas}},
+            backgroundColor: [
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              'rgba(75, 192, 192, 0.2)',
+              "rgba(255, 99, 132, 0.2)",
+
+
+            ],
+            borderColor: [
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              'rgba(75, 192, 192, 1)',
+              "rgba(255, 99, 132, 1)",
+
+            ],
+
+            hoverOffset: 4,
+            borderWidth: 1,
+          },
+        ],
+      },
+    });
+  </script>
+
 </div>
 {% endblock %}

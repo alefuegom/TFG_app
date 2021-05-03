@@ -41,7 +41,6 @@ def edit_perfil_trabajador(request):
                 trabajador.persona.dni = form.cleaned_data['dni']
                 trabajador.persona.save()
                 trabajador.save()
-                print("yes")
                 return redirect('/trabajador/miPerfil')
             else:
                 valores = [trabajador.persona.nombre, trabajador.persona.apellidos, trabajador.persona.dni,
@@ -124,7 +123,7 @@ def edit_servicio_trabajador(request, id):
                         servicio.estado = 'realizado'
                         servicio.save()
                         creacionFactura(servicio)
-                        return redirect('/trabajador/servicios/')
+                        return redirect('/trabajador/servicio/')
                     else:
                         msg_error = 'No se puede editar un servicio que ya ha sido realizado.'
                         try:

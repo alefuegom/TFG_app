@@ -89,6 +89,7 @@ def list_solicitudServicio_administrador(request):
                 msg_error = "No existe ninguna solicitud de servicio con los filtros introducidos."
                 return render(request, 'solicitudServicioAdministrador.html', {'msg_error': msg_error})
             else:
+                solicitudes = solicitudes.order_by('fecha')
                 for solicitud in solicitudes:
                     try:
                         empresa = Empresa.objects.filter(
@@ -99,7 +100,6 @@ def list_solicitudServicio_administrador(request):
                             usuario=solicitud.usuario)[0]
                         resultado.append(
                             [solicitud, persona.nombre + " " + persona.apellidos])
-
                 paginator = Paginator(resultado, 20)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
@@ -1033,81 +1033,84 @@ def delete_administrador_administrador(request, id):
     else:
         return redirect('/errorPermiso/')
 
-
+@login_required()
 def show_panelControl_administrador(request):
-    total_solicitud_servicio_pendiente = SolicitudServicio.objects.filter(
-        estado="Pendiente").count()
-    total_solicitud_servicio_atendida = SolicitudServicio.objects.filter(
-        estado="Atendida").count()
-    total_solicitud_servicio_aceptada = SolicitudServicio.objects.filter(
-        estado="Aceptada").count()
-    total_solicitud_servicio_rechazada = SolicitudServicio.objects.filter(
-        estado="Rechazada").count()
-    total_data = total_solicitud_servicio_pendiente + total_solicitud_servicio_atendida + \
-        total_solicitud_servicio_aceptada + total_solicitud_servicio_rechazada
-    data = [100 * total_solicitud_servicio_pendiente/total_data,
-            100 * total_solicitud_servicio_atendida/total_data,
-            100 * total_solicitud_servicio_aceptada/total_data,
-            100 * total_solicitud_servicio_rechazada/total_data]
+    if esAdministrador(request):
+        total_solicitud_servicio_pendiente = SolicitudServicio.objects.filter(
+            estado="Pendiente").count()
+        total_solicitud_servicio_atendida = SolicitudServicio.objects.filter(
+            estado="Atendida").count()
+        total_solicitud_servicio_aceptada = SolicitudServicio.objects.filter(
+            estado="Aceptada").count()
+        total_solicitud_servicio_rechazada = SolicitudServicio.objects.filter(
+            estado="Rechazada").count()
+        total_data = total_solicitud_servicio_pendiente + total_solicitud_servicio_atendida + \
+            total_solicitud_servicio_aceptada + total_solicitud_servicio_rechazada
+        data = [100 * total_solicitud_servicio_pendiente/total_data,
+                100 * total_solicitud_servicio_atendida/total_data,
+                100 * total_solicitud_servicio_aceptada/total_data,
+                100 * total_solicitud_servicio_rechazada/total_data]
 
-    today = datetime.now()
-    current_month = today.month
-    current_year = today.year
-    loop_number = 5
-    months = [0, 0, 0, 0, 0, 0]
-    servicios_mes = [0, 0, 0, 0, 0, 0]
-    trabajador_mes = ""
-    trabajador_total = ""
-    total_trabajador = 0
-    plaga_mas_tratada = ""
-    total_plaga = 0
-    tratamiento_mas_empleado = ""
-    total_tratamiento = 0
-    total_servicios = Servicio.objects.all().count()
-    total_servicios_pendiente = Servicio.objects.filter(
-        estado='Pendiente').count()
-    total_servicios_realizado = Servicio.objects.filter(
-        estado='realizado').count()
-    while loop_number >= 0:
-        if current_month == 0:
-            current_month = 12
-            months[loop_number] = current_month
-            current_year = today.year - 1
-            servicios_mes[loop_number] = (Servicio.objects.filter(
-                solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
-        else:
-            months[loop_number] = current_month
-            servicios_mes[loop_number] = (Servicio.objects.filter(
-                solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
-        current_month = current_month - 1
-        loop_number = loop_number-1
-    for trabajador in Trabajador.objects.all():
-        if Servicio.objects.filter(trabajador=trabajador).count() > total_trabajador:
-            trabajador_total = trabajador.persona.nombre + " " + trabajador.persona.apellidos
+        today = datetime.now()
+        current_month = today.month
+        current_year = today.year
+        loop_number = 5
+        months = [0, 0, 0, 0, 0, 0]
+        servicios_mes = [0, 0, 0, 0, 0, 0]
+        trabajador_mes = ""
+        trabajador_total = ""
+        total_trabajador = 0
+        plaga_mas_tratada = ""
+        total_plaga = 0
+        tratamiento_mas_empleado = ""
+        total_tratamiento = 0
+        total_servicios = Servicio.objects.all().count()
+        total_servicios_pendiente = Servicio.objects.filter(
+            estado='Pendiente').count()
+        total_servicios_realizado = Servicio.objects.filter(
+            estado='realizado').count()
+        while loop_number >= 0:
+            if current_month == 0:
+                current_month = 12
+                months[loop_number] = current_month
+                current_year = today.year - 1
+                servicios_mes[loop_number] = (Servicio.objects.filter(
+                    solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
+            else:
+                months[loop_number] = current_month
+                servicios_mes[loop_number] = (Servicio.objects.filter(
+                    solicitudServicio__fecha__month=current_month, solicitudServicio__fecha__year=current_year).count())
+            current_month = current_month - 1
+            loop_number = loop_number-1
+        for trabajador in Trabajador.objects.all():
+            if Servicio.objects.filter(trabajador=trabajador).count() > total_trabajador:
+                trabajador_total = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
-    total_trabajdor = 0
-    for trabajador in Trabajador.objects.all():
-        if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador = trabajador).count() > total_trabajador:
-            trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
+        total_trabajdor = 0
+        for trabajador in Trabajador.objects.all():
+            if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador = trabajador).count() > total_trabajador:
+                trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
-    for plaga in Plaga.objects.all():
-        if Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count() > total_plaga:
-            plaga_mas_tratada = plaga.nombre
-    for tratamiento in Tratamiento.objects.all():
-        if Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count() > total_tratamiento:
-            tratamiento_mas_empleado = tratamiento.nombre
-    data_plagas = []
-    plagas = []
-    total_plagas = Plaga.objects.all().count()
-    for plaga in Plaga.objects.all():
-        plagas.append(plaga.nombre)
-        number = Servicio.objects.filter(solicitudServicio__plaga=plaga).count()
-        p = (number * 100)/total_servicios
-        data_plagas.append(p)
-    return render(request, 'panelControlAdministrador.html',
-                  {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
-                   'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
-                   'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
-                   'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
-                   'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
-                   'trabajador_mes':trabajador_mes, 'trabajador_total':trabajador_total})
+        for plaga in Plaga.objects.all():
+            if Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count() > total_plaga:
+                plaga_mas_tratada = plaga.nombre
+        for tratamiento in Tratamiento.objects.all():
+            if Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count() > total_tratamiento:
+                tratamiento_mas_empleado = tratamiento.nombre
+        data_plagas = []
+        plagas = []
+        total_plagas = Plaga.objects.all().count()
+        for plaga in Plaga.objects.all():
+            plagas.append(plaga.nombre)
+            number = Servicio.objects.filter(solicitudServicio__plaga=plaga).count()
+            p = (number * 100)/total_servicios
+            data_plagas.append(p)
+        return render(request, 'panelControlAdministrador.html',
+                    {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
+                    'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
+                    'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
+                    'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
+                    'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
+                    'trabajador_mes':trabajador_mes, 'trabajador_total':trabajador_total})
+    else:
+        return ('/errorPermiso')

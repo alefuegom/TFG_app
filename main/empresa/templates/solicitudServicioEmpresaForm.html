@@ -37,6 +37,7 @@
                     <strong><p>Plaga: </p></strong>
                     <p class="ml-1">{{solicitud.plaga.nombre}}</p>
                 </div>
+                {% if solicitud.estado != 'Rechazada' %}
                 <div class="row">
                     <strong><p>Abandono: </p></strong>
                     {% if solicitud.abandono %}
@@ -53,7 +54,7 @@
                     <p class=" ml-1">Por definir</p>
                     {% endif %}
                 </div>
-
+                {% endif %}
 
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12">

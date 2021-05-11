@@ -165,6 +165,10 @@
                     <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
                 <div class="row">
+                    <strong><p>Trabajador recomendado: </p></strong>
+                    <p class="ml-1">{{trabajador_recomendado}}</p>
+                </div>
+                <div class="row">
                     <form id='form' method='post'>
                         {% csrf_token %}
                         {% for field in form %}

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Con estos patrones podemos validar los campos dni, cif y la cuenta bancaria
 
@@ -139,3 +140,10 @@ class Servicio(models.Model):
 
     def __str__(self):
         return str(self.id) + "-" + self.estado + " [" + str(self.solicitudServicio.id) + "]"
+
+class Puntuacion(models.Model):
+    trabajador = models.ForeignKey(Trabajador, on_delete=models.DO_NOTHING )
+    servicio = models.ForeignKey(Servicio, on_delete=models.DO_NOTHING)
+    puntuacion = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    def __str__(self):
+        return self.trabajador.persona.nombre + "-" + str(self.servicio.id) + "-" + str(self.puntuacion)

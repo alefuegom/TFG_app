@@ -1,6 +1,8 @@
 from datetime import datetime, date
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+import shelve
+from .recommendations import calculateSimilarItems, getRecommendations, transformPrefs
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 from django.db.models.functions import Lower
@@ -30,6 +32,7 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
+        iniciar_sistemaRecomendacion()
         return render(request, 'inicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
@@ -274,7 +277,6 @@ def edit_servicio_administrador(request, id):
                         id=form.cleaned_data['trabajador'])
                     if trabajador.vehiculo:
                         servicio.trabajador = trabajador
-                        print(trabajador.vehiculo)
                         servicio.save()
                         return redirect('/administrador/servicio/')
                     else:
@@ -297,13 +299,14 @@ def edit_servicio_administrador(request, id):
 
             else:
                 form = EditServicioAdministradorForm()
+                trabajador_recomendado = recomendation_trabajador_administrador(servicio)
                 if cliente:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'cliente': cliente,
+                                  {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado':trabajador_recomendado,
                                    'form': form})
                 if empresa:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'empresa': empresa,
+                                  {'servicio_edit': servicio, 'empresa': empresa, 'trabajador_recomendado':trabajador_recomendado,
                                    'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
@@ -1033,6 +1036,7 @@ def delete_administrador_administrador(request, id):
     else:
         return redirect('/errorPermiso/')
 
+
 @login_required()
 def show_panelControl_administrador(request):
     if esAdministrador(request):
@@ -1088,7 +1092,7 @@ def show_panelControl_administrador(request):
 
         total_trabajdor = 0
         for trabajador in Trabajador.objects.all():
-            if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador = trabajador).count() > total_trabajador:
+            if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count() > total_trabajador:
                 trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
         for plaga in Plaga.objects.all():
@@ -1102,15 +1106,43 @@ def show_panelControl_administrador(request):
         total_plagas = Plaga.objects.all().count()
         for plaga in Plaga.objects.all():
             plagas.append(plaga.nombre)
-            number = Servicio.objects.filter(solicitudServicio__plaga=plaga).count()
+            number = Servicio.objects.filter(
+                solicitudServicio__plaga=plaga).count()
             p = (number * 100)/total_servicios
             data_plagas.append(p)
         return render(request, 'panelControlAdministrador.html',
-                    {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
-                    'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
-                    'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
-                    'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
-                    'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
-                    'trabajador_mes':trabajador_mes, 'trabajador_total':trabajador_total})
+                      {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
+                       'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
+                       'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
+                       'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
+                       'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
+                       'trabajador_mes': trabajador_mes, 'trabajador_total': trabajador_total})
     else:
         return ('/errorPermiso')
+
+
+def recomendation_trabajador_administrador(servicio):
+    shelf = shelve.open("dataRS.dat")
+    ServicioPrefs = shelf['ServicioPrefs']
+    shelf.close()
+    ranking = getRecommendations(ServicioPrefs, int(servicio.id))
+    if len(ranking) != 0:
+        recommended = ranking[0][1].persona.nombre + " " + ranking[0][1].persona.apellidos  
+    else:
+        recommended = "No hay suficientes datos para la recomendación"
+    return recommended
+
+def iniciar_sistemaRecomendacion():
+    Prefs = {}
+    shelf = shelve.open("dataRS.dat")
+    ratings = Puntuacion.objects.all()
+    for ra in ratings:
+        trabajador = int(ra.trabajador.id)
+        servicio = int(ra.servicio.id)
+        rating = float(ra.puntuacion)
+        Prefs.setdefault(trabajador, {})
+        Prefs[trabajador][servicio] = rating
+    shelf['Prefs'] = Prefs
+    shelf['ServicioPrefs'] = transformPrefs(Prefs)
+    shelf['SimItems'] = calculateSimilarItems(Prefs, n=10)
+    shelf.close()

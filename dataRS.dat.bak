@@ -1,3 +1,3 @@
-'Prefs', (0, 6)
-'ServicioPrefs', (512, 6)
-'SimItems', (1024, 6)
+'Prefs', (0, 128)
+'ServicioPrefs', (512, 144)
+'SimItems', (1024, 512)

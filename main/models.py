@@ -146,4 +146,4 @@ class Puntuacion(models.Model):
     servicio = models.ForeignKey(Servicio, on_delete=models.DO_NOTHING)
     puntuacion = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     def __str__(self):
-        return self.trabajador.persona.nombre + "-" + str(self.servicio.id) + "-" + str(self.puntuacion)
+        return self.trabajador.persona.nombre + " "+ self.trabajador.persona.apellidos + "-" + str(self.servicio.id) + "-" + str(self.puntuacion)

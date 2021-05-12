@@ -1092,14 +1092,20 @@ def show_panelControl_administrador(request):
 
         total_trabajdor = 0
         for trabajador in Trabajador.objects.all():
-            if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count() > total_trabajador:
+            numero_iteracion_trabajador = Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count()
+            if  numero_iteracion_trabajador > total_trabajador:
+                total_trabajador = numero_iteracion_trabajador
                 trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
         for plaga in Plaga.objects.all():
-            if Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count() > total_plaga:
+            numero_iteracion_plaga = Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count()
+            if  numero_iteracion_plaga > total_plaga:
+                total_plaga = numero_iteracion_plaga
                 plaga_mas_tratada = plaga.nombre
         for tratamiento in Tratamiento.objects.all():
-            if Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count() > total_tratamiento:
+            numero_iteracion_tratamiento = Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count()
+            if  numero_iteracion_tratamiento > total_tratamiento:
+                total_tratamiento = numero_iteracion_tratamiento
                 tratamiento_mas_empleado = tratamiento.nombre
         data_plagas = []
         plagas = []

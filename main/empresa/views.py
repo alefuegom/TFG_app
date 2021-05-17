@@ -9,11 +9,7 @@ from django.contrib.auth import logout as do_logout
 
 # MÉTODOS AUXILIARES
 def esEmpresa(request):
-    try:
-        empresa = Empresa.objects.filter(usuario=request.user)[0]
-        return empresa
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "empresa"
 
 
 # VISTAS GENERALES
@@ -67,7 +63,9 @@ def edit_perfil_empresa(request):
 
 def logout(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 # CRUD SERVICIOS

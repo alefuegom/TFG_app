@@ -214,13 +214,10 @@ def show_factura_cliente(request, id):
 
 def logout(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 def esCliente(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        cliente = Cliente.objects.filter(persona=persona)[0]
-        return cliente
-    except:
-        return None
+        return request.COOKIES.get('CK02') == "cliente"

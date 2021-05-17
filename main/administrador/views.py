@@ -14,19 +14,16 @@ from ..models import *
 
 # MÉTODOS AUXILIARES
 def esAdministrador(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        administrador = Administrador.objects.filter(persona=persona)[0]
-        return administrador
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "administrador"
 
 
 # VISTAS GENERALES
 @login_required
 def cerrarSesion(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 @login_required

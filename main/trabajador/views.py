@@ -175,16 +175,14 @@ def edit_servicio_trabajador(request, id):
 @login_required
 def cerrarSesion(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 def esTrabajador(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        trabajador = Trabajador.objects.filter(persona=persona)
-        return trabajador
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "trabajador"
+
 
 
 def creacionFactura(servicio):

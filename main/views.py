@@ -11,10 +11,22 @@ from .forms import *
 
 def index(request):
     response = render(request, 'home.html')
-    if not request.COOKIES.get('CK01'): 
-        response = render(request, 'home.html', {'first_time':True})
-        response.set_cookie('CK01','Cookie que registra la primera vez que entra en la aplicación.') 
+    if not request.COOKIES.get('CK01'):
+        response = render(request, 'home.html', {'first_time': True})
+        response.set_cookie(
+            'CK01', 'Cookie que registra la primera vez que entra en la aplicación.')
+    if request.COOKIES.get('CK02'):
+        rol = request.COOKIES.get('CK02')
+        if(rol == "cliente"):
+            return redirect("/cliente/")
+        if(rol == "empresa"):
+            return redirect("/empresa/")
+        if(rol == "trabajador"):
+            return redirect("/trabajador/")
+        if(rol == "administrador"):
+            return redirect("/administrador/")
     return response
+
 
 def quienresSomos(request):
     return render(request, 'quienesSomos.html')
@@ -27,8 +39,10 @@ def tratamientos(request):
 def errorPermiso(request):
     return render(request, 'errorPermiso.html')
 
+
 def handler404(request, exception):
     return render(request, '404.html', status=404)
+
 
 def inicioSesion(request):
     if request.method == "POST":
@@ -41,22 +55,35 @@ def inicioSesion(request):
                 try:
                     empresa = Empresa.objects.filter(usuario=usuario)[0]
                     do_login(request, usuario)
-                    return redirect('/empresa/')
+                    response = redirect('/empresa/')
+                    response.set_cookie('CK02', 'empresa')
+                    return response
+
                 except:
                     persona = Persona.objects.filter(usuario=usuario)[0]
                     try:
                         cliente = Cliente.objects.filter(persona=persona)[0]
                         do_login(request, usuario)
-                        return redirect('/cliente/')
+                        response = redirect('/cliente/')
+                        response.set_cookie('CK02', 'cliente')
+                        return response
                     except:
                         try:
-                            trabajador = Trabajador.objects.filter(persona=persona)[0]
+                            trabajador = Trabajador.objects.filter(persona=persona)[
+                                0]
                             do_login(request, usuario)
-                            return redirect('/trabajador/')
+                            response = redirect('/trabajador/')
+                            response.set_cookie('CK02', 'trabajador')
+                            return response
+
                         except:
-                            administrador = Administrador.objects.filter(persona=persona)[0]
+                            administrador = Administrador.objects.filter(persona=persona)[
+                                0]
                             do_login(request, usuario)
-                            return redirect('/administrador/')
+                            response = redirect('/administrador/')
+                            response.set_cookie('CK02', 'administrador')
+                            return response
+
             else:
                 er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
                 return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})
@@ -87,7 +114,8 @@ def registroCliente(request):
                 return render(request, 'auth/registroCliente.html',
                               {'er_msg': 'Ya existe un usuario con el email introducido.', 'form': form})
 
-            persona = Persona(nombre=nombre, apellidos=apellidos, dni=dni, telefono=telefono, usuario=usuario)
+            persona = Persona(nombre=nombre, apellidos=apellidos,
+                              dni=dni, telefono=telefono, usuario=usuario)
             telefonos = []
             for p in Persona.objects.all():
                 telefonos.append(p.telefono)
@@ -104,7 +132,8 @@ def registroCliente(request):
                 return render(request, 'auth/registroCliente.html',
                               {'er_msg': 'Ya existe un usuario con el DNI introducido', 'form': form})
 
-            cliente = Cliente(direccion=direccion, cuenta_bancaria=cuenta_bancaria, persona=persona)
+            cliente = Cliente(direccion=direccion,
+                              cuenta_bancaria=cuenta_bancaria, persona=persona)
             if not cuenta_bancaria:
                 cliente.save()
                 # usuario = authenticate(username=email, password=contraseña)
@@ -185,7 +214,6 @@ def registroEmpresa(request):
     form = RegistroEmpresaForm()
     return render(request, 'auth/registroEmpresa.html', {'form': form})
 
+
 def politicaPrivacidad(request):
     return render(request, 'politicaPrivacidad.html')
-
-    

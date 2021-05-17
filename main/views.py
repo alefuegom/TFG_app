@@ -10,7 +10,11 @@ from .forms import *
 
 
 def index(request):
-    return render(request, 'home.html')
+    response = render(request, 'home.html')
+    if not request.COOKIES.get('CK01'): 
+        response = render(request, 'home.html', {'first_time':True})
+        response.set_cookie('CK01','Cookie que registra la primera vez que entra en la aplicación.') 
+    return response
 
 def quienresSomos(request):
     return render(request, 'quienesSomos.html')
@@ -180,3 +184,8 @@ def registroEmpresa(request):
 
     form = RegistroEmpresaForm()
     return render(request, 'auth/registroEmpresa.html', {'form': form})
+
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidad.html')
+
+    

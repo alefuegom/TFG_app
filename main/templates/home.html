@@ -1,5 +1,37 @@
-{% extends 'header.html' %} {% block contenido %} {% load static %}
+{% extends 'header.html' %} {% block contenido %} {% load static %} {% if first_time == True %}
 
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+       $("#exampleModal").modal('show');
+  });
+  function hideModal() {
+    console.log("hi")
+    $("#exampleModal").modal('hide');
+}
+  </script>
+  
+
+{% endif %}
 <div class="container-fluid">
   <div class="row snippet-fondo" id="home-1">
     <h1 class="title mx-4">La solución a sus problemas de plagas</h1>
@@ -7,12 +39,10 @@
       En Dedesin SL solucionamos todo tipo de problemas ambientales, desde
       invsiones de insectos hasta control de herbaje.
     </h4>
-    <hr>
+    <hr />
     <!--<a class="mx-4 btn btn-outline-success text-decoration-none" href="/tratamientos" style="color:#2a9d8f;">MÁS INFORMACIÓN 
       <i class="fal fa-chevron-right"></i> </a>-->
   </div>
-  
-    
 </div>
 <div name="" class="container-fluid">
   <div class="row justify-content-end snippet-fondo" id="home-2">
@@ -26,13 +56,13 @@
 <div class="w-100" id="parallax-inicio">
   <div class="container h-100">
     <div class="row align-items-center h-100">
-        <div>
-          <h1 class="text-center title text-white">Eficiencia y garantia</h1>
-          <h4 class="text-center mt-3 subtitle text-white">
-            Desde Dedesin S.L le garantizamos la máxima efectividad y calidad en
-            nuestros tratamientos. Nos avala 40 años a la cabeza del sector.
-          </h4>
-        </div>
+      <div>
+        <h1 class="text-center title text-white">Eficiencia y garantia</h1>
+        <h4 class="text-center mt-3 subtitle text-white">
+          Desde Dedesin S.L le garantizamos la máxima efectividad y calidad en
+          nuestros tratamientos. Nos avala 40 años a la cabeza del sector.
+        </h4>
+      </div>
     </div>
   </div>
 </div>

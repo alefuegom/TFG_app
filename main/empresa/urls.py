@@ -27,5 +27,6 @@ urlpatterns = [
     path('servicio/show/<int:id>/', views.show_servicios_empresa),
     path('miPerfil/', views.show_perfil_empresa),
     path('miPerfil/edit/', views.edit_perfil_empresa),
+    path('errorPermiso/', views.errorPermiso),
     path('cerrarSesion/', views.logout)
 ]

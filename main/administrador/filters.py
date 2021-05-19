@@ -1,18 +1,26 @@
 import django_filters
 from django_filters import DateFilter, ModelChoiceFilter
-from django.forms.widgets import TextInput
+from django.forms.widgets import NumberInput, TextInput
 from ..models import *
 
+ESTADO_SOLICITUD = (
+        ('Pendiente', 'Pendiente'),
+        ('Atendida', 'Atendida'),
+        ('Aceptada', 'Aceptada'),
+        ('Rechazada', 'Rechazada'),
+    )
 
 class SolicitudServicioAdministradorFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact', widget=NumberInput(attrs={'min': 1}))
+    estado =django_filters.ChoiceFilter(choices=ESTADO_SOLICITUD,field_name="estado", label="Estado")
     fecha = DateFilter(field_name="fecha", lookup_expr="iexact", label="Fecha",
-                                      widget=TextInput(attrs={'placeholder': 'mm/dd/YYYY'}))
-    id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact')
-
+                                      widget=TextInput(attrs={'placeholder': 'dd/mm/yyyy'}))
+    plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="solicitudServicio__plaga",
+                                             label="Plaga")
     class Meta:
         model = SolicitudServicio
         fields = "__all__"
-        exclude = ['observaciones', 'usuario', 'tratamiento']
+        exclude = ['id','plaga', 'estado', 'fecha','observaciones', 'usuario', 'tratamiento']
 
 ESTADO_SERVICIO = (
         ('Pendiente', 'Pendiente'),
@@ -20,32 +28,41 @@ ESTADO_SERVICIO = (
     )
 
 class ServicioAdministradorFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact', widget=NumberInput(attrs={'min': 1}))
+    estado =django_filters.ChoiceFilter(choices=ESTADO_SERVICIO,field_name="estado", label="Estado")
     fecha = django_filters.DateFilter(field_name="solicitudServicio__fecha", label="Fecha",
-                                      widget=TextInput(attrs={'placeholder': 'mm/dd/YYYY'}))
+                                      widget=TextInput(attrs={'placeholder': 'dd/mm/yyyy'}))
     plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="solicitudServicio__plaga",
                                              label="Plaga")
-    estado =django_filters.ChoiceFilter(choices=ESTADO_SERVICIO,field_name="estado", label="Estado")
+    trabajador = django_filters.ModelChoiceFilter(queryset=Trabajador.objects.all(), field_name="trabajador",
+                                             label="Trabajador")
     class Meta:
         model = Servicio
-        fields = ["id", "trabajador"]
+        fields = ["trabajador"]
+        exclude=['trabajador']
 
 
 class FacturaAdministradorFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact', widget=NumberInput(attrs={'min': 1}))
     fecha_expedicion = django_filters.DateFilter(field_name="fecha_expedicion", label="Fecha",
-                                      widget=TextInput(attrs={'placeholder': 'mm/dd/YYYY'}))
+                                      widget=TextInput(attrs={'placeholder': 'dd/mm/yyyy'}))
     receptor = django_filters.CharFilter(field_name='receptor', lookup_expr='icontains', label="Receptor")
 
     class Meta:
         model = Factura
         fields = ["id"]
+        exclude = ["id"]
 
 class TratamientoAdministradorFilter(django_filters.FilterSet):
+    id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact', widget=NumberInput(attrs={'min': 1}))
     plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="plaga",
                                              label="Plaga")
     nombre = django_filters.CharFilter(field_name='nombre', lookup_expr='icontains', label="Nombre")
     class Meta:
         model = Factura
         fields = ["id"]
+        exclude = ["id"]
+
 
 class ClienteAdministradorFilter(django_filters.FilterSet):
     nombre = django_filters.CharFilter(field_name='persona__nombre', lookup_expr='icontains', label="Nombre")

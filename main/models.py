@@ -63,7 +63,7 @@ class Trabajador(models.Model):
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
+        return self.persona.nombre + "," + self.persona.apellidos
 
 
 class Administrador(models.Model):

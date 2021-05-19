@@ -15,6 +15,9 @@ def inicioTrabajador(request):
     else:
         return redirect('/errorPermiso/')
 
+def errorPermiso(request):
+        return render(request, 'errorPermisoTrabajador.html')
+
 
 @login_required
 def show_perfil_trabajador(request):

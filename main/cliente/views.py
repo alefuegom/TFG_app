@@ -66,6 +66,8 @@ def edit_perfil_cliente(request):
     else:
         return redirect('/errorPermiso')
 
+def errorPermiso(request):
+    return render(request, 'errorPermisoCliente.html')
 
 # CRUD SERVICIOS
 @login_required

@@ -37,7 +37,18 @@ def tratamientos(request):
 
 
 def errorPermiso(request):
-    return render(request, 'errorPermiso.html')
+    if request.COOKIES.get('CK02'):
+        rol = request.COOKIES.get('CK02')
+        if(rol == "cliente"):
+            return redirect("/cliente/errorPermiso")
+        if(rol == "empresa"):
+            return redirect("/empresa/errorPermiso")
+        if(rol == "trabajador"):
+            return redirect("/trabajador/errorPermiso")
+        if(rol == "administrador"):
+            return redirect("/administrador/errorPermiso")
+    else:
+        return render(request, 'errorPermiso.html')
 
 
 def handler404(request, exception):

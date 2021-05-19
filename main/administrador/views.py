@@ -74,6 +74,8 @@ def edit_perfil_administrador(request):
     else:
         return redirect('/errorPermiso/')
 
+def errorPermiso(request):
+    return render(request, 'errorPermisoAdministrador.html')
 
 # CRUD SOLICITUD SERVICIO
 @login_required
@@ -965,7 +967,8 @@ def create_administrador_administrador(request):
                             return render(request, 'administradorAdministradorForm.html', {'msg_error': msg_error,
                                                                                            'form': form})
                         except:
-                            usuario = User(username=email, password=contrasena)
+                            usuario = User(username=email)
+                            usuario.set_password(contrasena)
                             usuario.save()
                             persona = Persona(usuario=usuario, nombre=nombre, apellidos=apellidos, dni=dni,
                                               telefono=telefono)

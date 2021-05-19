@@ -60,6 +60,8 @@ def edit_perfil_empresa(request):
     else:
         return redirect('/errorPermiso/')
 
+def errorPermiso(request):
+    return render(request, 'errorPermisoEmpresa.html')
 
 def logout(request):
     do_logout(request)

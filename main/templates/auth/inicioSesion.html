@@ -2,9 +2,10 @@
 {% block contenido %}
 
 <div class="container">
-    <div class="row justify-content-center ">
         <div class="row justify-content-center my-5">
             <h1 class="my-4 subtitle text-uppercase text-center w-100">Inicio de sesión</h1>
+        </div>
+        <div class="row justify-content-center my-5">
             {% if form.errors %}
             {% for field in form %}
             {% for error in field.errors %}
@@ -35,10 +36,10 @@
                 {% csrf_token %}
 
                 {% for field in form %}
-                <div class="container center_div" style="margin-top:10px;">
+                <div class="w-100">
                     {# uncomment to display field errors #}
                     {# {{ field.errors }} #}
-                    <div class="form-group">
+                    <div class="form-group ">
                      {{ field }}
                     </div>
                 </div>
@@ -47,7 +48,6 @@
                     <input type='submit' class="btn-outline btn-dedesin mt-4" value='Confirmar'/>
                 </div>
             </form>
-        </div>
     </div>
 </div>
 {% endblock %}

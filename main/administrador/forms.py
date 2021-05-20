@@ -7,7 +7,7 @@ DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
 MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe un matrícula correcta.')
 CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número')
+                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número.')
 
 
 class EditPerfilAdministrador(forms.Form):

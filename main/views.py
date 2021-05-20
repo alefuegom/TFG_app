@@ -94,11 +94,11 @@ def inicioSesion(request):
                             response = redirect('/administrador/')
                             response.set_cookie('CK02', 'administrador')
                             return response
-
             else:
                 er_msg = "Error al introducir los datos. No coincide ningún usuario con los datos introducidos."
-                return render(request, "auth/inicioSesion.html", {form: 'form', 'er_msg': er_msg})
-
+                return render(request, "auth/inicioSesion.html", {'form': form, 'er_msg': er_msg})
+        else:
+            return render(request, 'auth/registroCliente.html', {'form': form})
     form = InicioSesionForm()
     return render(request, "auth/inicioSesion.html", {'form': form})
 

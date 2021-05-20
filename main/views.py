@@ -227,4 +227,15 @@ def registroEmpresa(request):
 
 
 def politicaPrivacidad(request):
-    return render(request, 'politicaPrivacidad.html')
+    if request.COOKIES.get('CK02'):
+        rol = request.COOKIES.get('CK02')
+        if(rol == "cliente"):
+            return redirect("/cliente/politicaPrivacidad")
+        if(rol == "empresa"):
+            return redirect("/empresa/politicaPrivacidad")
+        if(rol == "trabajador"):
+            return redirect("/trabajador/politicaPrivacidad")
+        if(rol == "administrador"):
+            return redirect("/administrador/politicaPrivacidad")
+    else:
+        return render(request, 'politicaPrivacidad.html')

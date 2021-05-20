@@ -62,6 +62,8 @@ def edit_perfil_empresa(request):
 
 def errorPermiso(request):
     return render(request, 'errorPermisoEmpresa.html')
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidadEmpresa.html')
 
 def logout(request):
     do_logout(request)

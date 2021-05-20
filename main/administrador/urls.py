@@ -58,7 +58,9 @@ urlpatterns = [
     path('administrador/edit/<int:id>/', views.edit_administrador_administrador),
     path('administrador/delete/<int:id>/', views.delete_administrador_administrador),
     path('panelControl/', views.show_panelControl_administrador),
-    path('errorPermiso/', views.errorPermiso)
+    path('errorPermiso/', views.errorPermiso),
+    path('politicaPrivacidad/', views.politicaPrivacidad)
+
 
 
 ]

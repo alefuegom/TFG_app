@@ -28,5 +28,6 @@ urlpatterns = [
     path('miPerfil/', views.show_perfil_empresa),
     path('miPerfil/edit/', views.edit_perfil_empresa),
     path('errorPermiso/', views.errorPermiso),
+    path('politicaPrivacidad/', views.politicaPrivacidad),
     path('cerrarSesion/', views.logout)
 ]

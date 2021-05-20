@@ -77,6 +77,9 @@ def edit_perfil_administrador(request):
 def errorPermiso(request):
     return render(request, 'errorPermisoAdministrador.html')
 
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidadAdministrador.html')
+
 # CRUD SOLICITUD SERVICIO
 @login_required
 def list_solicitudServicio_administrador(request):

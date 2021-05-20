@@ -69,6 +69,9 @@ def edit_perfil_cliente(request):
 def errorPermiso(request):
     return render(request, 'errorPermisoCliente.html')
 
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidadCliente.html')
+
 # CRUD SERVICIOS
 @login_required
 def list_servicios_cliente(request):

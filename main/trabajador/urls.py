@@ -25,6 +25,8 @@ urlpatterns = [
     path('miPerfil/edit/', views.edit_perfil_trabajador),
     path('cerrarSesion', views.cerrarSesion),
     path('errorPermiso/', views.errorPermiso),
+    path('politicaPrivacidad/', views.politicaPrivacidad),
+
 
 ]
 

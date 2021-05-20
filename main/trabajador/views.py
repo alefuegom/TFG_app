@@ -18,6 +18,8 @@ def inicioTrabajador(request):
 def errorPermiso(request):
         return render(request, 'errorPermisoTrabajador.html')
 
+def politicaPrivacidad(request):
+        return render(request, 'politicaPrivacidadTrabajador.html')
 
 @login_required
 def show_perfil_trabajador(request):

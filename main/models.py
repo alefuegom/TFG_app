@@ -45,6 +45,8 @@ class Cliente(models.Model):
     def __str__(self):
         return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
 
+    def nombreCompleto(self):
+        return self.persona.nombre + " " + self.persona.apellidos
 
 class Vehiculo(models.Model):
     marca = models.CharField(max_length=50)

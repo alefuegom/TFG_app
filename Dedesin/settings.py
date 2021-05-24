@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
-    'mathfilters'
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +135,4 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_URL = '/static/'
 LOGIN_URL = '/inicioSesion'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+GOOGLE_API_KEY = "AIzaSyBSxnsCB4U8DwpxBAq5smdlQsMU9Y0BcEo"

@@ -1,10 +1,11 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import shelve
 from .recommendations import calculateSimilarItems, getRecommendations, transformPrefs
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
+import random
 from django.db.models.functions import Lower
 from django.http import JsonResponse
 from .filters import *
@@ -30,6 +31,7 @@ def cerrarSesion(request):
 def inicioAdministrador(request):
     if esAdministrador(request):
         iniciar_sistemaRecomendacion()
+        # poblar_bbdd()
         return render(request, 'inicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
@@ -74,13 +76,17 @@ def edit_perfil_administrador(request):
     else:
         return redirect('/errorPermiso/')
 
+
 def errorPermiso(request):
     return render(request, 'errorPermisoAdministrador.html')
+
 
 def politicaPrivacidad(request):
     return render(request, 'politicaPrivacidadAdministrador.html')
 
 # CRUD SOLICITUD SERVICIO
+
+
 @login_required
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
@@ -301,14 +307,15 @@ def edit_servicio_administrador(request, id):
 
             else:
                 form = EditServicioAdministradorForm()
-                trabajador_recomendado = recomendation_trabajador_administrador(servicio)
+                trabajador_recomendado = recomendation_trabajador_administrador(
+                    servicio)
                 if cliente:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado':trabajador_recomendado,
+                                  {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado': trabajador_recomendado,
                                    'form': form})
                 if empresa:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'empresa': empresa, 'trabajador_recomendado':trabajador_recomendado,
+                                  {'servicio_edit': servicio, 'empresa': empresa, 'trabajador_recomendado': trabajador_recomendado,
                                    'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
@@ -1095,19 +1102,22 @@ def show_panelControl_administrador(request):
 
         total_trabajdor = 0
         for trabajador in Trabajador.objects.all():
-            numero_iteracion_trabajador = Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count()
-            if  numero_iteracion_trabajador > total_trabajador:
+            numero_iteracion_trabajador = Servicio.objects.filter(
+                solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count()
+            if numero_iteracion_trabajador > total_trabajador:
                 total_trabajador = numero_iteracion_trabajador
                 trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
         for plaga in Plaga.objects.all():
-            numero_iteracion_plaga = Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count()
-            if  numero_iteracion_plaga > total_plaga:
+            numero_iteracion_plaga = Servicio.objects.filter(
+                solicitudServicio__tratamiento__plaga=plaga).count()
+            if numero_iteracion_plaga > total_plaga:
                 total_plaga = numero_iteracion_plaga
                 plaga_mas_tratada = plaga.nombre
         for tratamiento in Tratamiento.objects.all():
-            numero_iteracion_tratamiento = Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count()
-            if  numero_iteracion_tratamiento > total_tratamiento:
+            numero_iteracion_tratamiento = Servicio.objects.filter(
+                solicitudServicio__tratamiento=tratamiento).count()
+            if numero_iteracion_tratamiento > total_tratamiento:
                 total_tratamiento = numero_iteracion_tratamiento
                 tratamiento_mas_empleado = tratamiento.nombre
         data_plagas = []
@@ -1132,14 +1142,18 @@ def show_panelControl_administrador(request):
 
 def recomendation_trabajador_administrador(servicio):
     shelf = shelve.open("dataRS.dat")
-    ServicioPrefs = shelf['ServicioPrefs']
+    Prefs = shelf['Prefs']
     shelf.close()
-    ranking = getRecommendations(ServicioPrefs, int(servicio.id))
+    print(Prefs)
+    ranking = getRecommendations(Prefs, 2)
+    print(ranking)
     if len(ranking) != 0:
-        recommended = ranking[0][1].persona.nombre + " " + ranking[0][1].persona.apellidos  
+        recommended = ranking[0][1].persona.nombre + \
+            " " + ranking[0][1].persona.apellidos
     else:
         recommended = "No hay suficientes datos para la recomendación"
     return recommended
+
 
 def iniciar_sistemaRecomendacion():
     Prefs = {}
@@ -1155,3 +1169,29 @@ def iniciar_sistemaRecomendacion():
     shelf['ServicioPrefs'] = transformPrefs(Prefs)
     shelf['SimItems'] = calculateSimilarItems(Prefs, n=10)
     shelf.close()
+
+
+def poblar_bbdd():
+    print("INICIO DE LA POBLACIÓN")
+    clientes = Cliente.objects.all()
+    empresas = Empresa.objects.all()
+    trabajadores = Trabajador.objects.all()
+    tratamientos = Tratamiento.objects.all()
+    plaga = Plaga.objects.all()
+    contador = 0
+    while contador <= 500:
+        fecha = date.today() - timedelta(days=random.randint(0, 150))
+        cliente = clientes[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "Tengo una plaga de " + tratamiento.plaga.nombre + "en casa."
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
+        descripcion = "Tratamiento para combatir  la plaga de"+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
+        factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
+                                        receptor = cliente.nombreCompleto(), descripcion=descripcion, importe = tratamiento.precio, 
+                                        tipo_impositivo = 21.0, fecha_operaciones=fecha)
+        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
+                                        trabajador = trabajadores[random.randint(0, 7)], factura = factura)
+        puntuacion = Puntuacion.objects.create(trabajador = servicio.trabajador, servicio=servicio, puntuacion = random.randint(1, 5))
+        contador +=1
+        print("Implementado "+str(contador)+"de 500.")

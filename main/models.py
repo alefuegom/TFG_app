@@ -36,6 +36,8 @@ class Persona(models.Model):
     def __str__(self):
         return self.nombre + "," + self.apellidos + "-" + self.dni
 
+    def nombreCompleto(self):
+        return self.nombre + " " + self.apellidos
 
 class Cliente(models.Model):
     direccion = models.TextField()

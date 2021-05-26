@@ -2,7 +2,7 @@ from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import shelve
-from .recommendations import calculateSimilarItems, getRecommendations, transformPrefs
+from .recommendations import datos_recomendacion_trabajador
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 import random
@@ -30,8 +30,6 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        iniciar_sistemaRecomendacion()
-        # poblar_bbdd()
         return render(request, 'inicioAdministrador.html')
     else:
         return redirect('/errorPermiso/')
@@ -307,8 +305,7 @@ def edit_servicio_administrador(request, id):
 
             else:
                 form = EditServicioAdministradorForm()
-                trabajador_recomendado = recomendation_trabajador_administrador(
-                    servicio)
+                trabajador_recomendado = datos_recomendacion_trabajador(servicio.id)
                 if cliente:
                     return render(request, 'servicioAdministradorForm.html',
                                   {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado': trabajador_recomendado,
@@ -1138,37 +1135,6 @@ def show_panelControl_administrador(request):
                        'trabajador_mes': trabajador_mes, 'trabajador_total': trabajador_total})
     else:
         return ('/errorPermiso')
-
-
-def recomendation_trabajador_administrador(servicio):
-    shelf = shelve.open("dataRS.dat")
-    Prefs = shelf['Prefs']
-    shelf.close()
-    print(Prefs)
-    ranking = getRecommendations(Prefs, 2)
-    print(ranking)
-    if len(ranking) != 0:
-        recommended = ranking[0][1].persona.nombre + \
-            " " + ranking[0][1].persona.apellidos
-    else:
-        recommended = "No hay suficientes datos para la recomendación"
-    return recommended
-
-
-def iniciar_sistemaRecomendacion():
-    Prefs = {}
-    shelf = shelve.open("dataRS.dat")
-    ratings = Puntuacion.objects.all()
-    for ra in ratings:
-        trabajador = int(ra.trabajador.id)
-        servicio = int(ra.servicio.id)
-        rating = float(ra.puntuacion)
-        Prefs.setdefault(trabajador, {})
-        Prefs[trabajador][servicio] = rating
-    shelf['Prefs'] = Prefs
-    shelf['ServicioPrefs'] = transformPrefs(Prefs)
-    shelf['SimItems'] = calculateSimilarItems(Prefs, n=10)
-    shelf.close()
 
 
 def poblar_bbdd():

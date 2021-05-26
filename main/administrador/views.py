@@ -2,7 +2,7 @@ from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import shelve
-from .recommendations import datos_recomendacion_trabajador
+from .recommendations import recomendacion_trabajador
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 import random
@@ -305,7 +305,7 @@ def edit_servicio_administrador(request, id):
 
             else:
                 form = EditServicioAdministradorForm()
-                trabajador_recomendado = datos_recomendacion_trabajador(servicio.id)
+                trabajador_recomendado = recomendacion_trabajador(servicio.id)
                 if cliente:
                     return render(request, 'servicioAdministradorForm.html',
                                   {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado': trabajador_recomendado,

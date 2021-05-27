@@ -86,3 +86,12 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+#wideform input:not([type="checkbox"]){
+  width: 100%;
+  margin: 0;
+}
+#wideform textarea{
+  width: 100%;
+  margin: 0;
+  height: 10rem;
+}

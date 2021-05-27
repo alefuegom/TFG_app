@@ -113,14 +113,14 @@
                         {% csrf_token %}
                         {% for field in form %}
                         <div class="my-3">
-                            {# uncomment to display field errors #}
-                            {# {{ field.errors }} #}
-
-                            {{ field.label_tag }} {{ field }}
+                            <strong><label for="field" class="mr-2">{{field.label_tag}}</label></strong>
+                            {{field}}
+                            {% for error in field.errors %}
+                            <p class="text-danger">{{ error|escape }}</p>
+                            {% endfor %}
                         </div>
                         {% endfor %}
-                        <input type='submit' class="page-link btn-dedesin mt-3" value='Finalizar el servicio'
-                               style=""/>
+                        <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
                     </form>
                 </div>
             </div>

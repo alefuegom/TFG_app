@@ -26,7 +26,8 @@ class EditSolicitudServicioAdministradorForm(forms.Form):
     trabajadores = []
     for tb in Trabajador.objects.all():
         trabajadores.append([tb.id, tb.persona.nombre + "," + tb.persona.apellidos])
-    fecha = forms.CharField(error_messages={'required': 'El campo fecha no puede estar vacío'}, widget=forms.Textarea(attrs={"placeholder": 'dd/mm/yyyy'}))
+    fecha = forms.CharField(error_messages={'required': 'El campo fecha no puede estar vacío'}, 
+                            widget=forms.TextInput(attrs={"placeholder": 'dd/mm/yyyy'}))
     tratamiento = forms.ChoiceField(choices=tratamientos,
                                     error_messages={'required': 'El campo tratamiento no puede estar vacío'})
 
@@ -72,14 +73,14 @@ class CreateVehiculoAdministradorForm(forms.Form):
     modelo = forms.CharField(error_messages={'required': 'El campo modelo no puede estar vacío'})
     matricula = forms.CharField(label="Matrícula", max_length=7, min_length=7, validators=[MATRICULA_REGEX])
     fecha_matriculacion = forms.CharField(label="Fecha de matriculación", min_length=10, max_length=10, error_messages={
-        'required': 'El campo fecha matriculación no puede estar vacío'}, widget=forms.Textarea(attrs={"placeholder": 'dd/mm/yyyy'}))
+        'required': 'El campo fecha matriculación no puede estar vacío'}, widget=forms.TextInput(attrs={"placeholder": 'dd/mm/yyyy'}))
     proxima_revision = forms.CharField(label="Fecha de próxima revisión", min_length=10, max_length=10, error_messages={
-        'required': 'El campo fecha de próxima revisión no puede estar vacío'}, widget=forms.Textarea(attrs={"placeholder": 'dd/mm/yyyy'}))
+        'required': 'El campo fecha de próxima revisión no puede estar vacío'}, widget=forms.TextInput(attrs={"placeholder": 'dd/mm/yyyy'}))
 
 
 class EditVehiculoAdministradorForm(forms.Form):
     proxima_revision = forms.CharField(label="Fecha de próxima revisión", min_length=10, max_length=10, error_messages={
-        'required': 'El campo fecha de próxima revisión no puede estar vacío'}, widget=forms.Textarea(attrs={"placeholder": 'dd/mm/yyyy'}))
+        'required': 'El campo fecha de próxima revisión no puede estar vacío'}, widget=forms.TextInput(attrs={"placeholder": 'dd/mm/yyyy'}))
 
 
 class CreateTrabajadorForm(forms.Form):
@@ -98,7 +99,7 @@ class CreateTrabajadorForm(forms.Form):
     email = forms.EmailField(label="E-mail", error_messages={'required': 'El campo email no puede estar vacío.'})
     telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",
                                error_messages={'required': 'El campo teléfono no puede estar vacío.'})
-    cualificacion = forms.CharField(label="Cualificación",
+    cualificacion = forms.CharField(label="Cualificación", widget=forms.Textarea(attrs={"placeholder":"Describa su formación."}),
                                     error_messages={'required': 'El campo dirección no puede estar vacío.'})
     vehiculo = forms.ChoiceField(choices=vehiculos_matricula, label="Vehículo")
 

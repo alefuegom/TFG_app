@@ -47,7 +47,7 @@
 {% if form %}
 <div class="container mb-5">
     <h1 class="title"> Nuevo vehículo </h1>
-    <div class="container mt-4">
+    <div class="mt-4">
         {% if msg_error %}
         <div class="alert alert-danger" style="width:100%">
             <strong>{{msg_error}}</strong>
@@ -56,30 +56,22 @@
     </div>
 
     <div class="container">
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
-        <div class="row">
-            <form id='form' method='post'>
+            <form id='wideform' method='post'>
                 {% csrf_token %}
                 {% for field in form %}
-                <div class="form-group">
-                    {# uncomment to display field errors #}
-                    {# {{ field.errors }} #}
-
-                    {{ field.label_tag }} {{ field }}
+                <div class="row my-3">
+                    <strong><label for="field">{{field.label_tag}}</label></strong>
+                    <p class="w-100">{{field}}</p>
+                    {% for error in field.errors %}
+                    <p class="text-danger">{{ error|escape }}</p>
+                    {% endfor %}
                 </div>
                 {% endfor %}
-                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
-
+                
+                <div class="row">
+                    <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
+                </div>
             </form>
-        </div>
     </div>
 
 </div>
@@ -118,19 +110,22 @@
                     <strong><p>Fecha de matriculación: </p></strong>
                     <p class="ml-1">{{vehiculo_edit.fecha_matriculacion}}</p>
                 </div>
-                <div class="row">
-                    <form id='form_edit' method='post'>
+                    <form id='wideform' method='post'>
                         {% csrf_token %}
                         {% for field in form_edit %}
-                        <div class="form-group">
-                            {# uncomment to display field errors #}
-                            {# {{ field.errors }} #}
-                            {{ field.label_tag }} {{ field }}
+                        <div class="row my-3">
+                            <strong><label for="field">{{field.label_tag}}</label></strong>
+                            <p class="w-100">{{field}}</p>
+                            {% for error in field.errors %}
+                            <p class="text-danger">{{ error|escape }}</p>
+                            {% endfor %}
                         </div>
                         {% endfor %}
-                        <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
+                        
+                        <div class="row">
+                            <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
+                        </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>

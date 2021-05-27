@@ -470,7 +470,8 @@ def edit_tratamiento_administrador(request, id):
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
                                                                                  'form_edit': form,
-                                                                                 'msg_error': msg_error})
+                                                                                 'msg_error': msg_error,
+                                                                                 'tratamiento_edit':tratamiento})
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
@@ -479,7 +480,8 @@ def edit_tratamiento_administrador(request, id):
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
                                                                                  'form_edit': form,
-                                                                                 'msg_error': msg_error})
+                                                                                 'msg_error': msg_error,
+                                                                                 'tratamiento_edit':tratamiento})
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']
@@ -538,7 +540,7 @@ def list_facturas_administrador(request):
             else:
                 resultado = []
                 for factura in facturas:
-                    servicio = Servicio.objects.filter(factura=factura)[0]
+                    servicio = Servicio.objects.filter(factura=factura, )[0]
                     resultado.append([factura, servicio])
                 paginator = Paginator(resultado, 20)
                 page_number = request.GET.get('page')
@@ -1019,6 +1021,11 @@ def edit_administrador_administrador(request, id):
                             return redirect('/administrador/administrador/show/' + str(administrador.id))
                 else:
                     return redirect('/administrador/administrador/show/' + str(administrador.id))
+            else:
+                return render(request, 'administradorAdministradorForm.html',
+                                          {'form_edit': form,
+                                           'administrador_edit': administrador})
+
 
         else:
             form = EditAdministradorForm()
@@ -1156,8 +1163,7 @@ def poblar_bbdd():
         factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
                                         receptor = cliente.nombreCompleto(), descripcion=descripcion, importe = tratamiento.precio, 
                                         tipo_impositivo = 21.0, fecha_operaciones=fecha)
-        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
+        servicio = Servicio.objects.create(estado="realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
                                         trabajador = trabajadores[random.randint(0, 7)], factura = factura)
-        puntuacion = Puntuacion.objects.create(trabajador = servicio.trabajador, servicio=servicio, puntuacion = random.randint(1, 5))
         contador +=1
         print("Implementado "+str(contador)+"de 500.")

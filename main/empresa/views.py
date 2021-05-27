@@ -112,6 +112,15 @@ def show_servicios_empresa(request, id):
     else:
         return redirect('/errorPermiso/')
 
+@login_required()
+def show_factura_empresa(request, id):
+    if esEmpresa(request):
+        servicio = Servicio.objects.get(id=id)
+        factura = servicio.factura
+        return render(request, 'facturaTrabajadorForm.html', {'servicio': servicio, 'factura': factura})
+    else:
+        return redirect("/errorPermiso/")
+
 
 # CRUD SOLICITUD DE SERVICIO
 @login_required

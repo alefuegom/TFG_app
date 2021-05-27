@@ -202,7 +202,7 @@ def creacionFactura(servicio):
         receptor = persona.apellidos + ", " + persona.nombre
     descripcion = "Tratamiento para combatir  la plaga de " + servicio.solicitudServicio.plaga.nombre + \
                   ". Concretamente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
-                  ". Realizado el día: " + str(servicio.solicitudServicio.fecha)
+                  ". Realizado el día: " + servicio.solicitudServicio.fecha.strftime("%m/%d/%Y")+"."
     importe = servicio.solicitudServicio.tratamiento.precio
     tipo_impositivo = 21
     fecha_operaciones = fecha_expedicion

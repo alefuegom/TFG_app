@@ -53,32 +53,20 @@
 {% if form %}
 <div class="container">
 
-    <strong><h1 class="title mb-3">Mi perfil</h1></strong>
+    <strong><h1 class="title mb-5">Mi perfil</h1></strong>
 
     <form id='form' method='post'>
         {% csrf_token %}
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-        <div class="alert alert-danger" style="width:100%">
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endif %}
         {% for field, valor in items %}
-        <div class="container">
-            <label for="field">{{field.label_tag}}</label>
+        <div class="my-3">
+            <strong><label for="field">{{field.label_tag}}</label></strong>
             <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
+            {% for error in field.errors %}
+            <p class="text-danger">{{ error|escape }}</p>
+            {% endfor %}
         </div>
         {% endfor %}
-        <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'
-               style=""/>
+        <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
     </form>
 </div>
 {% endif %}

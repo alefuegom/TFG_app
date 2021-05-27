@@ -20,8 +20,8 @@
         <tbody>
         {% for p in page_obj %}
         <tr>
-            <td>{{p.id}}</td>
-            <td>{{p.nombre}}</td>
+            <td class="my-auto">{{p.id}}</td>
+            <td class="my-auto">{{p.nombre}}</td>
             <td><a class="btn btn-outline-danger rounded-0" href="/administrador/plaga/delete/{{p.id}}">
                 Eliminar Plaga</a></td>
         </tr>

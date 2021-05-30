@@ -3,8 +3,12 @@
 {% load extraFiltros %}
 {% if num_trabajadores %}
 <div class="container">
-    <strong><h1 class="title">Trabajadores</h1></strong>
-    <h2 class="subtitle mt-3"> Actualmente se tienen {{num_trabajadores}} trabajadores</h2>
+    <div class="row">
+        <strong><h1 class="title">Trabajadores</h1></strong>
+    </div>
+    <div class="row">
+        <h2 class="subtitle mt-3"> Actualmente se tienen {{num_trabajadores}} trabajadores</h2>
+    </div>
     {% if msg_error %}
     <div class="alert alert-danger w-100">
         <strong>{{msg_error}}</strong>
@@ -26,6 +30,8 @@
                         <a href="/administrador/trabajador" class="btn btn-outline-danger rounded-0 ml-2">
                             Borrar filtros
                         </a>
+                            <a class="ml-auto page-link btn-dedesin ml-auto"
+                               href="/administrador/trabajador/create">Nuevo trabajador</a>
                     </div>
                 </div>
             </div>
@@ -79,10 +85,6 @@
                 <a class="page-link btn-dedesin" href="
                 {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
-                <div class="ml-auto">
-                    <a class="page-link btn-dedesin"
-                       href="/administrador/trabajador/create">Nuevo trabajador</a>
-                </div>
             </div>
         </div>
     </div>

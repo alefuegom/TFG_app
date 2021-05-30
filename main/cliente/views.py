@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.db.models import Q
 from .forms import *
 from datetime import datetime, date
 from ..models import *
@@ -12,7 +13,9 @@ from .filters import *
 @login_required
 def inicio_cliente(request):
     if esCliente(request):
-        return render(request, 'inicioCliente.html')
+        nombre_cliente = Cliente.objects.get(
+            persona__usuario=request.user).nombreCompleto()
+        return render(request, 'inicioCliente.html', {'nombre_cliente': nombre_cliente})
     else:
         return redirect('/errorPermiso/')
 
@@ -66,32 +69,37 @@ def edit_perfil_cliente(request):
     else:
         return redirect('/errorPermiso')
 
+
 def errorPermiso(request):
     return render(request, 'errorPermisoCliente.html')
+
 
 def politicaPrivacidad(request):
     return render(request, 'politicaPrivacidadCliente.html')
 
 # CRUD SERVICIOS
+
+
 @login_required
 def list_servicios_cliente(request):
     if esCliente(request):
         usuario = User.objects.filter(username=request.user.username)[0]
         servicios = Servicio.objects.filter(solicitudServicio__usuario=usuario)
-        if len(servicios)>0:
+        if len(servicios) > 0:
             servicios = servicios.order_by('-solicitudServicio__fecha')
-            servicioFilter = ServicioClienteFilter(request.GET, queryset=servicios)
+            servicioFilter = ServicioClienteFilter(
+                request.GET, queryset=servicios)
             servicios = servicioFilter.qs
-            if len(servicios)>0:
+            if len(servicios) > 0:
                 paginator = Paginator(servicios, 10)
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 return render(request, 'servicioCliente.html', {'page_obj': page_obj,
                                                                 'num_servicios': len(servicios),
-                                                                'servicioFilter':servicioFilter})
+                                                                'servicioFilter': servicioFilter})
             else:
                 msg_error = "No existe ningún servicio con los filtros introducidos."
-                return render(request, 'servicioCliente.html', {'msg_error':msg_error})
+                return render(request, 'servicioCliente.html', {'msg_error': msg_error})
         else:
             return render(request, 'servicioCliente.html')
     else:
@@ -117,10 +125,17 @@ def show_servicios_cliente(request, id):
 @login_required
 def list_solicitud_servicio_cliente(request):
     if esCliente(request):
-        usuario = User.objects.filter(username=request.user.username)[0]
-        solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
+        servicios = Servicio.objects.filter(
+            estado="Pendiente", solicitudServicio__usuario=request.user)
+        list_ids = []
+        if len(servicios) > 0:
+            for servicio in servicios:
+                list_ids.append(servicio.solicitudServicio.id)
+        solicitudes = SolicitudServicio.objects.filter(Q(estado="Pendiente") | Q(
+            estado="Atendida") | Q(estado="Rechazada" ) | Q(id__in=list_ids) , usuario=request.user)
         if len(solicitudes) > 0:
-            solicitudServicioFilter = SolicitudServicioClienteFilter(request.GET, queryset=solicitudes)
+            solicitudServicioFilter = SolicitudServicioClienteFilter(
+                request.GET, queryset=solicitudes)
             solicitudes = solicitudServicioFilter.qs
             if len(solicitudes) > 0:
                 solicitudes = solicitudes.order_by('-fecha')
@@ -128,11 +143,11 @@ def list_solicitud_servicio_cliente(request):
                 page_number = request.GET.get('page')
                 page_obj = paginator.get_page(page_number)
                 return render(request, 'solicitudServicioCliente.html', {'page_obj': page_obj,
-                                                                     'num_solicitudes': solicitudes.count(),
-                                                                         'solicitudServicioFilter':solicitudServicioFilter})
+                                                                         'num_solicitudes': solicitudes.count(),
+                                                                         'solicitudServicioFilter': solicitudServicioFilter})
             else:
                 msg_error = "No existe ninguna solicitud de servicio con los filtros introducidos."
-                return render(request, 'solicitudServicioCliente.html', {'msg_error':msg_error})
+                return render(request, 'solicitudServicioCliente.html', {'msg_error': msg_error})
         else:
             return render(request, 'solicitudServicioCliente.html')
     else:
@@ -143,7 +158,8 @@ def list_solicitud_servicio_cliente(request):
 def create_solicitud_servicio_cliente(request):
     if esCliente(request):
         if request.method == 'POST':
-            form = CreateSolicitudServicioClienteForm(request.POST, request.FILES)
+            form = CreateSolicitudServicioClienteForm(
+                request.POST, request.FILES)
             if form.is_valid():
                 usuario = request.user
                 estado = 'Pendiente'
@@ -178,12 +194,30 @@ def show_solicitud_servicio_cliente(request, id):
 
 @login_required
 def edit_solicitud_servicio_cliente(request, id):
+    print(request.user)
     if esCliente(request):
         solicitud = SolicitudServicio.objects.get(id=id)
         if request.user == solicitud.usuario:
+            if solicitud.estado == 'Pendiente':
+                if request.method == 'POST':
+                    form = EditSolicitudServicioPendienteClienteForm(
+                        request.POST, request.FILES)
+                    if form.is_valid():
+                        plaga = form.cleaned_data['plaga']
+                        observaciones = form.cleaned_data['observaciones']
+                        solicitud.plaga = Plaga.objects.get(nombre=plaga)
+                        solicitud.observaciones = observaciones
+                        solicitud.save()
+                        return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
+                else:
+                    form = EditSolicitudServicioPendienteClienteForm()
+                    values = [solicitud.plaga, solicitud.observaciones]
+                    items = zip(form, values)
+                    return render(request, 'solicitudServicioClienteForm.html', {'solicitud': solicitud, 'items': items})
             if solicitud.estado == 'Atendida':
                 if request.method == 'POST':
-                    form = EditSolicitudServicioClienteForm(request.POST, request.FILES)
+                    form = EditSolicitudServicioClienteForm(
+                        request.POST, request.FILES)
                     if form.is_valid():
                         estado = form.cleaned_data['estado']
                         solicitud.estado = estado
@@ -191,7 +225,8 @@ def edit_solicitud_servicio_cliente(request, id):
                         if estado == 'Rechazada':
                             return redirect("/cliente/solicitudServicio/show/" + str(solicitud.id))
                         elif estado == 'Aceptada':
-                            servicio = Servicio(solicitudServicio=solicitud, estado="Pendiente")
+                            servicio = Servicio(
+                                solicitudServicio=solicitud, estado="Pendiente")
                             servicio.save()
                             return redirect("/cliente/servicio/show/" + str(servicio.id))
                 else:
@@ -225,4 +260,5 @@ def logout(request):
 
 
 def esCliente(request):
-        return request.COOKIES.get('CK02') == "cliente"
+    esCliente = request.COOKIES.get('CK02') == "cliente"
+    return esCliente

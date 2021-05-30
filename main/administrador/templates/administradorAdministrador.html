@@ -28,6 +28,8 @@
                         <a href="/administrador/vehiculo" class="btn btn-outline-danger rounded-0 ml-2">
                             Borrar filtros
                         </a>
+                            <a class="page-link btn-dedesin ml-auto"
+                               href="/administrador/administrador/create">Nuevo administrador</a>
                     </div>
                 </div>
             </div>
@@ -73,10 +75,6 @@
                 <a class="page-link btn-dedesin" href="
                 {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
-                <div class="ml-auto">
-                    <a class="page-link btn-dedesin mt-2 mb-5"
-                       href="/administrador/administrador/create">Nuevo administrador</a>
-                </div>
             </div>
         </div>
     </div>

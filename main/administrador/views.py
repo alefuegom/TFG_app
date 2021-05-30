@@ -2,6 +2,8 @@ from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import shelve
+from django.db.models import Q
+from django.db.models.query import QuerySet
 from .recommendations import recomendacion_trabajador
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
@@ -30,7 +32,8 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        return render(request, 'inicioAdministrador.html')
+        nombre_administrador = Administrador.objects.get(persona__usuario = request.user).persona.nombreCompleto()
+        return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:
         return redirect('/errorPermiso/')
 
@@ -88,7 +91,12 @@ def politicaPrivacidad(request):
 @login_required
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
-        solicitudes = SolicitudServicio.objects.all()
+        servicios = Servicio.objects.filter(estado="Pendiente")
+        list_ids = []
+        if len(servicios)>0:
+            for servicio in servicios:
+                    list_ids.append(servicio.solicitudServicio.id)
+            solicitudes = SolicitudServicio.objects.filter(Q(estado="Pendiente")| Q(estado="Atendida" ) | Q(estado="Rechazada" ) | Q(id__in=list_ids)) 
         if len(solicitudes) > 0:
             resultado = []
             solicitudServicioFilter = SolicitudServicioAdministradorFilter(

@@ -11,7 +11,8 @@ from datetime import date
 @login_required
 def inicioTrabajador(request):
     if esTrabajador(request):
-        return render(request, 'inicioTrabajador.html')
+        nombre_trabajador = Trabajador.objects.get(persona__usuario = request.user).persona.nombreCompleto()
+        return render(request, 'inicioTrabajador.html', {'nombre_trabajador':nombre_trabajador})
     else:
         return redirect('/errorPermiso/')
 

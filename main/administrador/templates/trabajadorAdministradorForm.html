@@ -83,34 +83,21 @@
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
 
-        <form id='form' method='post'>
+        <form id='wideform' method='post'>
             {% csrf_token %}
-
             {% for field in form %}
-            <div class="group-form my-3">
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
-                {% if not field == form.descripcion %}
-                {{ field.label_tag }} {{ field }}
-                {% endif%}
-                {% if field == form.descripcion %}
-                <p>Descripción:</p>
-                {{field}}
-                {% endif%}
+            <div class="row my-3">
+                <strong><label for="field">{{field.label_tag}}</label></strong>
+                <p class="w-100">{{field}}</p>
+                {% for error in field.errors %}
+                <p class="text-danger">{{ error|escape }}</p>
+                {% endfor %}
             </div>
             {% endfor %}
-            <div class=" container  my-3">
-                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
+            
+            <div class="row">
+                <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
             </div>
         </form>
     </div>

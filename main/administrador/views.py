@@ -1163,33 +1163,25 @@ def poblar_bbdd():
     tratamientos = Tratamiento.objects.all()
     plaga = Plaga.objects.all()
     contador = 0
-    while contador <= 25:
-        '''fecha = date.today() - timedelta(days=random.randint(0, 150))
+    while contador <= 4:
+        fecha = date.today() + timedelta(days=random.randint(0, 15))
         empresa = empresas[random.randint(0, 19)]
         tratamiento = tratamientos[random.randint(0, 16)]
-        observaciones = "La empresa posee un problema de" + tratamiento.plaga.nombre + ". Necesitamos una rápida actuación para seguir el ritmo normal de trabajo. "
+        observaciones = "Se tiene un problema muy importante de " + tratamiento.plaga.nombre + ". Necesitamos una solución inmediata."
         solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
-            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
-        descripcion = "Tratamiento para combatir la plaga de "+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
-        factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
-                                        receptor = empresa.nombre, descripcion=descripcion, importe = tratamiento.precio, 
-                                        tipo_impositivo = 21.0, fecha_operaciones=fecha)
-        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
-                                        trabajador = trabajadores[random.randint(0, 7)], factura = factura)
-        contador +=1
-        print("Implementado "+str(contador)+"de 25.")'''
-
-        fecha = date.today() - timedelta(days=random.randint(0, 150))
-        cliente = clientes[random.randint(0, 19)]
-        tratamiento = tratamientos[random.randint(0, 16)]
-        observaciones = "Tengo una plaga de " + tratamiento.plaga.nombre + " muy abundante en casa. Necesito que me solucionen el problema."
-        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
-            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
-        descripcion = "Tratamiento para combatir la plaga de "+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
-        factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
-                                        receptor = cliente.nombreCompleto(), descripcion=descripcion, importe = tratamiento.precio, 
-                                        tipo_impositivo = 21.0, fecha_operaciones=fecha)
-        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
-                                        trabajador = trabajadores[random.randint(0, 7)], factura = factura)
+                    estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
+        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud,
+                                        trabajador = trabajadores[random.randint(0, 7)])
         contador +=1
         print("Implementado "+str(contador)+"de 25.")
+
+        '''fecha = date.today() + timedelta(days=random.randint(0, 15))
+        cliente = clientes[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "Una plaga de " + tratamiento.plaga.nombre + ""
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
+        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud,
+                                        trabajador = trabajadores[random.randint(0, 7)])
+        contador +=1
+        print("Implementado "+str(contador)+"de 25.")'''

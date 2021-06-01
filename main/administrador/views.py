@@ -32,7 +32,7 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        poblar_bbdd()
+        # poblar_bbdd()
         nombre_administrador = Administrador.objects.get(persona__usuario=request.user).persona.nombreCompleto()
         return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:
@@ -1164,24 +1164,22 @@ def poblar_bbdd():
     plaga = Plaga.objects.all()
     contador = 0
     while contador <= 4:
-        fecha = date.today() + timedelta(days=random.randint(0, 15))
+        '''fecha = date.today() + timedelta(days=random.randint(15, 30))
         empresa = empresas[random.randint(0, 19)]
         tratamiento = tratamientos[random.randint(0, 16)]
-        observaciones = "Se tiene un problema muy importante de " + tratamiento.plaga.nombre + ". Necesitamos una solución inmediata."
+        observaciones = "Necesitamos una solución inminente para un problema de " + tratamiento.plaga.nombre + ". Por favor, tratad esta solicitud."
         solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
-                    estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
-        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud,
-                                        trabajador = trabajadores[random.randint(0, 7)])
-        contador +=1
-        print("Implementado "+str(contador)+"de 25.")
+                    estado="Atendida", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
 
-        '''fecha = date.today() + timedelta(days=random.randint(0, 15))
-        cliente = clientes[random.randint(0, 19)]
-        tratamiento = tratamientos[random.randint(0, 16)]
-        observaciones = "Una plaga de " + tratamiento.plaga.nombre + ""
-        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
-            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
-        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud,
-                                        trabajador = trabajadores[random.randint(0, 7)])
         contador +=1
         print("Implementado "+str(contador)+"de 25.")'''
+
+        fecha = date.today() + timedelta(days=random.randint(15, 30))
+        cliente = clientes[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "Existe una plaga muy abundante de " + tratamiento.plaga.nombre + ". Necesito ayuda por favor. "
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
+        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud)
+        contador +=1
+        print("Implementado "+str(contador)+"de 25.")

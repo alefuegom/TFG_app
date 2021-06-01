@@ -28,6 +28,8 @@ urlpatterns = [
     path('servicio/factura/<int:id>/', views.show_factura_cliente),
     path('miPerfil/', views.show_perfil_cliente),
     path('miPerfil/edit/', views.edit_perfil_cliente),
-    path('cerrarSesion/', views.logout)
+    path('errorPermiso/', views.errorPermiso),
+    path('politicaPrivacidad/', views.politicaPrivacidad),
+    path('cerrarSesion/', views.logout),
 
 ]

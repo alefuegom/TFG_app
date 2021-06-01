@@ -1,8 +1,13 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+import shelve
+from django.db.models import Q
+from django.db.models.query import QuerySet
+from .recommendations import recomendacion_trabajador
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
+import random
 from django.db.models.functions import Lower
 from django.http import JsonResponse
 from .filters import *
@@ -12,25 +17,24 @@ from ..models import *
 
 # MÉTODOS AUXILIARES
 def esAdministrador(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        administrador = Administrador.objects.filter(persona=persona)[0]
-        return administrador
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "administrador"
 
 
 # VISTAS GENERALES
 @login_required
 def cerrarSesion(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        return render(request, 'inicioAdministrador.html')
+        #poblar_bbdd()
+        nombre_administrador = Administrador.objects.get(persona__usuario=request.user).persona.nombreCompleto()
+        return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:
         return redirect('/errorPermiso/')
 
@@ -75,11 +79,26 @@ def edit_perfil_administrador(request):
         return redirect('/errorPermiso/')
 
 
+def errorPermiso(request):
+    return render(request, 'errorPermisoAdministrador.html')
+
+
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidadAdministrador.html')
+
 # CRUD SOLICITUD SERVICIO
+
+
 @login_required
 def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
-        solicitudes = SolicitudServicio.objects.all()
+        servicios = Servicio.objects.filter(estado="Pendiente")
+        list_ids = []
+        solicitudes = []
+        if len(servicios)>0:
+            for servicio in servicios:
+                    list_ids.append(servicio.solicitudServicio.id)
+            solicitudes = SolicitudServicio.objects.filter(Q(estado="Pendiente")| Q(estado="Atendida" ) | Q(estado="Rechazada" ) | Q(id__in=list_ids)) 
         if len(solicitudes) > 0:
             resultado = []
             solicitudServicioFilter = SolicitudServicioAdministradorFilter(
@@ -214,6 +233,7 @@ def list_servicio_administrador(request):
                 msg_error = "No existe ningún servicio con los filtros seleccionados."
                 return render(request, "servicioAdministrador.html", {'msg_error': msg_error})
             else:
+                servicios = servicios.order_by('-solicitudServicio__fecha')
                 for servicio in servicios:
                     try:
                         empresa = Empresa.objects.filter(
@@ -274,7 +294,6 @@ def edit_servicio_administrador(request, id):
                         id=form.cleaned_data['trabajador'])
                     if trabajador.vehiculo:
                         servicio.trabajador = trabajador
-                        print(trabajador.vehiculo)
                         servicio.save()
                         return redirect('/administrador/servicio/')
                     else:
@@ -297,13 +316,14 @@ def edit_servicio_administrador(request, id):
 
             else:
                 form = EditServicioAdministradorForm()
+                trabajador_recomendado = recomendacion_trabajador(servicio.id)
                 if cliente:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'cliente': cliente,
+                                  {'servicio_edit': servicio, 'cliente': cliente, 'trabajador_recomendado': trabajador_recomendado,
                                    'form': form})
                 if empresa:
                     return render(request, 'servicioAdministradorForm.html',
-                                  {'servicio_edit': servicio, 'empresa': empresa,
+                                  {'servicio_edit': servicio, 'empresa': empresa, 'trabajador_recomendado': trabajador_recomendado,
                                    'form': form})
         else:
             msg_error = 'Exclusivamente se puede editar un servicio ' \
@@ -461,7 +481,8 @@ def edit_tratamiento_administrador(request, id):
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
                                                                                  'form_edit': form,
-                                                                                 'msg_error': msg_error})
+                                                                                 'msg_error': msg_error,
+                                                                                 'tratamiento_edit':tratamiento})
 
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
@@ -470,7 +491,8 @@ def edit_tratamiento_administrador(request, id):
                     items = zip(form, valores)
                     return render(request, 'tratamientoAdministradorForm.html', {'items': items,
                                                                                  'form_edit': form,
-                                                                                 'msg_error': msg_error})
+                                                                                 'msg_error': msg_error,
+                                                                                 'tratamiento_edit':tratamiento})
                 else:
                     tratamiento.nombre = form.cleaned_data['nombre']
                     tratamiento.descripcion = form.cleaned_data['descripcion']
@@ -529,7 +551,7 @@ def list_facturas_administrador(request):
             else:
                 resultado = []
                 for factura in facturas:
-                    servicio = Servicio.objects.filter(factura=factura)[0]
+                    servicio = Servicio.objects.filter(factura=factura, )[0]
                     resultado.append([factura, servicio])
                 paginator = Paginator(resultado, 20)
                 page_number = request.GET.get('page')
@@ -965,7 +987,8 @@ def create_administrador_administrador(request):
                             return render(request, 'administradorAdministradorForm.html', {'msg_error': msg_error,
                                                                                            'form': form})
                         except:
-                            usuario = User(username=email, password=contrasena)
+                            usuario = User(username=email)
+                            usuario.set_password(contrasena)
                             usuario.save()
                             persona = Persona(usuario=usuario, nombre=nombre, apellidos=apellidos, dni=dni,
                                               telefono=telefono)
@@ -1009,6 +1032,11 @@ def edit_administrador_administrador(request, id):
                             return redirect('/administrador/administrador/show/' + str(administrador.id))
                 else:
                     return redirect('/administrador/administrador/show/' + str(administrador.id))
+            else:
+                return render(request, 'administradorAdministradorForm.html',
+                                          {'form_edit': form,
+                                           'administrador_edit': administrador})
+
 
         else:
             form = EditAdministradorForm()
@@ -1032,6 +1060,7 @@ def delete_administrador_administrador(request, id):
 
     else:
         return redirect('/errorPermiso/')
+
 
 @login_required()
 def show_panelControl_administrador(request):
@@ -1068,7 +1097,7 @@ def show_panelControl_administrador(request):
         total_servicios_pendiente = Servicio.objects.filter(
             estado='Pendiente').count()
         total_servicios_realizado = Servicio.objects.filter(
-            estado='realizado').count()
+            estado='Realizado').count()
         while loop_number >= 0:
             if current_month == 0:
                 current_month = 12
@@ -1088,29 +1117,69 @@ def show_panelControl_administrador(request):
 
         total_trabajdor = 0
         for trabajador in Trabajador.objects.all():
-            if Servicio.objects.filter(solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador = trabajador).count() > total_trabajador:
+            numero_iteracion_trabajador = Servicio.objects.filter(
+                solicitudServicio__fecha__month=today.month, solicitudServicio__fecha__year=today.year, trabajador=trabajador).count()
+            if numero_iteracion_trabajador > total_trabajador:
+                total_trabajador = numero_iteracion_trabajador
                 trabajador_mes = trabajador.persona.nombre + " " + trabajador.persona.apellidos
 
         for plaga in Plaga.objects.all():
-            if Servicio.objects.filter(solicitudServicio__tratamiento__plaga=plaga).count() > total_plaga:
+            numero_iteracion_plaga = Servicio.objects.filter(
+                solicitudServicio__tratamiento__plaga=plaga).count()
+            if numero_iteracion_plaga > total_plaga:
+                total_plaga = numero_iteracion_plaga
                 plaga_mas_tratada = plaga.nombre
         for tratamiento in Tratamiento.objects.all():
-            if Servicio.objects.filter(solicitudServicio__tratamiento=tratamiento).count() > total_tratamiento:
+            numero_iteracion_tratamiento = Servicio.objects.filter(
+                solicitudServicio__tratamiento=tratamiento).count()
+            if numero_iteracion_tratamiento > total_tratamiento:
+                total_tratamiento = numero_iteracion_tratamiento
                 tratamiento_mas_empleado = tratamiento.nombre
         data_plagas = []
         plagas = []
         total_plagas = Plaga.objects.all().count()
         for plaga in Plaga.objects.all():
             plagas.append(plaga.nombre)
-            number = Servicio.objects.filter(solicitudServicio__plaga=plaga).count()
+            number = Servicio.objects.filter(
+                solicitudServicio__plaga=plaga).count()
             p = (number * 100)/total_servicios
             data_plagas.append(p)
         return render(request, 'panelControlAdministrador.html',
-                    {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
-                    'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
-                    'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
-                    'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
-                    'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
-                    'trabajador_mes':trabajador_mes, 'trabajador_total':trabajador_total})
+                      {'data': data, 'total_data': total_data, 'serviciosMesData': servicios_mes,
+                       'months': months, 'tratamiento_mas_empleado': tratamiento_mas_empleado,
+                       'plaga_mas_tratada': plaga_mas_tratada, 'total_servicios': total_servicios,
+                       'total_servicios_pendiente': total_servicios_pendiente, 'total_servicios_realizado': total_servicios_realizado,
+                       'plagas': plagas, 'data_plagas': data_plagas, 'total_plagas': total_plagas,
+                       'trabajador_mes': trabajador_mes, 'trabajador_total': trabajador_total})
     else:
         return ('/errorPermiso')
+
+
+def poblar_bbdd():
+    print("INICIO DE LA POBLACIÓN")
+    clientes = Cliente.objects.all()
+    empresas = Empresa.objects.all()
+    trabajadores = Trabajador.objects.all()
+    tratamientos = Tratamiento.objects.all()
+    plaga = Plaga.objects.all()
+    contador = 0
+    while contador <= 4:
+        '''fecha = date.today() + timedelta(days=random.randint(15, 30))
+        empresa = empresas[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "Necesitamos una solución inminente para un problema de " + tratamiento.plaga.nombre + ". Por favor, tratad esta solicitud."
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+                    estado="Atendida", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
+
+        contador +=1
+        print("Implementado "+str(contador)+"de 25.")'''
+
+        fecha = date.today() + timedelta(days=random.randint(15, 30))
+        cliente = clientes[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "Existe una plaga muy abundante de " + tratamiento.plaga.nombre + ". Necesito ayuda por favor. "
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
+        servicio = Servicio.objects.create(estado="Pendiente", solicitudServicio = solicitud)
+        contador +=1
+        print("Implementado "+str(contador)+"de 25.")

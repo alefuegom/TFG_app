@@ -1,53 +1,49 @@
 {% extends 'header.html' %}
 {% block contenido %}
-
+<style>
+    input{
+        width: 100%;
+        height: 2.5rem;
+    }
+</style>
 <div class="container">
-    <div class="row justify-content-center ">
-        <div class="row justify-content-center my-5">
-            <h1 class="my-4 subtitle text-uppercase text-center w-100">Inicio de sesión</h1>
-            {% if form.errors %}
-            {% for field in form %}
-            {% for error in field.errors %}
-            <div class="alert alert-danger" style="width:100%">
-                <strong>{{ error|escape }}</strong>
-            </div>
-            {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-            <div class="alert alert-danger" style="width:100%">
-                <strong>{{ error|escape }}</strong>
-            </div>
-            {% endfor %}
-            {% endif %}
+    <div class="row justify-content-center my-4">
+        <h1 class="subtitle text-uppercase text-center w-100">Inicio de sesión</h1>
+    </div>
+    <div class="row mb-5 justify-content-center">
 
-            {% if er_msg %}
-            <div class="alert alert-danger" style="width:100%">
-                <strong>{{er_msg}}</strong>
-            </div>
-            {% endif %}
-
-            {% if ex_msg %}
-            <div class="alert alert-success" style="width:100%">
-                <strong>{{ex_msg}}</strong>
-            </div>
-            {% endif %}
-            <form id='form' method='post'>
-                {% csrf_token %}
-
-                {% for field in form %}
-                <div class="container center_div" style="margin-top:10px;">
-                    {# uncomment to display field errors #}
-                    {# {{ field.errors }} #}
-                    <div class="form-group">
-                     {{ field }}
-                    </div>
-                </div>
-                {% endfor %}
-                <div class="d-flex justify-content-center ">
-                    <input type='submit' class="btn-outline btn-dedesin mt-4" value='Confirmar'/>
-                </div>
-            </form>
+        {% if er_msg %}
+        <div class="alert alert-danger" style="width:100%">
+            <strong>{{er_msg}}</strong>
         </div>
+        {% endif %}
+
+        {% if ex_msg %}
+        <div class="alert alert-success" style="width:100%">
+            <strong>{{ex_msg}}</strong>
+        </div>
+        {% endif %}
+
+        <form id='form' method='post' class="w-100">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="w-50 my-3 mx-auto">
+                {{field.label}}
+                <div class="form-group w-100 my-3">
+                    {{ field }}
+                </div>
+                {% for error in field.errors %}
+                <p class="w-100 text-danger">{{ error|escape }}</p>
+
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="d-flex mx-auto w-25">
+                <input type='submit' class="btn-outline btn-dedesin mt-4"
+                    value='Confirmar'/>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

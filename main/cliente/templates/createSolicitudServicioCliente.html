@@ -1,28 +1,31 @@
 {% extends 'headerCliente.html' %}
 {% block contenido %}
 <div class="container">
-    <form id='form' method='post'>
-        {% csrf_token %}
-        <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
-        <h2 class="subtitle mt-3 mb-5">Nueva solicitud</h2>
-
-        <div class="center_div">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="center_div" style="margin-top:10px;">
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
-
-                {{ field.label_tag }} {{ field }}
-
-
-            </div>
-            {% endfor %}
-
-            <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'
-                   style=""/>
+    {% csrf_token %}
+    <strong><h1 class="title"> Solicitudes de servicio </h1></strong>
+    <h2 class="subtitle my-3">Nueva solicitud</h2>
+    <div class="row mb-4">
+        <div class="col-lg-6 col-md-6 col-xs-12" >
+            <form id='form' method='post'>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="my-3">
+                    <strong><label for="field" class="mr-2">{{field.label_tag}}</label></strong>
+                    {{field}}
+                    {% for error in field.errors %}
+                    <p class="text-danger">{{ error|escape }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
+            </form>
+                </div>
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <h4 class="subtitle">A tener en cuenta</h4>
+            <p class="text-justify">Para la máxima efectividad del servicio, se ruega que se complete detalladamente en las observaciones el problema correspondiente.</p>
         </div>
-    </form>
+    </div>
+</div>
 </div>
 
 {% endblock %}

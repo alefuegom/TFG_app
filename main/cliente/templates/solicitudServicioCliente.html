@@ -20,6 +20,8 @@
                         <a href="/cliente/solicitudServicio" class="btn btn-outline-danger rounded-0 ml-2">
                         Borrar filtros
                         </a>
+                        <a class="ml-auto page-link btn-dedesin ml-auto"
+           href="/cliente/solicitudServicio/create">Nueva solicitud</a>
                     </div>
                 </div>
             </div>
@@ -84,9 +86,7 @@
                 <a class="page-link btn-dedesin" href="
                 {% extraFiltros page_obj.paginator.num_pages 'page' request.GET.urlencode %}">&raquo;</a>
                 {% endif %}
-                <div class="ml-auto">
-                    <a class="page-link btn-dedesin" href="/cliente/solicitudServicio/create/">Nueva solicitud</a>
-                </div>
+        
             </div>
 
 
@@ -110,8 +110,7 @@
         <a class="mr-auto page-link btn-dedesin mt-2"
            href="/cliente/solicitudServicio/">Atrás</a>
                     {% endif %}
-        <a class="ml-auto page-link btn-dedesin mt-2"
-           href="/cliente/solicitudServicio/create">Nueva solicitud</a>
+        <a class="page-link btn-dedesin" href="/cliente/solicitudServicio/create/">Nueva solicitud</a>
     </div>
 
 </div>

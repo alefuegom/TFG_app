@@ -23,7 +23,10 @@ urlpatterns = [
     path('servicio/edit/<int:id>/', views.edit_servicio_trabajador),
     path('miPerfil/', views.show_perfil_trabajador),
     path('miPerfil/edit/', views.edit_perfil_trabajador),
-    path('cerrarSesion', views.cerrarSesion)
+    path('cerrarSesion', views.cerrarSesion),
+    path('errorPermiso/', views.errorPermiso),
+    path('politicaPrivacidad/', views.politicaPrivacidad),
+
 
 ]
 

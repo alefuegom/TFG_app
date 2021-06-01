@@ -28,12 +28,19 @@
                 </div>
                 <div class="row">
                     <strong><p>Abandono: </p></strong>
-                    <p class="ml-1">{{servicio.solicitudServicio.tratamiento.abandono}}</p>
+                    {% if servicio_edit.solicitudServicio.tratamiento.abandono == True %}
+                    <p class="ml-1">Sí</p>
+                    {% else %}
+                    <p class="ml-1">No</p>
+                    {% endif %}
                 </div>
+
+                {% if servicio_edit.solicitudServicio.tratamiento.abandono == True %}
                 <div class="row">
                     <strong><p>Tiempo de abandono: </p></strong>
-                    <p class="ml-1">{{servicio.solicitudServicio.tratamiento.horasAbandono}}</p>
+                    <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.horasAbandono}}</p>
                 </div>
+                {% endif %}
                 <div class="row">
                     <strong><p>Trabajador asociado: </p></strong>
                     {% if servicio.trabajador %}
@@ -122,6 +129,12 @@
         </div>
         {% endif %}
         {% endif %}
+        {% if servicio.factura %}
+        <div class="row my-3">
+            <a class="page-link btn-dedesin"
+               href="/administrador/factura/show/{{servicio.id}}">Mostrar factura</a>
+        </div>
+        {% endif %}
 
     </div>
 </div>
@@ -156,26 +169,39 @@
                     <strong><p>Plaga: </p></strong>
                     <p class="ml-1">{{servicio_edit.solicitudServicio.plaga.nombre}}</p>
                 </div>
+               
                 <div class="row">
                     <strong><p>Abandono: </p></strong>
-                    <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.abandono}}</p>
+                    {% if servicio_edit.solicitudServicio.tratamiento.abandono == True %}
+                    <p class="ml-1">Sí</p>
+                    {% else %}
+                    <p class="ml-1">No</p>
+                    {% endif %}
                 </div>
+
+                {% if servicio_edit.solicitudServicio.tratamiento.abandono == True %}
                 <div class="row">
                     <strong><p>Tiempo de abandono: </p></strong>
                     <p class="ml-1">{{servicio_edit.solicitudServicio.tratamiento.horasAbandono}}</p>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <strong><p>Trabajador recomendado: </p></strong>
+                    <p class="ml-1">{{trabajador_recomendado}}</p>
                 </div>
                 <div class="row">
                     <form id='form' method='post'>
                         {% csrf_token %}
                         {% for field in form %}
-
-                        {# uncomment to display field errors #}
-                        {# {{ field.errors }} #}
-
-                        {{ field.label_tag }} {{ field }}
-
+                        <div class="my-3">
+                            <strong><label for="field" class="mr-2">{{field.label_tag}}</label></strong>
+                            {{field}}
+                            {% for error in field.errors %}
+                            <p class="text-danger">{{ error|escape }}</p>
+                            {% endfor %}
+                        </div>
                         {% endfor %}
-                        <p><input type='submit' class="page-link my-4 btn-dedesin" value='Confirmar'/>
+                        <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
                     </form>
                 </div>
             </div>

@@ -41,20 +41,22 @@
                 </div>
                 <div class="row">
                     <strong><p>Abandono: </p></strong>
+                    {% if solicitud.tratamiento %}
                     {% if solicitud.tratamiento.abandono %}
-                    <p class=" ml-1">{{solicitud.tratamiento.abandono}}</p>
+                    <p class=" ml-1">Sí</p>
+                    {% else %}
+                    <p class=" ml-1">No</p>
+                    {% endif %}
                     {% else %}
                     <p class=" ml-1">Por definir</p>
                     {% endif %}
                 </div>
+                {% if solicitud.tratamiento.abandono %}
                 <div class="row">
                     <strong><p>Tiempo de abandono: </p></strong>
-                    {% if solicitud.tratamiento.horasAbandono %}
                     <p class=" ml-1">{{solicitud.tratamiento.horasAbandono}}</p>
-                    {% else %}
-                    <p class=" ml-1">Por definir</p>
-                    {% endif %}
                 </div>
+                {% endif %}
                 <div class="row">
                     <strong><p>Observaciones</p></strong>
                     <p class="ml-2">{{solicitud.observaciones}}</p>
@@ -145,43 +147,24 @@
         <strong>{{msg_error}}</strong>
     </div>
     {% endif %}
-    <div class="row">
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger" style="width:100%">
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
-    </div>
-    <div class="row">
+    <div class="row my-3">
 
         <div class="col-lg-6 col-md-6 col-xs-12">
-            <div class="row">
                 <h3 class="subtitle mb-3 w-100">Editar la solicitud de servicio</h3>
-            </div>
-            <div class="row">
 
                 <form id='form' method='post'>
                     {% csrf_token %}
                     {% for field in form %}
-                    <div class="form-grup my-3">
-                        {# uncomment to display field errors #}
-                        {# {{ field.errors }} #}
-
-                        {{ field.label_tag }} {{ field }}
-
-                    </div>
-
-                    {% endfor %}
                     <div class="my-3">
-                        <p><input type='submit' class="page-link btn-dedesin" value='Confirmar'
-                        />
+                        <strong><label for="field" class="mr-2">{{field.label_tag}}</label></strong>
+                        {{field}}
+                        {% for error in field.errors %}
+                        <p class="text-danger">{{ error|escape }}</p>
+                        {% endfor %}
                     </div>
+                    {% endfor %}
+                    <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
                 </form>
-            </div>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-12">
             <div class="row">

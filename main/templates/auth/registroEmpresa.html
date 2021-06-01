@@ -1,25 +1,17 @@
 {% extends 'header.html' %}
 {% block contenido %}
+<style>
+    input{
+        width: 100%;
+        height: 2.5rem;
+    }
+</style>
 <div class="container">
     <div class="row justify-content-center ">
         <div class="row justify-content-center my-5">
-            <h1 class="subtitle color-dedesin text-uppercase" style="width:100%; text-align:center;">Registro para empresas</h1>
-            <a class="my-1 color-dedesin" style="width:100%;text-align:center;" href="/registroCliente">¿Eres un cliente
+            <h1 class="subtitle color-dedesin text-uppercase text-center w-100">Registro para empresas</h1>
+            <a class="my-1 color-dedesin w-100 text-center" href="/registroCliente">¿Eres un cliente
                 particular?</a>
-            {% if form.errors %}
-            {% for field in form %}
-            {% for error in field.errors %}
-            <div class="alert alert-danger" style="width:100%">
-                <strong>{{ error|escape }}</strong>
-            </div>
-            {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-            <div class="alert alert-danger" style="width:100%">
-                <strong>{{ error|escape }}</strong>
-            </div>
-            {% endfor %}
-            {% endif %}
 
             {% if er_msg %}
             <div class="alert alert-danger" style="width:100%">
@@ -32,21 +24,25 @@
             </div>
             {% endif %}
 
-            <form id='form' method='post'>
+            <form id='form' method='post' class="w-100">
                 {% csrf_token %}
+
                 {% for field in form %}
-                <div class="container center_div" style="margin-top:10px;">
+                <div class="w-50 my-3 mx-auto">
                     {# uncomment to display field errors #}
                     {# {{ field.errors }} #}
-                    <div class="form-group">
-
+                    {{field.label}}
+                    <div class="form-group w-100 my-3">
                         {{ field }}
                     </div>
-                                </div>
+                    {% for error in field.errors %}
+                        <p class="w-100 text-danger">{{ error|escape }}</p>
+
+                    {% endfor %}                
+                </div>
                 {% endfor %}
-                <div class="d-flex justify-content-center ">
-                    <p><input type='submit' class="btn-outline btn-dedesin mt-4" value='Confirmar'
-                              style=""/>
+                <div class="d-flex mx-auto w-25 ">
+                    <input type='submit' class="btn-outline btn-dedesin mt-4" value='Confirmar'/>
                 </div>
             </form>
         </div>

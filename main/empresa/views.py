@@ -4,23 +4,21 @@ from django.core.paginator import Paginator
 from .forms import *
 from ..models import *
 from .filters import *
+from django.db.models import Q
 from django.contrib.auth import logout as do_logout
 
 
 # MÉTODOS AUXILIARES
 def esEmpresa(request):
-    try:
-        empresa = Empresa.objects.filter(usuario=request.user)[0]
-        return empresa
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "empresa"
 
 
 # VISTAS GENERALES
 @login_required
 def inicio_empresa(request):
     if esEmpresa(request):
-        return render(request, 'inicioEmpresa.html')
+        nombre_empresa = Empresa.objects.get(usuario=request.user).nombre
+        return render(request, 'inicioEmpresa.html', {'nombre_empresa': nombre_empresa})
     else:
         return redirect('/errorPermiso/')
 
@@ -65,9 +63,19 @@ def edit_perfil_empresa(request):
         return redirect('/errorPermiso/')
 
 
+def errorPermiso(request):
+    return render(request, 'errorPermisoEmpresa.html')
+
+
+def politicaPrivacidad(request):
+    return render(request, 'politicaPrivacidadEmpresa.html')
+
+
 def logout(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 # CRUD SERVICIOS
@@ -78,7 +86,8 @@ def list_servicios_empresa(request):
         servicios = Servicio.objects.filter(solicitudServicio__usuario=usuario)
         if len(servicios) > 0:
             servicios = servicios.order_by('-solicitudServicio__fecha')
-            servicioFilter = ServicioEmpresaFilter(request.GET, queryset=servicios)
+            servicioFilter = ServicioEmpresaFilter(
+                request.GET, queryset=servicios)
             servicios = servicioFilter.qs
             if len(servicios) > 0:
                 paginator = Paginator(servicios, 10)
@@ -111,14 +120,31 @@ def show_servicios_empresa(request, id):
         return redirect('/errorPermiso/')
 
 
+@login_required()
+def show_factura_empresa(request, id):
+    if esEmpresa(request):
+        servicio = Servicio.objects.get(id=id)
+        factura = servicio.factura
+        return render(request, 'facturaTrabajadorForm.html', {'servicio': servicio, 'factura': factura})
+    else:
+        return redirect("/errorPermiso/")
+
+
 # CRUD SOLICITUD DE SERVICIO
 @login_required
 def list_solicitud_servicio_empresa(request):
     if esEmpresa(request):
-        usuario = User.objects.filter(username=request.user.username)[0]
-        solicitudes = SolicitudServicio.objects.filter(usuario=usuario)
+        servicios = Servicio.objects.filter(
+        estado="Pendiente", solicitudServicio__usuario=request.user)
+        list_ids = []
+        if len(servicios) > 0:
+            for servicio in servicios:
+                list_ids.append(servicio.solicitudServicio.id)
+        solicitudes = SolicitudServicio.objects.filter(Q(estado="Pendiente") | Q(
+            estado="Atendida") | Q(estado="Rechazada") | Q(id__in=list_ids), usuario=request.user)
         if len(solicitudes) > 0:
-            solicitudServicioFilter = SolicitudServicioEmpresaFilter(request.GET, queryset=solicitudes)
+            solicitudServicioFilter = SolicitudServicioEmpresaFilter(
+                request.GET, queryset=solicitudes)
             solicitudes = solicitudServicioFilter.qs
             if len(solicitudes) > 0:
                 solicitudes = solicitudes.order_by('-fecha')
@@ -180,8 +206,24 @@ def edit_solicitud_servicio_empresa(request, id):
     if esEmpresa(request):
         solicitud = SolicitudServicio.objects.get(id=id)
         if request.user == solicitud.usuario:
-            if request.method == 'POST':
-                if solicitud.estado == 'Atendida':
+            if solicitud.estado == 'Pendiente':
+                if request.method == 'POST':
+                    form = CreateSolicitudServicioEmpresaForm(  
+                        request.POST, request.FILES)
+                    if form.is_valid():
+                        plaga = form.cleaned_data['plaga']
+                        observaciones = form.cleaned_data['observaciones']
+                        solicitud.plaga = Plaga.objects.get(nombre=plaga)
+                        solicitud.observaciones = observaciones
+                        solicitud.save()
+                        return redirect("/empresa/solicitudServicio/show/" + str(solicitud.id))
+                else:
+                    form = CreateSolicitudServicioEmpresaForm()
+                    values = [solicitud.plaga, solicitud.observaciones]
+                    items = zip(form, values)
+                    return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'items': items})
+            if solicitud.estado == 'Atendida':
+                if request.method == 'POST':
                     form = EditSolicitudServicioEmpresaForm(
                         request.POST, request.FILES)
                     if form.is_valid():
@@ -196,12 +238,13 @@ def edit_solicitud_servicio_empresa(request, id):
                             servicio.save()
                             return redirect("/empresa/servicio/show/" + str(servicio.id))
                 else:
-                    msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
-                    return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
-                                                                                 'msg_error': msg_error})
+                    form = EditSolicitudServicioEmpresaForm()
+                    return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'form': form})
             else:
-                form = EditSolicitudServicioEmpresaForm()
-                return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'form': form})
+                msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
+                return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
+                                                                                 'msg_error': msg_error})
+           
         else:
             return redirect('/errorPermiso')
     else:

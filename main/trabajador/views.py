@@ -11,10 +11,16 @@ from datetime import date
 @login_required
 def inicioTrabajador(request):
     if esTrabajador(request):
-        return render(request, 'inicioTrabajador.html')
+        nombre_trabajador = Trabajador.objects.get(persona__usuario = request.user).persona.nombreCompleto()
+        return render(request, 'inicioTrabajador.html', {'nombre_trabajador':nombre_trabajador})
     else:
         return redirect('/errorPermiso/')
 
+def errorPermiso(request):
+        return render(request, 'errorPermisoTrabajador.html')
+
+def politicaPrivacidad(request):
+        return render(request, 'politicaPrivacidadTrabajador.html')
 
 @login_required
 def show_perfil_trabajador(request):
@@ -62,12 +68,13 @@ def edit_perfil_trabajador(request):
 def list_servicios_trabajador(request):
     if esTrabajador(request):
         trabajador = Trabajador.objects.filter(persona__usuario=request.user)[0]
-        servicios = Servicio.objects.filter(trabajador=trabajador)
+        servicios = Servicio.objects.filter(trabajador=trabajador, estado="Pendiente")
         if len(servicios) > 0:
             servicios = servicios.order_by('-solicitudServicio__fecha')
             servicioFilter = ServicioTrabajadorFilter(request.GET, queryset=servicios)
             servicios = servicioFilter.qs
             if len(servicios) > 0:
+                servicios.order_by("-solicitudServicio__fecha")
                 resultado = []
                 for servicio in servicios:
                     usuario = servicio.solicitudServicio.usuario
@@ -88,7 +95,7 @@ def list_servicios_trabajador(request):
                 msg_error = "No existe ningún servicio con los filtros introducidos."
                 return render(request, 'servicioTrabajador.html', {'msg_error': msg_error})
         else:
-            return render(request, 'servicioCliente.html')
+            return render(request, 'servicioTrabajador.html')
     else:
         return redirect('/errorPermiso/')
 
@@ -175,16 +182,14 @@ def edit_servicio_trabajador(request, id):
 @login_required
 def cerrarSesion(request):
     do_logout(request)
-    return redirect('/')
+    response = redirect('/')
+    response.delete_cookie('CK02')
+    return response
 
 
 def esTrabajador(request):
-    try:
-        persona = Persona.objects.filter(usuario=request.user)[0]
-        trabajador = Trabajador.objects.filter(persona=persona)
-        return trabajador
-    except:
-        return None
+    return request.COOKIES.get('CK02') == "trabajador"
+
 
 
 def creacionFactura(servicio):
@@ -199,7 +204,7 @@ def creacionFactura(servicio):
         receptor = persona.apellidos + ", " + persona.nombre
     descripcion = "Tratamiento para combatir  la plaga de " + servicio.solicitudServicio.plaga.nombre + \
                   ". Concretamente el tratamiento aplicado: " + servicio.solicitudServicio.tratamiento.nombre + \
-                  ". Realizado el día: " + str(servicio.solicitudServicio.fecha)
+                  ". Realizado el día: " + servicio.solicitudServicio.fecha.strftime("%m/%d/%Y")+"."
     importe = servicio.solicitudServicio.tratamiento.precio
     tipo_impositivo = 21
     fecha_operaciones = fecha_expedicion

@@ -1,0 +1,16 @@
+{% extends 'headerTrabajador.html' %}
+{% block contenido %}
+{% load static %}
+<div class="container">
+    <div class="row my-3">
+        <div class=" text-center" style="width:100%">
+            <h1 class="text-danger my-2">La petición que ha realizado no es posible. No tiene permisos.</h1>
+            <h4 class="subtitle text-justify my-2">La petición que se está realizando no está permitida. Si necesita más información puede enviar un correo a la dirección: administrador1@email.com</h4>
+        </div>
+    </div>
+    <div class="row my-5">
+        <a href="/" class="page-link btn-dedesin">Volver a inicio</a>
+    </div>
+</div>
+
+{% endblock %}

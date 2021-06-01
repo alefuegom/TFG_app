@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Con estos patrones podemos validar los campos dni, cif y la cuenta bancaria
 
@@ -9,8 +10,8 @@ MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe una matrícula
 CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
 CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
-CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número')
+CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}',
+                                  'Escriba una contraseña entre 8 y 15 caracteres, al menos una letra minúscula, otra mayúscula, un número y un carácter especial.')
 
 
 class Empresa(models.Model):
@@ -35,6 +36,8 @@ class Persona(models.Model):
     def __str__(self):
         return self.nombre + "," + self.apellidos + "-" + self.dni
 
+    def nombreCompleto(self):
+        return self.nombre + " " + self.apellidos
 
 class Cliente(models.Model):
     direccion = models.TextField()
@@ -44,6 +47,8 @@ class Cliente(models.Model):
     def __str__(self):
         return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
 
+    def nombreCompleto(self):
+        return self.persona.nombre + " " + self.persona.apellidos
 
 class Vehiculo(models.Model):
     marca = models.CharField(max_length=50)
@@ -62,7 +67,7 @@ class Trabajador(models.Model):
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.persona.nombre + "," + self.persona.apellidos + "-" + self.persona.dni
+        return self.persona.nombre + "," + self.persona.apellidos
 
 
 class Administrador(models.Model):
@@ -103,9 +108,9 @@ class SolicitudServicio(models.Model):
     estado = models.CharField(choices=ESTADO_SOLICITUD, default='pendiente', max_length=9)
     fecha = models.DateField(default=None, null=True)
     observaciones = models.TextField()
-    tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE, default=None, null=True)
-    plaga = models.ForeignKey(Plaga, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    tratamiento = models.ForeignKey(Tratamiento, on_delete=models.DO_NOTHING, default=None, null=True)
+    plaga = models.ForeignKey(Plaga, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.id) + "-" + self.usuario.username + " (" + self.estado + ")"
@@ -134,7 +139,7 @@ class Servicio(models.Model):
     estado = models.CharField(choices=ESTADO_SERVICIO, default='pendiente', max_length=9)
     observaciones = models.TextField()
     solicitudServicio = models.OneToOneField(SolicitudServicio, on_delete=models.CASCADE)
-    trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, default=None, null=True)
+    trabajador = models.ForeignKey(Trabajador, on_delete=models.DO_NOTHING, default=None, null=True)
     factura = models.OneToOneField(Factura, on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):

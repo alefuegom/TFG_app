@@ -5,8 +5,8 @@ DNI_REGEX = RegexValidator(r'[0-9]{8}[A-Za-z]{1}', 'Escribe un DNI correcto.')
 CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
 CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
-CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número')
+CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}',
+                                  'Escriba una contraseña entre 8 y 15 caracteres, al menos una letra minúscula, otra mayúscula, un número y un carácter especial.')
 
 
 class RegistroClienteForm(forms.Form):
@@ -27,9 +27,9 @@ class RegistroEmpresaForm(forms.Form):
     contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}), validators=[CONTRASEÑA_REGEX], label="Contraseña")
     telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono", widget=forms.TextInput(attrs={'placeholder': 'Teléfono'}))
     cuenta_bancaria = forms.CharField(validators=[CUENTA_BANCARIA_REGEX], required=True,label="Cuenta bancaria", widget=forms.TextInput(attrs={'placeholder': 'Cuenta bancaria'}))
-    direccion = forms.CharField(label="Dirección", widget=forms.Textarea(attrs={'placeholder': 'Dirección'}))
+    direccion = forms.CharField(label="Dirección",  widget=forms.TextInput(attrs={'placeholder': 'Dirección'}))
 
 
 class InicioSesionForm(forms.Form):
-    email = forms.EmailField(label="E-mail", widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    email = forms.EmailField(label="E-mail",  widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
     contraseña = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))

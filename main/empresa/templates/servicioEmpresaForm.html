@@ -50,6 +50,12 @@
             </div>
             {% endif %}
         </div>
+        {% if servicio.estado == 'realizado' %}
+        <div class="row my-3">
+            <a class="page-link btn-dedesin" href="/empresa/servicio/factura/{{servicio.id}}/">Mostrar
+                factura</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endif %}

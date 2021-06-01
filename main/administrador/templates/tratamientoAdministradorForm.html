@@ -69,41 +69,31 @@
 {% endif %}
 {% if form %}
 <div class="container mb-5">
-    <h1 class="mt-3 mb-4"> Nuevo tratamiento</h1>
-        {% if msg_error %}
+    <div class="row">
+        <h1 class="mt-3 mb-4 title"> Nuevo tratamiento</h1>
+    </div>
+    {% if msg_error %}
+    <div class="row">
         <div class="alert alert-danger w-100">
             <strong>{{msg_error}}</strong>
         </div>
-        {% endif %}
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger w-100" >
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
-
-        <form id='form' method='post'>
+    </div>
+    {% endif %}
+        <form id='wideform' method='post'>
             {% csrf_token %}
-
             {% for field in form %}
-            <div class="form-group my-3">
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
-                {% if not field == form.descripcion %}
-                {{ field.label_tag }} {{ field }}
-                {% endif%}
-                {% if field == form.descripcion %}
-                <p>Descripción:</p>
-                {{field}}
-                {% endif%}
+            <div class="row my-3">
+                <strong><label for="field">{{field.label_tag}}</label></strong>
+                <p class="w-100">{{field}}</p>
+                {% for error in field.errors %}
+                <p class="text-danger">{{ error|escape }}</p>
+                {% endfor %}
             </div>
             {% endfor %}
-
-                <input type='submit' class="page-link btn-dedesin" value='Confirmar'/>
-
+            
+            <div class="row">
+                <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
+            </div>
         </form>
 </div>
 {% endif %}
@@ -116,15 +106,6 @@
             <strong>{{msg_error}}</strong>
         </div>
         {% endif %}
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger w-100" >
-            <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
         <div class="row">
             <strong>
                 <p>Plaga: </p>
@@ -132,26 +113,20 @@
             <p class=" ml-1">{{tratamiento_edit.plaga}}</p>
         </div>
 
-        <form id='form_edit' method='post'>
+        <form id='wideform' method='post'>
             {% csrf_token %}
-
             {% for field, valor in items %}
-            <div class="form-group my-3">
-
-                {% if not field == form.descripcion %}
-                <label for="field">{{field.label_tag}}</label>
-                <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
-                {% endif %}
-                {% if field == form.descripcion %}
-                <p>Descripción:</p>
-                <input id="field" type="{{field.type}}" name="{{field.name}}" value="{{valor}}">
-                {% endif %}
-                {# uncomment to display field errors #}
-                {# {{ field.errors }} #}
+            <div class="row my-3">
+                <strong><label for="field">{{field.label_tag}}</label></strong>
+                <p class="w-100">{{field}}</p>
+                {% for error in field.errors %}
+                <p class="text-danger">{{ error|escape }}</p>
+                {% endfor %}
             </div>
             {% endfor %}
-             <input type='submit' class="page-link btn-dedesin " value='Confirmar' />
-
+            <div class="row">
+                <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
+            </div>
         </form>
     </div>
 </div>

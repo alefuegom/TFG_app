@@ -1,9 +1,9 @@
 {% extends 'headerCliente.html' %}
 {% block contenido %}
 {% if factura %}
-<div class="container mb-5" style="margin-top:10%;">
-    <h1> Factura {{factura.id}} </h1>
-    <h2>Servicio asociado: <a
+<div class="container mb-5">
+    <h1 class="title"> Factura {{factura.id}} </h1>
+    <h2 class="subtitle">Servicio asociado: <a class="color-dedesin"
             href="/cliente/servicio/show/{{servicio.id}}/">{{servicio.id}}</a>
     </h2>
     <div class="container mt-4">
@@ -37,7 +37,7 @@
             <div class="col-sm">
                 <div class="row">
                     <strong><p>Descripción: </p></strong>
-                    <p class="ml-2">{{factura.descripcion}}</p>
+                    <p class="ml-2 text-justify">{{factura.descripcion}}</p>
                 </div>
             </div>
         </div>

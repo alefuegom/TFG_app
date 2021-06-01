@@ -32,7 +32,7 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        # poblar_bbdd()
+        #poblar_bbdd()
         nombre_administrador = Administrador.objects.get(persona__usuario=request.user).persona.nombreCompleto()
         return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:

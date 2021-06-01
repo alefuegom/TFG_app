@@ -24,7 +24,7 @@ class SolicitudServicioAdministradorFilter(django_filters.FilterSet):
 
 ESTADO_SERVICIO = (
         ('Pendiente', 'Pendiente'),
-        ('realizado', 'Realizado'),
+        ('Realizado', 'Realizado'),
     )
 
 class ServicioAdministradorFilter(django_filters.FilterSet):

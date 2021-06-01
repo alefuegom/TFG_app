@@ -129,6 +129,12 @@
         </div>
         {% endif %}
         {% endif %}
+        {% if servicio.factura %}
+        <div class="row my-3">
+            <a class="page-link btn-dedesin"
+               href="/administrador/factura/show/{{servicio.id}}">Mostrar factura</a>
+        </div>
+        {% endif %}
 
     </div>
 </div>

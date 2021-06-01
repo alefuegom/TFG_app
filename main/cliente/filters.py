@@ -17,7 +17,7 @@ class SolicitudServicioClienteFilter(django_filters.FilterSet):
 
 ESTADO_SERVICIO = (
     ('Pendiente', 'Pendiente'),
-    ('realizado', 'Realizado'),
+    ('Realizado', 'Realizado'),
 )
 class ServicioClienteFilter(django_filters.FilterSet):
     id = django_filters.NumberFilter(field_name='id', lookup_expr='iexact', widget=NumberInput(attrs={'min': 1}))    

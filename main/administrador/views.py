@@ -32,7 +32,8 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        nombre_administrador = Administrador.objects.get(persona__usuario = request.user).persona.nombreCompleto()
+        poblar_bbdd()
+        nombre_administrador = Administrador.objects.get(persona__usuario=request.user).persona.nombreCompleto()
         return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:
         return redirect('/errorPermiso/')
@@ -93,6 +94,7 @@ def list_solicitudServicio_administrador(request):
     if esAdministrador(request):
         servicios = Servicio.objects.filter(estado="Pendiente")
         list_ids = []
+        solicitudes = []
         if len(servicios)>0:
             for servicio in servicios:
                     list_ids.append(servicio.solicitudServicio.id)
@@ -1095,7 +1097,7 @@ def show_panelControl_administrador(request):
         total_servicios_pendiente = Servicio.objects.filter(
             estado='Pendiente').count()
         total_servicios_realizado = Servicio.objects.filter(
-            estado='realizado').count()
+            estado='Realizado').count()
         while loop_number >= 0:
             if current_month == 0:
                 current_month = 12
@@ -1161,18 +1163,33 @@ def poblar_bbdd():
     tratamientos = Tratamiento.objects.all()
     plaga = Plaga.objects.all()
     contador = 0
-    while contador <= 500:
+    while contador <= 25:
+        '''fecha = date.today() - timedelta(days=random.randint(0, 150))
+        empresa = empresas[random.randint(0, 19)]
+        tratamiento = tratamientos[random.randint(0, 16)]
+        observaciones = "La empresa posee un problema de" + tratamiento.plaga.nombre + ". Necesitamos una rápida actuación para seguir el ritmo normal de trabajo. "
+        solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
+            estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=empresa.usuario, observaciones=observaciones)
+        descripcion = "Tratamiento para combatir la plaga de "+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
+        factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
+                                        receptor = empresa.nombre, descripcion=descripcion, importe = tratamiento.precio, 
+                                        tipo_impositivo = 21.0, fecha_operaciones=fecha)
+        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
+                                        trabajador = trabajadores[random.randint(0, 7)], factura = factura)
+        contador +=1
+        print("Implementado "+str(contador)+"de 25.")'''
+
         fecha = date.today() - timedelta(days=random.randint(0, 150))
         cliente = clientes[random.randint(0, 19)]
         tratamiento = tratamientos[random.randint(0, 16)]
-        observaciones = "Tengo una plaga de " + tratamiento.plaga.nombre + "en casa."
+        observaciones = "Tengo una plaga de " + tratamiento.plaga.nombre + " muy abundante en casa. Necesito que me solucionen el problema."
         solicitud = SolicitudServicio.objects.create( plaga = tratamiento.plaga,
             estado="Aceptada", fecha=fecha, tratamiento=tratamiento, usuario=cliente.persona.usuario, observaciones=observaciones)
-        descripcion = "Tratamiento para combatir  la plaga de"+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
+        descripcion = "Tratamiento para combatir la plaga de "+ tratamiento.plaga.nombre + ". Concretamente el tratamiento aplicado: " +tratamiento.nombre + ". Realizado el día: " +str(fecha)
         factura = Factura.objects.create(fecha_expedicion = solicitud.fecha, emisor="Dedesin S.L", 
                                         receptor = cliente.nombreCompleto(), descripcion=descripcion, importe = tratamiento.precio, 
                                         tipo_impositivo = 21.0, fecha_operaciones=fecha)
-        servicio = Servicio.objects.create(estado="realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
+        servicio = Servicio.objects.create(estado="Realizado",observaciones="Cliente satisfecho", solicitudServicio = solicitud,
                                         trabajador = trabajadores[random.randint(0, 7)], factura = factura)
         contador +=1
-        print("Implementado "+str(contador)+"de 500.")
+        print("Implementado "+str(contador)+"de 25.")

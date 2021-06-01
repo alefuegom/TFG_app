@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 import shelve
 from django.db.models import Q
 from django.db.models.query import QuerySet
-from .recommendations import recomendacion_trabajador
+from .recommendations import datos_recomendacion_trabajador, recomendacion_trabajador
 from django.shortcuts import *
 from django.contrib.auth import logout as do_logout
 import random
@@ -32,7 +32,8 @@ def cerrarSesion(request):
 @login_required
 def inicioAdministrador(request):
     if esAdministrador(request):
-        #poblar_bbdd()
+        # poblar_bbdd()
+        datos_recomendacion_trabajador()
         nombre_administrador = Administrador.objects.get(persona__usuario=request.user).persona.nombreCompleto()
         return render(request, 'inicioAdministrador.html', {'nombre_administrador':nombre_administrador})
     else:

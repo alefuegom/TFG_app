@@ -25,7 +25,7 @@ def recomendacion_trabajador(servicio_id):
 
 def datos_recomendacion_trabajador():
     servicios = Servicio.objects.all()
-    print("Inicio del writer")
+    print("Aprendiendo de los datos...")
     myfile = open('recomendation_data.csv','w')
     writer = csv.writer(myfile, delimiter=',', quotechar='"')
     writer.writerow(["id", "tratamiento", "trabajador", "observaciones"])
@@ -35,6 +35,5 @@ def datos_recomendacion_trabajador():
             writer.writerow([s.id, s.solicitudServicio.tratamiento.nombre, "", s.solicitudServicio.observaciones])
         else:
             writer.writerow([s.id, s.solicitudServicio.tratamiento.nombre, s.trabajador.persona.nombreCompleto(), s.solicitudServicio.observaciones])
-        print("Implementado " +str(s.id)+ " de " +str(len(servicios)))
         myfile.flush() # whenever you want, and/or
     myfile.close()

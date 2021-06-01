@@ -68,12 +68,13 @@ def edit_perfil_trabajador(request):
 def list_servicios_trabajador(request):
     if esTrabajador(request):
         trabajador = Trabajador.objects.filter(persona__usuario=request.user)[0]
-        servicios = Servicio.objects.filter(trabajador=trabajador)
+        servicios = Servicio.objects.filter(trabajador=trabajador, estado="Pendiente")
         if len(servicios) > 0:
             servicios = servicios.order_by('-solicitudServicio__fecha')
             servicioFilter = ServicioTrabajadorFilter(request.GET, queryset=servicios)
             servicios = servicioFilter.qs
             if len(servicios) > 0:
+                servicios.order_by("-solicitudServicio__fecha")
                 resultado = []
                 for servicio in servicios:
                     usuario = servicio.solicitudServicio.usuario
@@ -94,7 +95,7 @@ def list_servicios_trabajador(request):
                 msg_error = "No existe ningún servicio con los filtros introducidos."
                 return render(request, 'servicioTrabajador.html', {'msg_error': msg_error})
         else:
-            return render(request, 'servicioCliente.html')
+            return render(request, 'servicioTrabajador.html')
     else:
         return redirect('/errorPermiso/')
 

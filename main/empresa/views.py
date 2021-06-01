@@ -238,12 +238,13 @@ def edit_solicitud_servicio_empresa(request, id):
                             servicio.save()
                             return redirect("/empresa/servicio/show/" + str(servicio.id))
                 else:
-                    msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
-                    return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
-                                                                                 'msg_error': msg_error})
+                    form = EditSolicitudServicioEmpresaForm()
+                    return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'form': form})
             else:
-                form = EditSolicitudServicioEmpresaForm()
-                return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud, 'form': form})
+                msg_error = "Exclusivamente se puede editar una solicitud de servicio si su estado es 'Atendida'"
+                return render(request, 'solicitudServicioEmpresaForm.html', {'solicitud': solicitud,
+                                                                                 'msg_error': msg_error})
+           
         else:
             return redirect('/errorPermiso')
     else:

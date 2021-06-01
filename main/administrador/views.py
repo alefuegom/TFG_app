@@ -231,6 +231,7 @@ def list_servicio_administrador(request):
                 msg_error = "No existe ningún servicio con los filtros seleccionados."
                 return render(request, "servicioAdministrador.html", {'msg_error': msg_error})
             else:
+                servicios = servicios.order_by('-solicitudServicio__fecha')
                 for servicio in servicios:
                     try:
                         empresa = Empresa.objects.filter(

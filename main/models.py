@@ -10,8 +10,8 @@ MATRICULA_REGEX = RegexValidator(r'[0-9]{4}[A-Za-z]{3}', 'Escribe una matrícula
 CIF_REGEX = RegexValidator(r'^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$', 'Escribe un CIF correcto.')
 CUENTA_BANCARIA_REGEX = RegexValidator(r'^[A-Za-z]{2}[0-9]{22}$', 'Escribe una cuenta bancaria correcta.')
 TELEFONO_REGEX = RegexValidator(r'^[0-9]{9}$', 'Escribe un número de teléfono correcto.')
-CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$',
-                                  'Escribe una contraseña con al menos 8 caracteres, al menos una letra y un número.')
+CONTRASEÑA_REGEX = RegexValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}',
+                                  'Escriba una contraseña entre 8 y 15 caracteres, al menos una letra minúscula, otra mayúscula, un número y un carácter especial.')
 
 
 class Empresa(models.Model):

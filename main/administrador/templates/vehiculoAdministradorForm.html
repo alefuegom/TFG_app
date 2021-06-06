@@ -6,6 +6,11 @@
     {% if trabajador %}
     <h2 class="subtitle">Trabajador asociado: {{trabajador.persona.nombre}} {{trabajador.persona.apellidos}}</h2>
     {% endif %}
+    {% if msg_error %}
+    <div class="alert alert-danger w-100">
+        <strong>{{msg_error}}</strong>
+    </div>
+    {% endif %}
     <div class="container mt-4">
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12">

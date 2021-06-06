@@ -444,14 +444,19 @@ def create_tratamiento_administrador(request):
                 horasAbandono = form.cleaned_data['horasAbandono']
                 plaga = Plaga.objects.get(id=form.cleaned_data['plaga'])
                 if not abandono and horasAbandono != 0:
-                    msg_error = "No se puede rellenar el tiempo de abandono, si el tratamiento no requiere abandono."
+                    msg_error = "Se debe rellenar con un 0 el campo de horas de abandono, si el tratamiento no requiere abandono."
                     return render(request, 'tratamientoAdministradorForm.html',
                                   {'form': form, 'msg_error': msg_error})
                 if abandono and horasAbandono <= 0:
                     msg_error = "Si el tratamiento necesita que se abanone la zona tratada, el valor del tiempo no puede ser 0."
                     return render(request, 'tratamientoAdministradorForm.html',
                                   {'form': form, 'msg_error': msg_error})
-                else:
+                try:
+                    Tratamiento.objects.filter(nombre=nombre)[0]
+                    msg_error = "Ya existe un tratamiento con el nombre introducido"
+                    return render(request, 'tratamientoAdministradorForm.html',
+                                  {'form': form, 'msg_error': msg_error})
+                except:
                     tratamiento = Tratamiento(nombre=nombre, descripcion=descripcion, precio=precio, abandono=abandono,
                                               horasAbandono=horasAbandono, plaga=plaga)
                     tratamiento.save()
@@ -526,8 +531,8 @@ def delete_tratamiento_administrador(request, id):
         if len(solicitudes) != 0:
             tratamientos = Tratamiento.objects.all()
             msg_error = "No se puede eliminar un tratamiento que esta presente en una solicitud de servicio."
-            return render(request, 'tratamientoAdministrador.html',
-                          {'tratamientos': tratamientos, 'num_tratamientos': len(tratamientos),
+            return render(request, 'tratamientoAdministradorForm.html',
+                          {'tratamiento': tratamiento,
                            'msg_error': msg_error})
         else:
             tratamiento.delete()
@@ -696,6 +701,7 @@ def edit_vehiculo_administrador(request, id):
                     return render(request, 'vehiculoAdministradorForm.html',
                                   {'form_edit': form, 'vehiculo_edit': vehiculo,
                                    'msg_error': msg_error})
+                vehiculo.proxima_revision = proxima_revision
                 vehiculo.save()
                 return redirect('/administrador/vehiculo')
             else:
@@ -715,8 +721,8 @@ def delete_vehiculo_administrador(request, id):
             trabajador = Trabajador.objects.filter(vehiculo=vehiculo)[0]
             vehiculos = Vehiculo.objects.all()
             msg_error = "No se puede dar de baja a un vehículo si está asociado a un trabajador."
-            return render(request, 'vehiculoAdministrador.html', {'msg_error': msg_error, 'vehiculos': vehiculos,
-                                                                  'num_vehiculos': len(vehiculos)})
+            return render(request, 'vehiculoAdministradorForm.html', {'msg_error': msg_error, 'vehiculo': vehiculo, 
+            'trabajador':trabajador})
         except:
             vehiculo.delete()
             return redirect('/administrador/vehiculo/')

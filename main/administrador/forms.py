@@ -108,12 +108,11 @@ class EditTrabajadorAdministradorForm(forms.Form):
     vehiculos_matricula = [["-", "Ninguno"]]
     vehiculos_asignados = []
     for t in Trabajador.objects.all():
-        try:
-            if t.vehiculo != None:
-                vehiculos_asignados.append(t.vehiculo)
-        except:
-            pass
+        if t.vehiculo:
+            vehiculos_asignados.append(t.vehiculo)
+
     for v in Vehiculo.objects.all():
+        print(v,"pasa")
         if v not in vehiculos_asignados:
             vehiculos_matricula.append([v.id, v.marca + "-" + v.modelo + " (" + v.matricula + ")"])
     telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",

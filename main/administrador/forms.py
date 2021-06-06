@@ -112,7 +112,6 @@ class EditTrabajadorAdministradorForm(forms.Form):
             vehiculos_asignados.append(t.vehiculo)
 
     for v in Vehiculo.objects.all():
-        print(v,"pasa")
         if v not in vehiculos_asignados:
             vehiculos_matricula.append([v.id, v.marca + "-" + v.modelo + " (" + v.matricula + ")"])
     telefono = forms.CharField(validators=[TELEFONO_REGEX], label="Teléfono",

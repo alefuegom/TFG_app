@@ -246,8 +246,11 @@ def edit_solicitud_servicio_cliente(request, id):
 def show_factura_cliente(request, id):
     if esCliente(request):
         servicio = Servicio.objects.get(id=id)
-        factura = servicio.factura
-        return render(request, 'facturaClienteForm.html', {'servicio': servicio, 'factura': factura})
+        if servicio.solicitudServicio.usuario == request.user:
+            factura = servicio.factura
+            return render(request, 'facturaClienteForm.html', {'servicio': servicio, 'factura': factura})
+        else:
+            return redirect("/errorPermiso/")
     else:
         return redirect("/errorPermiso/")
 

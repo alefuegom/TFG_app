@@ -55,7 +55,7 @@
 
     <strong><h1 class="title mb-5">Mi perfil</h1></strong>
 
-    <form id='form' method='post'>
+    <form id='wideform' method='post'>
         {% csrf_token %}
         {% for field, valor in items %}
         <div class="my-3">
@@ -66,7 +66,7 @@
             {% endfor %}
         </div>
         {% endfor %}
-        <input type='submit' class="page-link btn-dedesin my-3" value='Confirmar'/>
+        <input type='submit' class="page-link btn-dedesin my-3 w-25" value='Confirmar'/>
     </form>
 </div>
 {% endif %}

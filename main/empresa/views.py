@@ -124,8 +124,11 @@ def show_servicios_empresa(request, id):
 def show_factura_empresa(request, id):
     if esEmpresa(request):
         servicio = Servicio.objects.get(id=id)
-        factura = servicio.factura
-        return render(request, 'facturaTrabajadorForm.html', {'servicio': servicio, 'factura': factura})
+        if servicio.solicitudServicio.usuario == request.user:
+            factura = servicio.factura
+            return render(request, 'facturaTrabajadorForm.html', {'servicio': servicio, 'factura': factura})
+        else:
+            return redirect("/errorPermiso/")    
     else:
         return redirect("/errorPermiso/")
 

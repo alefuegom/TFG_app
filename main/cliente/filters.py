@@ -8,7 +8,7 @@ class SolicitudServicioClienteFilter(django_filters.FilterSet):
     estado =django_filters.ChoiceFilter(choices=ESTADO_SOLICITUD,field_name="estado", label="Estado")
     fecha = DateFilter(field_name="fecha", lookup_expr="iexact", label="Fecha",
                                       widget=TextInput(attrs={'placeholder': 'dd/mm/yyyy'}))
-    plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="solicitudServicio__plaga",
+    plaga = django_filters.ModelChoiceFilter(queryset=Plaga.objects.all(), field_name="plaga",
                                              label="Plaga")
     class Meta:
         model = SolicitudServicio

@@ -149,7 +149,9 @@ def registroCliente(request):
                 cliente.save()
                 # usuario = authenticate(username=email, password=contraseña)
                 login(request, usuario)
-                return redirect('/cliente/')
+                response = redirect('/cliente/')
+                response.set_cookie('CK02', 'cliente')
+                return response
             else:
                 cuentas_bancarias = []
                 for c in Cliente.objects.all():
@@ -213,7 +215,9 @@ def registroEmpresa(request):
                 try:
                     empresa.save()
                     login(request, usuario)
-                    return redirect('/empresa/')
+                    response = redirect('/empresa/')
+                    response.set_cookie('CK02', 'empresa')
+                    return response
                 except:
                     usuario.delete()
                     return render(request, 'auth/registroEmpresa.html',
